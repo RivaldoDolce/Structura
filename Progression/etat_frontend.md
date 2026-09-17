@@ -1,6 +1,6 @@
 # État Frontend — STRUCTURA
 
-Date : 2026-09-17. Branche : `feat/sprint2-layouts-sections` (depuis `develop`). Sprint 2 terminé, en attente de merge.
+Date : 2026-09-17. Branche : `feat/sprint3-demo-integration` (depuis `develop`). Sprint 3 en cours.
 
 ## Architecture
 
@@ -14,8 +14,9 @@ Séparation stricte skill 01 : `src/frontend/components/ui` (primitives shadcn),
 - `layout` contient `SiteHeader`, `MobileNav`, `SiteFooter`. `sections` contient `Hero`, `Stats`, `Portfolio`, `Services`.
 - Tokens `@theme` complets : line, line-strong, safety-deep, whatsapp-deep ajoutés.
 - Dépendances installées via npm (gestionnaire officiel, lockfile committé) : motion, lenis, cva, Radix, sonner, Testing Library, jsdom, playwright, plugin TS ESLint.
-- Vérifications vertes : 84/84 tests Vitest, typecheck propre, lint 0 erreur (3 avertissements `<img>` assumés), Prisma généré. Build à rejouer hors sandbox (SWC natif pendu ici).
-- Sprint 3 : assembler la page d'accueil (Hero + Stats + Portfolio + Services + témoignages, FAQ, CTA final), page `/devis` avec DevisWizard, tests E2E Playwright.
+- `demo/sections` : galerie interne (noindex) des sections et primitifs avec visuels réels.
+- Vérifications vertes : 88/88 tests Vitest, typecheck propre, lint 0 erreur (3 avertissements `<img>` assumés), Prisma généré. Build à rejouer hors sandbox (SWC natif pendu ici).
+- Sprint 3 : page d'accueil assemblée, page `/devis` avec DevisWizard, tests E2E Playwright.
 
 ## Références design
 

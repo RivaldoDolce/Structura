@@ -42,3 +42,11 @@
 - `src/app/(public)/layout.tsx` : LenisProvider + header + main compensé + footer + WhatsApp via `NEXT_PUBLIC_WHATSAPP_NUMBER`.
 - Résultat : 84/84 tests, typecheck propre, lint 0 erreur, 3 warnings `<img>` assumés + 2 mocks exemptés.
 - Build impossible dans ce sandbox (binding natif SWC pendu, `next --version` OK) : à rejouer sur poste/CI.
+
+## 2026-09-17 — Sprint 3 `feat/sprint3-demo-integration` : démo & intégration
+
+- Proposition reçue non appliquée : décrivait le Sprint 2 déjà livré et régressait les corrections senior (`font-display`, hex, `StickyMobileCTA`).
+- `src/app/demo/sections/page.tsx` : galerie Hero + Stats + Portfolio + Services + JalonTimeline + BeforeAfter + WatermarkPreview avec photos réelles de `public/photos`, `noindex`.
+- Intégration TDD : `navigation.integration.test.tsx` (hamburger → lien overlay → fermeture + body restauré, lien scopé au dialogue), `accueil.integration.test.tsx` (régions uniques, carte vers slug, hero vers `/devis`).
+- Props réelles vérifiées avant usage (`Jalon.status/notes`, `BeforeAfter.beforeImage/afterImage`).
+- Résultat : 88/88 tests, typecheck propre, lint 0 erreur.
