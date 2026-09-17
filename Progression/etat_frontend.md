@@ -1,18 +1,21 @@
 # État Frontend — STRUCTURA
 
-Date : 2026-09-17. Branche : `feat/frontend-setup`.
+Date : 2026-09-17. Branche : `feat/sprint1-frontend-components-avancees`. Sprint 1 en cours.
 
-## Implémenté
+## Architecture
 
-- Structure `src/frontend/` conforme skill 01 (ui, signature, sections, hooks, lib).
-- `lib/cn.ts` conforme. `lib/tokens.ts` et `lib/animations.ts` présents mais non conformes (hex en dur, easing générique).
-- Tokens CSS présents dans `globals.css` et `tailwind.config.ts`.
+Séparation stricte skill 01 : `src/frontend/components/ui` (primitives shadcn), `signature` (marque), `sections` (pages), `hooks`, `lib` (cn, tokens, animations).
 
-## En cours
+## État réel
 
-- Déclaration dépendances sans install. Aucun composant joint pour l'instant.
+- `lib/cn.ts` conforme. `lib/tokens.ts` à migrer vers `var(--*)`. `lib/animations.ts` à aligner sur la cascade skill 04.
+- Dossiers `ui` et `signature` encore vides : rien n'est terminé côté composants, contrairement à ce qu'affirmait le plan proposé.
+- Dépendances déclarées sans installation (connexion insuffisante) : motion, lenis, cva, Radix, sonner, Testing Library, jsdom seul.
+- Sprint 1 : `JalonTimeline` plus test en cours, puis `BeforeAfter`, `WatermarkPreview`, `DevisWizard`, `LenisProvider`.
 
-## Reste
+## Références design
 
-- 10 primitives ui, 14 signature, 5 hooks, provider Lenis, tests, pages démo.
-- Se référer à `plan_frontend.md` et `docs/ui-maquettes`, `docs/wireframes`, `docs/mockups`.
+- Journal chantier : `docs/ui-maquettes/mobile/02-15_journal-chantier-diaspora.png` (timeline horizontale à 360px).
+- Tunnel devis : `docs/ui-maquettes/mobile/02-05_tunnel-devis-4-ecrans.png` (3 étapes, cartes visuelles).
+- Fiche plan : `docs/mockups/06-03_iphone15-fiche-plan-blueprint.png` (filigrane diagonal, tableau mono, barre sticky).
+- Détail : `Progression/plan_sprint1.md`, `Progression/audit_sprint1.md`.
