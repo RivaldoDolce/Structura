@@ -1,0 +1,817 @@
+// ──────────────────────────────────────────────
+// PRISMA SCHEMA — STRUCTURA
+// Plateforme digitale Ingénierie / Ébénisterie / Immobilier
+// PostgreSQL (Neon)
+// ──────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ════════════════════════════════════════════════
+// UTILISATEURS & AUTHENTIFICATION
+// ════════════════════════════════════════════════
+
+model User {
+  id             String    @id @default(uuid()) @db.Uuid
+  email          String    @unique @db.Text
+  telephone      String?   @db.Text
+  nom            String    @db.Text
+  prenom         String?   @db.Text
+  motDePasseHash String?   @map("mot_de_passe_hash") @db.Text
+  role           Role      @default(CLIENT)
+  pays           String?   @db.Text
+  avatarUrl      String?   @map("avatar_url") @db.Text
+  emailVerifieLe DateTime? @map("email_verifie_le")
+  derniereConnexion DateTime? @map("derniere_connexion")
+  twoFactorEnabled Boolean @default(false) @map("two_factor_enabled")
+  twoFactorSecret   String? @map("two_factor_secret") @db.Text
+  creeLe         DateTime  @default(now()) @map("cree_le")
+  misAJourLe     DateTime  @updatedAt @map("mis_a_jour_le")
+  supprimeLe     DateTime? @map("supprime_le")
+
+  // Relations
+  commandes           Commande[]
+  chantiers           Chantier[]
+  notifications       Notification[]
+  sessions            Session[]
+  devis               Devis[]
+  leads               Lead[]
+  achatsPlan          AchatPlan[]
+  demandesSurMesure   DemandeSurMesure[]
+
+  @@index([role])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @map("user_id") @db.Uuid
+  token        String   @unique @db.Text
+  expiresAt    DateTime @map("expires_at")
+  creeLe       DateTime @default(now()) @map("cree_le")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+enum Role {
+  CLIENT
+  CHEF_DE_PROJET
+  ADMIN
+  SUPER_ADMIN
+}
+
+// ════════════════════════════════════════════════
+// CATALOGUE DE PLANS
+// ════════════════════════════════════════════════
+
+model Plan {
+  id                 String   @id @default(uuid()) @db.Uuid
+  reference          String   @unique @db.Text
+  titre              String   @db.Text
+  typeBatiment       String   @map("type_batiment") @db.Text
+  superficieM2       Decimal? @map("superficie_m2") @db.Decimal(8, 2)
+  nbNiveaux          Int?     @map("nb_niveaux")
+  nbChambres         Int?     @map("nb_chambres")
+  nbSallesDeBain     Int?     @map("nb_salles_de_bain")
+  prixFcfa           Decimal  @map("prix_fcfa") @db.Decimal(12, 0)
+  description        String?  @db.Text
+  caracteristiques   Json?    @db.JsonB
+  fichierApercuUrl   String?  @map("fichier_apercu_url") @db.Text
+  fichierCompletUrl  String?  @map("fichier_complet_url") @db.Text
+  images             Json?    @db.JsonB
+  publie             Boolean  @default(true)
+  nbVentes           Int      @default(0) @map("nb_ventes")
+  creeLe             DateTime @default(now()) @map("cree_le")
+  misAJourLe         DateTime @updatedAt @map("mis_a_jour_le")
+  supprimeLe         DateTime? @map("supprime_le")
+
+  // Relations
+  achats              AchatPlan[]
+  categoriesPlan      PlanCategorie[]
+
+  @@index([typeBatiment])
+  @@index([publie])
+  @@map("plans")
+}
+
+model PlanCategorie {
+  id         String @id @default(uuid()) @db.Uuid
+  planId     String @map("plan_id") @db.Uuid
+  categorieId String @map("categorie_id") @db.Uuid
+
+  plan      Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  categorie Categorie @relation(fields: [categorieId], references: [id], onDelete: Cascade)
+
+  @@unique([planId, categorieId])
+  @@map("plans_categories")
+}
+
+model Categorie {
+  id       String @id @default(uuid()) @db.Uuid
+  nom      String @unique @db.Text
+  slug     String @unique @db.Text
+  type     String @db.Text
+
+  plansCategorie PlanCategorie[]
+
+  @@map("categories")
+}
+
+// ════════════════════════════════════════════════
+// CATALOGUE ÉBÉNISTERIE
+// ════════════════════════════════════════════════
+
+model ProduitEbenisterie {
+  id             String   @id @default(uuid()) @db.Uuid
+  reference      String   @unique @db.Text
+  nom            String   @db.Text
+  essenceBois    String   @map("essence_bois") @db.Text
+  prixBaseFcfa   Decimal  @map("prix_base_fcfa") @db.Decimal(12, 0)
+  options        Json?    @db.JsonB
+  description    String?  @db.Text
+  dimensions     Json?    @db.JsonB
+  images         Json?    @db.JsonB
+  publie         Boolean  @default(true)
+  nbVentes       Int      @default(0) @map("nb_ventes")
+  creeLe         DateTime @default(now()) @map("cree_le")
+  misAJourLe     DateTime @updatedAt @map("mis_a_jour_le")
+  supprimeLe     DateTime? @map("supprime_le")
+
+  // Relations
+  commandes       Commande[]
+  demandesSurMesure DemandeSurMesure[]
+
+  @@index([essenceBois])
+  @@index([publie])
+  @@map("produits_ebenisterie")
+}
+
+// ════════════════════════════════════════════════
+// IMMOBILIER
+// ════════════════════════════════════════════════
+
+model BienImmobilier {
+  id                    String   @id @default(uuid()) @db.Uuid
+  reference             String   @unique @db.Text
+  titre                 String   @db.Text
+  type                  TypeBien
+  localisation          String   @db.Text
+  quartier              String?  @db.Text
+  prixFcfa             Decimal  @map("prix_fcfa") @db.Decimal(12, 0)
+  surfaceM2            Decimal? @map("surface_m2") @db.Decimal(8, 2)
+  nbPieces             Int?     @map("nb_pieces")
+  nbChambres           Int?     @map("nb_chambres")
+  documentsJuridiques  Json?    @map("documents_juridiques") @db.JsonB
+  description          String?  @db.Text
+  images               Json?    @db.JsonB
+  publie               Boolean  @default(true)
+  creeLe               DateTime @default(now()) @map("cree_le")
+  misAJourLe           DateTime @updatedAt @map("mis_a_jour_le")
+  supprimeLe           DateTime? @map("supprime_le")
+
+  // Relations
+  visites Visite[]
+
+  @@index([type])
+  @@index([localisation])
+  @@index([publie])
+  @@map("biens_immobiliers")
+}
+
+model Visite {
+  id         String   @id @default(uuid()) @db.Uuid
+  bienId     String   @map("bien_id") @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  dateVisite DateTime @map("date_visite")
+  statut     StatutVisite @default(PROGRAMMEE)
+  notes      String?  @db.Text
+  creeLe     DateTime @default(now()) @map("cree_le")
+
+  bien BienImmobilier @relation(fields: [bienId], references: [id], onDelete: Cascade)
+  user User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("visites")
+}
+
+enum TypeBien {
+  VENTE
+  LOCATION
+}
+
+enum StatutVisite {
+  PROGRAMMEE
+  CONFIRMEE
+  ANNULEE
+}
+
+// ════════════════════════════════════════════════
+// COMMANDES & PAIEMENTS
+// ════════════════════════════════════════════════
+
+model Commande {
+  id                String          @id @default(uuid()) @db.Uuid
+  reference         String          @unique @db.Text
+  userId            String          @map("user_id") @db.Uuid
+  type              TypeCommande
+  referenceArticle  String?         @map("reference_article") @db.Text
+  montantTotalFcfa  Decimal         @map("montant_total_fcfa") @db.Decimal(12, 0)
+  montantPayeFcfa   Decimal         @default(0) @map("montant_paye_fcfa") @db.Decimal(12, 0)
+  statut            StatutCommande  @default(EN_ATTENTE)
+  details           Json?           @db.JsonB
+  factureNumero     String?         @map("facture_numero") @db.Text
+  factureUrl        String?         @map("facture_url") @db.Text
+  notes             String?         @db.Text
+  creeLe            DateTime        @default(now()) @map("cree_le")
+  misAJourLe        DateTime        @updatedAt @map("mis_a_jour_le")
+
+  // Relations
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  paiements  Paiement[]
+  produit    ProduitEbenisterie? @relation(fields: [referenceArticle], references: [reference])
+
+  @@index([userId])
+  @@index([statut])
+  @@index([type])
+  @@map("commandes")
+}
+
+model Paiement {
+  id                 String        @id @default(uuid()) @db.Uuid
+  commandeId         String        @map("commande_id") @db.Uuid
+  referenceCinetpay  String?       @unique @map("reference_cinetpay") @db.Text
+  montantFcfa        Decimal       @map("montant_fcfa") @db.Decimal(12, 0)
+  moyen              MoyenPaiement
+  statut             StatutPaiement @default(EN_ATTENTE)
+  metadata           Json?         @db.JsonB
+  recuLe             DateTime      @default(now()) @map("recu_le")
+
+  commande Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+
+  @@index([commandeId])
+  @@index([referenceCinetpay])
+  @@map("paiements")
+}
+
+enum TypeCommande {
+  PLAN
+  MEUBLE
+  ACOMPTE_CHANTIER
+}
+
+enum StatutCommande {
+  EN_ATTENTE
+  PAYE
+  LIVRE
+  ANNULE
+  REMBOURSE
+}
+
+enum MoyenPaiement {
+  MTN_MOMO
+  ORANGE_MONEY
+  CARTE_BANCAIRE
+}
+
+enum StatutPaiement {
+  EN_ATTENTE
+  SUCCES
+  ECHEC
+  REMBOURSE
+}
+
+// ════════════════════════════════════════════════
+// ACHATS DE PLANS
+// ════════════════════════════════════════════════
+
+model AchatPlan {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @map("user_id") @db.Uuid
+  planId        String   @map("plan_id") @db.Uuid
+  montantFcfa   Decimal  @map("montant_fcfa") @db.Decimal(12, 0)
+  statut        StatutCommande @default(EN_ATTENTE)
+  fichierTelecharge Boolean @default(false) @map("fichier_telecharge")
+  nbTelechargements Int @default(0) @map("nb_telechargements")
+  creeLe        DateTime @default(now()) @map("cree_le")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, planId])
+  @@map("achats_plans")
+}
+
+// ════════════════════════════════════════════════
+// DEVIS
+// ════════════════════════════════════════════════
+
+model Devis {
+  id            String        @id @default(uuid()) @db.Uuid
+  reference     String        @unique @db.Text
+  userId        String?       @map("user_id") @db.Uuid
+  type          TypeDevis
+  statut        StatutDevis   @default(EN_ATTENTE)
+  nom           String        @db.Text
+  email         String?       @db.Text
+  telephone     String?       @db.Text
+  description   String?       @db.Text
+  superficieM2  Decimal?      @map("superficie_m2") @db.Decimal(8, 2)
+  nbNiveaux     Int?          @map("nb_niveaux")
+  details       Json?         @db.JsonB
+  montantEstime Decimal?      @map("montant_estime") @db.Decimal(12, 0)
+  montantFinal  Decimal?      @map("montant_final") @db.Decimal(12, 0)
+  pdfUrl        String?       @map("pdf_url") @db.Text
+  expiresLe     DateTime?     @map("expires_le")
+  traiteLe      DateTime?     @map("traite_le")
+  notes         String?       @db.Text
+  creeLe        DateTime      @default(now()) @map("cree_le")
+  misAJourLe    DateTime      @updatedAt @map("mis_a_jour_le")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([statut])
+  @@index([type])
+  @@map("devis")
+}
+
+model DemandeSurMesure {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String?  @map("user_id") @db.Uuid
+  produitId   String?  @map("produit_id") @db.Uuid
+  nom         String   @db.Text
+  email       String?  @db.Text
+  telephone   String?  @db.Text
+  description String?  @db.Text
+  photoUrl    String?  @map("photo_url") @db.Text
+  statut      String   @default("en_attente")
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  user    User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  produit ProduitEbenisterie? @relation(fields: [produitId], references: [id], onDelete: SetNull)
+
+  @@map("demandes_sur_mesure")
+}
+
+enum TypeDevis {
+  INGENIERIE
+  EBENISTERIE
+  IMMobilier
+}
+
+enum StatutDevis {
+  EN_ATTENTE
+  EN_COURS
+  PROPOSE
+  ACCEPTE
+  REFUSE
+  EXPIRE
+}
+
+// ════════════════════════════════════════════════
+// CHANTIERS & SUIVI DIASPORA
+// ════════════════════════════════════════════════
+
+model Chantier {
+  id              String         @id @default(uuid()) @db.Uuid
+  reference       String         @unique @db.Text
+  userId          String         @map("user_id") @db.Uuid
+  titre           String         @db.Text
+  localisation    String         @db.Text
+  typeProjet      String         @map("type_projet") @db.Text
+  phaseActuelle   PhaseChantier  @map("phase_actuelle")
+  surfaceM2       Decimal?       @map("surface_m2") @db.Decimal(8, 2)
+  nbNiveaux       Int?           @map("nb_niveaux")
+  budgetTotal     Decimal?       @map("budget_total") @db.Decimal(12, 0)
+  dateDebut       DateTime?      @map("date_debut")
+  dateFinPrevue   DateTime?      @map("date_fin_prevue")
+  dateFinReelle   DateTime?      @map("date_fin_reelle")
+  pourcentageAvancement Int @default(0) @map("pourcentage_avancement")
+  creeLe          DateTime       @default(now()) @map("cree_le")
+  misAJourLe      DateTime       @updatedAt @map("mis_a_jour_le")
+
+  // Relations
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  journal       JournalChantier[]
+  depenses      DepenseChantier[]
+  taches        Tache[]
+  equipes       EquipeChantier[]
+  documents     DocumentChantier[]
+  rapports      RapportJournalier[]
+  approvisionnements DemandeAppro[]
+  incidents     IncidentHSE[]
+
+  @@index([userId])
+  @@index([phaseActuelle])
+  @@map("chantiers")
+}
+
+model JournalChantier {
+  id         String   @id @default(uuid()) @db.Uuid
+  chantierId String   @map("chantier_id") @db.Uuid
+  titre      String   @db.Text
+  contenu    String   @db.Text
+  mediaUrls  Json?    @map("media_urls") @db.JsonB
+  publieLe   DateTime @default(now()) @map("publie_le")
+  publiePar  String?  @map("publie_par") @db.Uuid
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@map("journal_chantier")
+}
+
+model DepenseChantier {
+  id               String   @id @default(uuid()) @db.Uuid
+  chantierId       String   @map("chantier_id") @db.Uuid
+  libelle          String   @db.Text
+  montantFcfa      Decimal  @map("montant_fcfa") @db.Decimal(12, 0)
+  categorie        String   @db.Text
+  justificatifUrl  String?  @map("justificatif_url") @db.Text
+  dateDepense      DateTime @map("date_depense")
+  creeLe           DateTime @default(now()) @map("cree_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@map("depenses_chantier")
+}
+
+enum PhaseChantier {
+  ETUDE
+  FONDATIONS
+  ELEVATION
+  CHARPENTE
+  COUVERTURE
+  INSTALLATIONS
+  FINITIONS
+  LIVRAISON
+}
+
+// ════════════════════════════════════════════════
+// PLANNING & TÂCHES
+// ════════════════════════════════════════════════
+
+model Tache {
+  id          String        @id @default(uuid()) @db.Uuid
+  chantierId  String        @map("chantier_id") @db.Uuid
+  titre       String        @db.Text
+  description String?       @db.Text
+  statut      StatutTache   @default(A_FAIRE)
+  priorite    PrioriteTache @default(NORMALE)
+  dateDebut   DateTime?     @map("date_debut")
+  dateFin     DateTime?     @map("date_fin")
+  assigneA    String?       @map("assigne_a") @db.Uuid
+  parentId    String?       @map("parent_id") @db.Uuid
+  ordre       Int           @default(0)
+  creeLe      DateTime      @default(now()) @map("cree_le")
+  misAJourLe  DateTime      @updatedAt @map("mis_a_jour_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@index([statut])
+  @@map("taches")
+}
+
+enum StatutTache {
+  A_FAIRE
+  EN_COURS
+  EN_ATTENTE
+  TERMINEE
+  ANNULEE
+}
+
+enum PrioriteTache {
+  BASSE
+  NORMALE
+  HAUTE
+  CRITIQUE
+}
+
+// ════════════════════════════════════════════════
+// ÉQUIPES & EFFECTIFS
+// ════════════════════════════════════════════════
+
+model EquipeChantier {
+  id          String   @id @default(uuid()) @db.Uuid
+  chantierId  String   @map("chantier_id") @db.Uuid
+  nom         String   @db.Text
+  chefEquipe  String?  @map("chef_equipe") @db.Uuid
+  effectif    Int      @default(0)
+  specialite  String?  @db.Text
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@map("equipes_chantier")
+}
+
+model EffectifJour {
+  id          String   @id @default(uuid()) @db.Uuid
+  chantierId  String   @map("chantier_id") @db.Uuid
+  date        DateTime @db.Date
+  effectif    Int
+  notes       String?  @db.Text
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  @@unique([chantierId, date])
+  @@map("effectif_jour")
+}
+
+// ════════════════════════════════════════════════
+// RAPPORTS JOURNALIERS
+// ════════════════════════════════════════════════
+
+model RapportJournalier {
+  id            String          @id @default(uuid()) @db.Uuid
+  chantierId    String          @map("chantier_id") @db.Uuid
+  date          DateTime        @db.Date
+  meteo         String?         @db.Text
+  effectif      Int
+  avancement    String?         @db.Text
+  travaux       String          @db.Text
+  observations  String?         @db.Text
+  mediaUrls     Json?           @map("media_urls") @db.JsonB
+  statut        StatutRapport   @default(BROUILLON)
+  verrouilleLe  DateTime?       @map("verrouille_le")
+  publieLe      DateTime?       @map("publie_le")
+  publiePar     String?         @map("publie_par") @db.Uuid
+  creeLe        DateTime        @default(now()) @map("cree_le")
+  misAJourLe    DateTime        @updatedAt @map("mis_a_jour_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@unique([chantierId, date])
+  @@index([statut])
+  @@map("rapports_journaliers")
+}
+
+enum StatutRapport {
+  BROUILLON
+  PUBLIE
+  VERROUILLE
+}
+
+// ════════════════════════════════════════════════
+// APPROVISIONNEMENTS
+// ════════════════════════════════════════════════
+
+model DemandeAppro {
+  id            String          @id @default(uuid()) @db.Uuid
+  chantierId    String          @map("chantier_id") @db.Uuid
+  materiel      String          @db.Text
+  quantite      String          @db.Text
+  unite         String          @db.Text
+  fournisseur   String?         @db.Text
+  coutEstime    Decimal?        @map("cout_estime") @db.Decimal(12, 0)
+  urgence       PrioriteTache   @default(NORMALE)
+  statut        StatutAppro     @default(EN_ATTENTE)
+  validePar     String?         @map("valide_par") @db.Uuid
+  recuLe        DateTime?       @map("recu_le")
+  notes         String?         @db.Text
+  creeLe        DateTime        @default(now()) @map("cree_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@index([statut])
+  @@map("demandes_appro")
+}
+
+enum StatutAppro {
+  EN_ATTENTE
+  VALIDEE
+  REFUSEE
+  COMMANDEE
+  RECUE
+}
+
+// ════════════════════════════════════════════════
+// HSE (Hygiène, Sécurité, Environnement)
+// ════════════════════════════════════════════════
+
+model IncidentHSE {
+  id            String   @id @default(uuid()) @db.Uuid
+  chantierId    String   @map("chantier_id") @db.Uuid
+  date          DateTime @db.Date
+  type          String   @db.Text
+  description   String   @db.Text
+  gravite       String   @db.Text
+  blesses       Int      @default(0)
+  mesures       String?  @db.Text
+  mediaUrls     Json?    @map("media_urls") @db.JsonB
+  declarePar    String?  @map("declare_par") @db.Uuid
+  traiteLe      DateTime? @map("traite_le")
+  creeLe        DateTime @default(now()) @map("cree_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@map("incidents_hse")
+}
+
+model ChecklistHSE {
+  id          String   @id @default(uuid()) @db.Uuid
+  chantierId  String   @map("chantier_id") @db.Uuid
+  date        DateTime @db.Date
+  items       Json     @db.JsonB
+  conforme   Boolean  @default(true)
+  notes       String?  @db.Text
+  verifiePar  String?  @map("verifie_par") @db.Uuid
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  @@unique([chantierId, date])
+  @@map("checklist_hse")
+}
+
+// ════════════════════════════════════════════════
+// DOCUMENTS
+// ════════════════════════════════════════════════
+
+model DocumentChantier {
+  id          String   @id @default(uuid()) @db.Uuid
+  chantierId  String   @map("chantier_id") @db.Uuid
+  nom         String   @db.Text
+  type        String   @db.Text
+  fichierUrl  String   @map("fichier_url") @db.Text
+  taille      Int?
+  uploadPar   String?  @map("upload_par") @db.Uuid
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  chantier Chantier @relation(fields: [chantierId], references: [id], onDelete: Cascade)
+
+  @@index([chantierId])
+  @@map("documents_chantier")
+}
+
+// ════════════════════════════════════════════════
+// LEADS & CRM
+// ════════════════════════════════════════════════
+
+model Lead {
+  id           String      @id @default(uuid()) @db.Uuid
+  userId       String?     @map("user_id") @db.Uuid
+  nom          String      @db.Text
+  email        String?     @db.Text
+  telephone    String?     @db.Text
+  source       SourceLead
+  statut       StatutLead  @default(NOUVEAU)
+  score        Int         @default(0)
+  notes        String?     @db.Text
+  assigneA     String?     @map("assigne_a") @db.Uuid
+  convertiLe   DateTime?   @map("converti_le")
+  creeLe       DateTime    @default(now()) @map("cree_le")
+  misAJourLe   DateTime    @updatedAt @map("mis_a_jour_le")
+
+  user       User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  activites  ActiviteLead[]
+
+  @@index([statut])
+  @@index([source])
+  @@map("leads")
+}
+
+model ActiviteLead {
+  id       String   @id @default(uuid()) @db.Uuid
+  leadId   String   @map("lead_id") @db.Uuid
+  type     String   @db.Text
+  contenu  String   @db.Text
+  auteur   String?  @db.Text
+  creeLe   DateTime @default(now()) @map("cree_le")
+
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId])
+  @@map("activites_lead")
+}
+
+enum SourceLead {
+  SITE_WEB
+  WHATSAPP
+  TELEPHONE
+  RESEAUX_SOCIAUX
+  REFERENCE
+  BOUTIQUE
+}
+
+enum StatutLead {
+  NOUVEAU
+  CONTACTE
+  QUALIFIE
+  PROPOSITION
+  NEGOCIATION
+  CONVERTI
+  PERDU
+}
+
+// ════════════════════════════════════════════════
+// NOTIFICATIONS
+// ════════════════════════════════════════════════
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  type      String   @db.Text
+  titre     String   @db.Text
+  message   String   @db.Text
+  lu        Boolean  @default(false)
+  lien      String?  @db.Text
+  metadata  Json?    @db.JsonB
+  creeLe    DateTime @default(now()) @map("cree_le")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, lu])
+  @@map("notifications")
+}
+
+// ════════════════════════════════════════════════
+// CONTENU (Blog, Témoignages, FAQ)
+// ════════════════════════════════════════════════
+
+model Article {
+  id          String        @id @default(uuid()) @db.Uuid
+  slug        String        @unique @db.Text
+  titre       String        @db.Text
+  excerpt     String?       @db.Text
+  contenu     String        @db.Text
+  imageUrls   Json?         @map("image_urls") @db.JsonB
+  categorie   String?       @db.Text
+  publie      Boolean       @default(false)
+  publieLe    DateTime?     @map("publie_le")
+  auteur      String?       @db.Text
+  vue         Int           @default(0)
+  creeLe      DateTime      @default(now()) @map("cree_le")
+  misAJourLe  DateTime      @updatedAt @map("mis_a_jour_le")
+
+  @@index([publie])
+  @@map("articles")
+}
+
+model Temoignage {
+  id          String   @id @default(uuid()) @db.Uuid
+  nom         String   @db.Text
+  role        String?  @db.Text
+  contenu     String   @db.Text
+  note        Int?     @db.Int
+  photoUrl    String?  @map("photo_url") @db.Text
+  publie      Boolean  @default(false)
+  ordre       Int      @default(0)
+  creeLe      DateTime @default(now()) @map("cree_le")
+
+  @@index([publie])
+  @@map("temoignages")
+}
+
+model FAQ {
+  id          String   @id @default(uuid()) @db.Uuid
+  question    String   @db.Text
+  reponse     String   @db.Text
+  categorie   String?  @db.Text
+  ordre       Int      @default(0)
+  publie      Boolean  @default(true)
+  creeLe      DateTime @default(now()) @map("cree_le")
+  misAJourLe  DateTime @updatedAt @map("mis_a_jour_le")
+
+  @@map("faq")
+}
+
+// ════════════════════════════════════════════════
+// PARAMÈTRES & CONFIGURATION
+// ════════════════════════════════════════════════
+
+model Parametre {
+  id        String   @id @default(uuid()) @db.Uuid
+  cle       String   @unique @db.Text
+  valeur    Json     @db.JsonB
+  description String? @db.Text
+  creeLe    DateTime @default(now()) @map("cree_le")
+  misAJourLe DateTime @updatedAt @map("mis_a_jour_le")
+
+  @@map("parametres")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String?  @map("user_id") @db.Uuid
+  action    String   @db.Text
+  entite    String   @db.Text
+  entiteId  String?  @map("entite_id") @db.Uuid
+  ancien    Json?    @db.JsonB
+  nouveau   Json?    @db.JsonB
+  ip        String?  @db.Text
+  creeLe    DateTime @default(now()) @map("cree_le")
+
+  @@index([userId])
+  @@index([entite, entiteId])
+  @@map("audit_logs")
+}

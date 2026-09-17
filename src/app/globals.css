@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-base: #070B14;
+  --color-surface: #0C1220;
+  --color-elevated: #121A2C;
+  --color-steel: #3B82F6;
+  --color-steel-deep: #1D4ED8;
+  --color-blueprint: #22D3EE;
+  --color-safety: #F59E0B;
+  --color-ink: #F1F5F9;
+  --color-ink-soft: #94A3B8;
+  --color-ink-muted: #64748B;
+  --color-ok: #10B981;
+  --color-danger: #EF4444;
+  --color-whatsapp: #25D366;
+
+  --font-heading: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-ink);
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: var(--color-ink);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-elevated);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-muted);
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--color-steel);
+  outline-offset: 2px;
+}
+
+/* Blueprint grid overlay */
+.st-bg-blueprint {
+  background-image: url("/textures/textures-overlays/05-02_texture-grille-32.png");
+  background-repeat: repeat;
+}
+
+/* Grain overlay */
+.st-grain {
+  position: relative;
+}
+
+.st-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/textures/textures-overlays/05-07_texture-grain.png");
+  background-repeat: repeat;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

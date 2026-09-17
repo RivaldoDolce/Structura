@@ -1,0 +1,105 @@
+/* ============================================================
+   STRUCTURA — Fonds d'écrans v1.0 — CSS d'intégration
+   Direction artistique « Blueprint Futuriste » — Deep Blueprint
+   Placez fonds.css à la racine du pack (à côté des dossiers 00-…).
+   ============================================================ */
+
+:root {
+  --st-base: #070B14; --st-surface: #0C1220; --st-elevated: #121A2C;
+  --st-steel: #3B82F6; --st-blueprint: #22D3EE; --st-safety: #F59E0B;
+  --st-ink: #F1F5F9; --st-ink-soft: #94A3B8; --st-ink-mute: #64748B;
+  --st-line: rgba(148,163,184,.14); --st-line-strong: rgba(148,163,184,.28);
+  --st-shadow-card: 0 24px 48px -24px rgba(2,6,23,.8);
+}
+
+/* ---------- 00 · FONDS DE PAGE ---------- */
+.st-bg-racine { background-color: var(--st-base); background-image: url('00-Fonds-Page/00-02_fond-page-racine-tuile.png'); background-size: 640px 640px; }
+.st-bg-racine-full { background: var(--st-base) url('00-Fonds-Page/00-03_fond-page-racine-desktop.png') center / cover no-repeat; }
+.st-bg-surface { background-color: var(--st-surface); background-image: url('00-Fonds-Page/00-06_fond-page-surface-tuile.png'); background-size: 640px 640px; }
+.st-bg-elevee { background-color: var(--st-elevated); background-image: url('00-Fonds-Page/00-08_fond-page-elevee-tuile.png'); background-size: 640px 640px; }
+
+/* ---------- 01 · HÉROS (cover + variante mobile) ---------- */
+.st-hero-accueil   { background: var(--st-base) url('01-Fonds-Heros/01-01_heros-accueil-desktop.png')   center / cover no-repeat; }
+.st-hero-ingenierie{ background: var(--st-base) url('01-Fonds-Heros/01-03_heros-ingenierie-desktop.png') center / cover no-repeat; }
+.st-hero-ebenisterie{ background: var(--st-base) url('01-Fonds-Heros/01-04_heros-ebenisterie-desktop.png') center / cover no-repeat; }
+.st-hero-plans     { background: var(--st-base) url('01-Fonds-Heros/01-05_heros-plans-desktop.png')     center / cover no-repeat; }
+.st-hero-immobilier{ background: var(--st-base) url('01-Fonds-Heros/01-06_heros-immobilier-desktop.png') center / cover no-repeat; }
+.st-hero-immobilier-photo { background: var(--st-base) url('01-Fonds-Heros/01-07_heros-immobilier-photo-desktop.png') center / cover no-repeat; }
+.st-hero-portfolio { background: var(--st-base) url('01-Fonds-Heros/01-08_heros-portfolio-desktop.png') center / cover no-repeat; }
+.st-hero-mobile    { background: var(--st-base) url('01-Fonds-Heros/01-09_heros-mobile-universel.png')  center / cover no-repeat; }
+@media (max-width: 768px) {
+  .st-hero-accueil { background-image: url('01-Fonds-Heros/01-02_heros-accueil-mobile.png'); }
+}
+
+/* ---------- 02 · PAGES SPÉCIFIQUES ---------- */
+.st-page-auth { background: var(--st-base) url('02-Fonds-Pages/02-01_page-auth-desktop.png') center / cover no-repeat; }
+@media (max-width: 768px) { .st-page-auth { background-image: url('02-Fonds-Pages/02-02_page-auth-mobile.png'); } }
+.st-page-404 { background: var(--st-base) url('02-Fonds-Pages/02-03_page-404-desktop.png') center / cover no-repeat; }
+.st-page-500 { background: var(--st-base) url('02-Fonds-Pages/02-04_page-500-desktop.png') center / cover no-repeat; }
+.st-page-contact { background: var(--st-base) url('02-Fonds-Pages/02-05_page-contact-desktop.png') center / cover no-repeat; }
+.st-page-a-propos { background: var(--st-base) url('02-Fonds-Pages/02-06_page-a-propos-desktop.png') center / cover no-repeat; }
+.st-page-backoffice { background: var(--st-base) url('02-Fonds-Pages/02-07_page-backoffice-desktop.png') center / cover no-repeat; }
+
+/* ---------- 03 · SECTIONS (bandes) ---------- */
+.st-sec-alternee { background: var(--st-surface) url('03-Fonds-Sections/03-01_section-alternee-desktop.png') center / cover no-repeat; }
+.st-sec-services { background: var(--st-base) url('03-Fonds-Sections/03-02_section-services-desktop.png') center / cover no-repeat; }
+.st-sec-stats { background: var(--st-surface) url('03-Fonds-Sections/03-03_section-stats-desktop.png') center / cover no-repeat; }
+.st-sec-temoignages { background: var(--st-base) url('03-Fonds-Sections/03-04_section-temoignages-desktop.png') center / cover no-repeat; }
+.st-sec-tarifs { background: var(--st-surface) url('03-Fonds-Sections/03-05_section-tarifs-desktop.png') center / cover no-repeat; }
+.st-sec-cta { background: var(--st-base) url('03-Fonds-Sections/03-06_section-cta-desktop.png') center / cover no-repeat; }
+.st-sec-footer { background: var(--st-base) url('03-Fonds-Sections/03-07_section-footer-desktop.png') center / cover no-repeat; }
+.st-sec-header { background: var(--st-base) url('03-Fonds-Sections/03-08_section-header-interne-desktop.png') center / cover no-repeat; }
+
+/* ---------- 04 · CARTES ---------- */
+.st-card {
+  background-color: var(--st-surface);
+  background-image: url('04-Fonds-Cartes/04-02_carte-surface-tuile.png');
+  background-size: 640px 640px;
+  border: 1px solid var(--st-line); border-radius: 16px;
+  box-shadow: var(--st-shadow-card);
+}
+.st-card--elevee { background-color: var(--st-elevated); background-image: url('04-Fonds-Cartes/04-03_carte-elevee-tuile.png'); background-size: 640px; }
+.st-card--hover  { background-image: url('04-Fonds-Cartes/04-04_carte-hover-lueur.png'); background-size: cover; }
+.st-card--plan  { background: var(--st-surface) url('04-Fonds-Cartes/04-05_carte-plan.png')  center / cover no-repeat; border-radius: 16px; }
+.st-card--projet{ background: var(--st-base)   url('04-Fonds-Cartes/04-06_carte-projet.png') center / cover no-repeat; border-radius: 16px; }
+.st-card--service{ background: var(--st-surface) url('04-Fonds-Cartes/04-07_carte-service.png') center / cover no-repeat; border-radius: 16px; }
+.st-card--tarif { background: var(--st-elevated) url('04-Fonds-Cartes/04-08_carte-tarif.png') center / cover no-repeat; border-radius: 16px; }
+.st-card--stat  { background: var(--st-surface) url('04-Fonds-Cartes/04-09_carte-stat.png')  center / cover no-repeat; border-radius: 16px; }
+.st-card--journal{ background: var(--st-surface) url('04-Fonds-Cartes/04-10_carte-journal.png') center / cover no-repeat; border-radius: 16px; }
+.st-card--temoignage{ background: var(--st-surface) url('04-Fonds-Cartes/04-11_carte-temoignage.png') center / cover no-repeat; border-radius: 16px; }
+
+/* ---------- 05 · TEXTURES & OVERLAYS (superposition) ----------
+   Le parent doit être position:relative et porter data / classes ci-dessous. */
+.st-tex-grille::before, .st-tex-croix::before, .st-tex-millimetre::before,
+.st-ovl-vignette::after, .st-ovl-photo::after, .st-tex-grain::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+}
+.st-tex-grille::before   { background-image: url('05-Textures-Overlays/05-02_texture-grille-32.png');    background-size: 32px 32px; }
+.st-tex-croix::before    { background-image: url('05-Textures-Overlays/05-04_texture-croix-160.png');   background-size: 160px 160px; }
+.st-tex-millimetre::before { background-image: url('05-Textures-Overlays/05-06_texture-millimetre.png'); background-size: 160px 160px; }
+.st-tex-grain::after     { background-image: url('05-Textures-Overlays/05-07_texture-grain.png'); background-size: 256px 256px; }
+.st-ovl-vignette::after  { background-image: url('05-Textures-Overlays/05-08_overlay-vignette-desktop.png'); background-size: cover; }
+.st-ovl-photo::after     { background-image: url('05-Textures-Overlays/05-10_overlay-photo-lecture.png'); background-size: cover; }
+
+/* lueurs : div dédiée, dimensions libres */
+.st-lueur { position: absolute; background-size: 100% 100%; pointer-events: none; }
+.st-lueur--acier     { background-image: url('05-Textures-Overlays/05-11_overlay-lueur-acier.png'); }
+.st-lueur--blueprint { background-image: url('05-Textures-Overlays/05-12_overlay-lueur-blueprint.png'); }
+.st-lueur--safety    { background-image: url('05-Textures-Overlays/05-13_overlay-lueur-safety.png'); } /* réservée conversion / prix */
+
+/* ---------- 06 · MOTIFS (éléments composables) ---------- */
+.st-motif { position: absolute; pointer-events: none; }
+.st-motif--maison  { background: url('06-Motifs-Transparents/06-01_motif-isometrie-maison-r1.png') center / contain no-repeat; }
+.st-motif--villa   { background: url('06-Motifs-Transparents/06-02_motif-isometrie-villa.png') center / contain no-repeat; }
+.st-motif--immeuble{ background: url('06-Motifs-Transparents/06-03_motif-isometrie-immeuble-r4.png') center / contain no-repeat; }
+.st-motif--charpente{ background: url('06-Motifs-Transparents/06-04_motif-isometrie-charpente.png') center / contain no-repeat; }
+.st-motif--meuble  { background: url('06-Motifs-Transparents/06-05_motif-isometrie-meuble-console.png') center / contain no-repeat; }
+.st-motif--grue    { background: url('06-Motifs-Transparents/06-06_motif-grue-chantier.png') center / contain no-repeat; }
+
+/* ---------- Équivalent CSS pur (sans asset) de la grille racine ---------- */
+.st-grid-css {
+  background-color: var(--st-base);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(148,163,184,.06) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(90deg, rgba(148,163,184,.06) 0 1px, transparent 1px 32px);
+}
