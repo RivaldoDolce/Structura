@@ -9,9 +9,10 @@ Séparation stricte skill 01 : `src/frontend/components/ui` (primitives shadcn),
 ## État réel
 
 - `lib/cn.ts` conforme. `lib/tokens.ts` à migrer vers `var(--*)`. `lib/animations.ts` à aligner sur la cascade skill 04.
-- Dossiers `ui` et `signature` encore vides : rien n'est terminé côté composants, contrairement à ce qu'affirmait le plan proposé.
+- Dossiers `ui` encore vide. `signature` contient `JalonTimeline`, `BeforeAfter`, `WatermarkPreview`, `DevisWizard` avec tests, plus index limités à l'existant.
+- `hooks` contient `useReducedMotion`. `providers` contient `LenisProvider` non encore branché au layout.
 - Dépendances déclarées sans installation (connexion insuffisante) : motion, lenis, cva, Radix, sonner, Testing Library, jsdom seul.
-- Sprint 1 : `JalonTimeline` plus test en cours, puis `BeforeAfter`, `WatermarkPreview`, `DevisWizard`, `LenisProvider`.
+- Sprint 1 : reste l'intégration layout, la page démo et les vérifications au retour du réseau.
 
 ## Références design
 
