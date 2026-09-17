@@ -31,8 +31,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
       role="group"
       aria-label="Aperçu protégé du plan. Le téléchargement nécessite un achat."
       onContextMenu={bloqueMenu}
-      style={{ WebkitTouchCallout: "none", userSelect: "none", WebkitUserSelect: "none" }}
-      className={cn("relative select-none", className)}
+      className={cn("relative [-webkit-touch-callout:none] select-none", className)}
     >
       <div className="relative overflow-hidden rounded-[16px] bg-[var(--color-surface)]">
         <img

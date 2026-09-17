@@ -44,6 +44,7 @@ model User {
   leads               Lead[]
   achatsPlan          AchatPlan[]
   demandesSurMesure   DemandeSurMesure[]
+  visites             Visite[]
 
   @@index([role])
   @@map("users")
@@ -762,7 +763,7 @@ model Temoignage {
   nom         String   @db.Text
   role        String?  @db.Text
   contenu     String   @db.Text
-  note        Int?     @db.Int
+  note        Int?
   photoUrl    String?  @map("photo_url") @db.Text
   publie      Boolean  @default(false)
   ordre       Int      @default(0)

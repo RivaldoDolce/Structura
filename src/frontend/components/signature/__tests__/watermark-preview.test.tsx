@@ -34,10 +34,10 @@ describe("WatermarkPreview", () => {
   it("neutralise l'appui long et la sélection sur mobile", () => {
     const { container } = render(<WatermarkPreview {...props} />);
 
-    expect(container.querySelector("[data-apercu-protege]")).toHaveStyle({
-      WebkitTouchCallout: "none",
-      userSelect: "none",
-    });
+    // jsdom n'interprète pas le CSS : on vérifie les classes utilitaires.
+    const apercu = container.querySelector("[data-apercu-protege]");
+    expect(apercu).toHaveClass("select-none");
+    expect(apercu).toHaveClass("[-webkit-touch-callout:none]");
   });
 
   it("annonce la protection aux lecteurs d'écran", () => {

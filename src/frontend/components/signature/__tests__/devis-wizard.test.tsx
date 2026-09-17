@@ -83,12 +83,13 @@ describe("DevisWizard", () => {
     const telephone = await screen.findByLabelText(/téléphone/i);
     await utilisateur.type(telephone, "123");
     await utilisateur.tab();
-    expect(await screen.findByText(/9 chiffres/i)).toBeInTheDocument();
+    // L'aide permanente mentionne aussi « 9 chiffres » : on cible l'alerte d'erreur.
+    expect(await screen.findByRole("alert")).toHaveTextContent(/9 chiffres/i);
 
     await utilisateur.clear(telephone);
     await utilisateur.type(telephone, "690123456");
     await utilisateur.tab();
-    expect(screen.queryByText(/9 chiffres/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("transmet la demande avec une référence puis affiche la promesse", async () => {

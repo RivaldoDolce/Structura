@@ -2,6 +2,8 @@ import { defineConfig } from "vitest/config";
 import path from "path";
 
 export default defineConfig({
+  // Transforme JSX sans import React explicite, comme le fait Next.js.
+  esbuild: { jsx: "automatic" },
   test: {
     environment: "node",
     globals: true,

@@ -21,3 +21,12 @@
 - `DevisWizard` plus test : 3 écrans d'après la maquette 02-05, validation par écran (correctif du plan proposé qui validait tout le formulaire), icônes Lucide au lieu des emojis, référence annuelle dynamique, boutons natifs en attendant `ButtonTech`.
 - `LenisProvider` plus test : réutilise `useReducedMotion`, coupé sur `/devis`, `/contact` et animations réduites. Index `signature` et `providers` limités aux fichiers existants.
 - Correctifs du plan proposé : `font-heading` du repo, statuts en texte plutôt qu'en classes, aucune indexation de tableau sous `noUncheckedIndexedAccess`.
+
+## 2026-09-17 — Stabilisation de la toolchain (npm installé, réseau de retour)
+
+- `npm install` exécuté par le porteur (587 paquets, 11 vulnérabilités connues à traiter plus tard). Choix entériné : on reste sur npm, le lockfile existe déjà.
+- Bloqueurs réparés : `tsconfig.json` corrompu ligne 33 (include invalide), schéma Prisma (`@db.Int` interdit sur postgres, relation `Visite.user` sans opposé → `User.visites` ajouté), `@playwright/test` manquant installé pour le script `test:e2e`.
+- Tests Vitest : `jsx: automatic` ajouté à la config esbuild (fini `React is not defined`), simulacre global `matchMedia` dans `tests/setup.ts`, `WatermarkPreview` passé en classes (`select-none`, `[-webkit-touch-callout:none]`) car jsdom n'interprète pas le CSS, test devis recentré sur `role=alert` unique.
+- Résultat : 30/30 tests verts, `tsc --noEmit` propre, `prisma generate` OK.
+- Lint migré : `next lint` déprécié et en crash, remplacé par `eslint.config.mjs` plat (FlatCompat + plugin TS explicite), script `lint` sur la CLI, `.eslintrc.json` supprimé. 0 erreur, 3 avertissements `<img>` assumés (`next/image` casserait le voile clip-path).
+- Décision : gestionnaire officiel = npm (lockfile committé).
