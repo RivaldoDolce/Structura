@@ -6,6 +6,12 @@ export default defineConfig({
     environment: "node",
     globals: true,
     include: ["src/**/*.test.{ts,tsx}", "tests/unit/**/*.test.{ts,tsx}"],
+    // Environnement jsdom pour les tests de composants frontend, node pour le backend.
+    environmentMatchGlobs: [
+      ["src/frontend/**/*.test.{ts,tsx}", "jsdom"],
+      ["src/backend/**/*.test.{ts,tsx}", "node"],
+    ],
+    setupFiles: ["./tests/setup.ts"],
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
