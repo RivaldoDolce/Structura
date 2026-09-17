@@ -30,3 +30,15 @@
 - Résultat : 30/30 tests verts, `tsc --noEmit` propre, `prisma generate` OK.
 - Lint migré : `next lint` déprécié et en crash, remplacé par `eslint.config.mjs` plat (FlatCompat + plugin TS explicite), script `lint` sur la CLI, `.eslintrc.json` supprimé. 0 erreur, 3 avertissements `<img>` assumés (`next/image` casserait le voile clip-path).
 - Décision : gestionnaire officiel = npm (lockfile committé).
+
+## 2026-09-17 — Sprint 2 `feat/sprint2-layouts-sections` : layouts & sections
+
+- Sprint 1 mergé en fast-forward dans `develop`, branche Sprint 2 créée depuis `develop`.
+- Écarts senior vs proposition : primitifs Phase 0 inexistants donc créés (pas corrigés), tokens `--color-line/line-strong/safety-deep/whatsapp-deep` ajoutés au `@theme`, `font-heading` + tailles explicites (`font-display/text-h2` inexistants), `tailwind.config.ts` ignoré par Tailwind v4, `StickyMobileCTA` non créé (mort-né), coordonnées footer en props + env.
+- Fondations : `tests/setup.ts` + polyfill rAF et simulacre IntersectionObserver (Motion/jsdom).
+- Primitifs TDD (9 + tests) : ButtonTech (Slot pur en asChild, coins en L), BlueprintGrid (CSS pur), Kicker, TechDivider, ProjectCard (panneau inline mobile / absolu desktop), ServiceCard (RSC), StatCounter + useCounter (whileInView once, expo-out), WhatsAppFab (wa.me assaini, bottom-24 mobile).
+- Layouts TDD (3 + tests) : MobileNav (focus trap bouclé, Escape, cascade 50ms), SiteHeader (flou après 24px, body bloqué), SiteFooter (4 colonnes, année dynamique).
+- Sections TDD (4 + tests) : Hero (masque H1, annotations), Stats (2→4 colonnes), Portfolio (1→3), Services (1→2, Lucide).
+- `src/app/(public)/layout.tsx` : LenisProvider + header + main compensé + footer + WhatsApp via `NEXT_PUBLIC_WHATSAPP_NUMBER`.
+- Résultat : 84/84 tests, typecheck propre, lint 0 erreur, 3 warnings `<img>` assumés + 2 mocks exemptés.
+- Build impossible dans ce sandbox (binding natif SWC pendu, `next --version` OK) : à rejouer sur poste/CI.
