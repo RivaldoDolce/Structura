@@ -1,10 +1,25 @@
-// Index limité aux composants existants : les autres signatures du skill 03
-// (BlueprintGrid, ButtonTech…) arriveront avec leurs lots et compléteront ce fichier.
+// Index limité aux composants existants : chaque lot complète ce fichier.
 export { BeforeAfter } from "./before-after";
 export type { BeforeAfterProps } from "./before-after";
+export { BlueprintGrid } from "./blueprint-grid";
+export type { BlueprintGridProps } from "./blueprint-grid";
+export { ButtonTech } from "./button-tech";
+export type { ButtonTechProps } from "./button-tech";
 export { DevisWizard } from "./devis-wizard";
 export type { DevisWizardProps } from "./devis-wizard";
 export { JalonTimeline } from "./jalon-timeline";
 export type { Jalon, JalonTimelineProps } from "./jalon-timeline";
+export { Kicker } from "./kicker";
+export type { KickerProps } from "./kicker";
+export { ProjectCard } from "./project-card";
+export type { ProjectCardProps } from "./project-card";
+export { ServiceCard } from "./service-card";
+export type { ServiceCardProps } from "./service-card";
+export { StatCounter } from "./stat-counter";
+export type { StatCounterProps } from "./stat-counter";
+export { TechDivider } from "./tech-divider";
+export type { TechDividerProps } from "./tech-divider";
 export { WatermarkPreview } from "./watermark-preview";
 export type { WatermarkPreviewProps } from "./watermark-preview";
+export { WhatsAppFab } from "./whatsapp-fab";
+export type { WhatsAppFabProps } from "./whatsapp-fab";
