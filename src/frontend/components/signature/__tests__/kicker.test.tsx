@@ -10,9 +10,25 @@ describe("Kicker", () => {
     expect(screen.getByText("STRUCTURA")).toBeInTheDocument();
   });
 
+  it("rend le libellé dans le style mono majuscule du sur-titre", () => {
+    render(<Kicker label="ÉTUDE & PLANS" />);
+
+    expect(screen.getByText("ÉTUDE & PLANS")).toBeInTheDocument();
+    expect(screen.getByText("ÉTUDE & PLANS").parentElement).toHaveClass(
+      "font-mono",
+      "uppercase",
+    );
+  });
+
   it("fusionne les classes complémentaires", () => {
-    render(<Kicker number="02" label="CHIFFRES" className="mb-4" />);
+    render(<Kicker label="CHIFFRES" className="mb-4" />);
 
     expect(screen.getByText("CHIFFRES").parentElement).toHaveClass("mb-4");
+  });
+
+  it("accepte un rendu sans numéro", () => {
+    render(<Kicker label="PORTFOLIO" />);
+
+    expect(screen.queryByText(/^\d+$/)).not.toBeInTheDocument();
   });
 });

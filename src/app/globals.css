@@ -85,6 +85,61 @@
   --dur-reveal: 400ms;
   --dur-cinematic: 700ms;
   --dur-stagger: 60ms;
+
+  /* Animations d'interface consommées par les primitives. Toutes reposent sur
+     `transform` ou `opacity` : aucun paint pendant l'animation (skill 04). */
+  --animate-sweep: st-sweep 1.4s ease-in-out infinite;
+  --animate-overlay-in: st-overlay-in 150ms ease-out;
+  --animate-content-in: st-content-in 200ms var(--ease-out-expo);
+  --animate-sheet-in-right: st-sheet-in-right 300ms var(--ease-out-expo);
+  --animate-sheet-in-bottom: st-sheet-in-bottom 300ms var(--ease-out-expo);
+
+  @keyframes st-sweep {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes st-overlay-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes st-content-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes st-sheet-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes st-sheet-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
 }
 
 /* ------------------------------------------------------------------ */

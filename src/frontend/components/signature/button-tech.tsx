@@ -1,5 +1,7 @@
 "use client";
-// Animations Motion au survol et Slot Radix : interaction donc rendu client.
+
+// Motion porte le survol ; Slot en mode asChild pour ne pas fuiter des props
+// Motion vers le DOM de l'enfant (Link, etc.).
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { motion } from "motion/react";
@@ -33,8 +35,6 @@ const CLASSES_TAILLES = {
 } as const;
 
 // Bouton de marque aux coins en L qui s'écartent au survol.
-// Le cas asChild passe par Slot pur : les props Motion ne fuient jamais
-// vers le DOM de l'enfant (Link, etc.), seul le style est appliqué.
 export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
   (
     {
