@@ -1,7 +1,7 @@
 # État Frontend — STRUCTURA
 
 Date : 2026-09-19. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
-Sprint 4 en cours — Chantiers A et B livrés.
+Sprint 4 en cours — Chantiers A, B et C livrés.
 
 ## Architecture
 
@@ -26,12 +26,20 @@ marque, `sections/` compose les pages.
   chacun avec ses tests (`form-controls`, `overlays`, `structure`).
 - **Layout** : `SiteHeader`, `MobileNav`, `SiteFooter`, `LenisProvider`, `WhatsAppFab` branchés sur
   `(public)/layout.tsx`. `next/font` alimente `--font-space-grotesk/--font-inter/--font-jetbrains-mono`.
+- **Sécurité (chantier C)** : `src/frontend/lib/sanitize.ts` assainit les valeurs client passées
+  dans des liens externes (`numeroInternational`, `texteMessage`, `etiquetePage` — TDD, 6 tests).
+  `WhatsAppFab` refuse de rendre un lien `wa.me` si le numéro ou la référence de page sont
+  inexploitables ; le fallback de numéro en dur a disparu du layout public (sans variable
+  d'environnement, le bouton ne rend rien). `src/shared/constants/navigation.ts` est la source
+  unique des liens publics consommés par le header et le footer. En-têtes de sécurité consolidés
+  (`Permissions-Policy`, CSP sans `unsafe-eval` en production), middleware couvert par tests.
 - **Pages** : `/devis`, `/demo/sections` (noindex). Le reste des routes publiques arrive au chantier D.
 - **Vérifications vertes** : 133/133 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
   `<img>` assumés et documentés au README). Build à rejouer hors sandbox (`next build` se plante
   par « Bus error » dans l'environnement actuel).
-- **Prochain chantier (C)** : `src/shared/constants` typé, durcissement des entrées client
-  (WhatsApp, UTM), `rel="noopener noreferrer"`, contrôle des en-têtes de sécurité et de la CSP.
+- **Prochain chantier (D)** : pages publiques — accueil complet (sections assemblées sur données
+  de démonstration), `/ingenierie`, `/plans`, `/plans/[reference]`, `/portfolio`, `/portfolio/[slug]`,
+  `/a-propos`, `/contact`, légal, 404/500. Données provisoires isolées dans `src/frontend/data/`.
 
 ## Références design
 

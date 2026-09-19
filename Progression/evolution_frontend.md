@@ -123,3 +123,34 @@
 - README §Déviations corrigé : il annonçait « aucune déviation » alors que deux étaient documentées.
 - Résultat : **103/103 tests** (88 + 15), `tsc --noEmit` propre, lint 0 erreur (3 warnings `<img>`
   assumés).
+
+## 2026-09-19 — Sprint 4 : Chantier B (primitives et signature complétées)
+
+- 16 primitives dans `ui/` (button, input, textarea, label, card, badge, separator, skeleton,
+  checkbox, radio-group, select, tabs, dialog, sheet, table, toaster) : toutes re-thémées sur les
+  tokens (`rounded-control`, `var(--color-*)`, focus-visible cyan), radix pour les comportements,
+  animations `transform/opacity` uniquement. `toaster.tsx` branché sur sonner (déjà dépendance).
+- 3 composants signature manquants : `PriceTag` (prix FCFA/EUR, cartouche technique),
+  `StickyMobileCTA` (barre fixe mobile, `safe-area-inset-bottom`, seuil de scroll),
+  `LoaderCrane` (grue SVG : flèche qui braque, charge qui hisse, transform-only, masquée en
+  mouvement réduit). `toaster` et skeleton partagés entre `ui/` et les usages signature.
+- Tests TDD : `form-controls` (6), `overlays` (4), `structure` (4), `price-tag` (4),
+  `sticky-mobile-cta` (2), `loader-crane` (2). Accessibilité vérifiée au test (rôles,
+  `aria-hidden`, libellés).
+- Résultat : **133/133 tests**, `tsc --noEmit` propre, lint 0 erreur.
+
+## 2026-09-19 — Sprint 4 : Chantier C (sécurité et partagé)
+
+- `NAVIGATION` (`src/shared/constants/navigation.ts`) devient la source unique des liens publics :
+  `site-header` et `site-footer` la consomment, la liste locale dupliquée disparaît. Le footer
+  conserve ses regroupements éditoriaux en référençant les mêmes constantes.
+- `src/frontend/lib/sanitize.ts` (TDD, 6 tests) : `numeroInternational` (wa.me n'accepte que des
+  chiffres), `texteMessage` (borne le pré-remplissage), `etiquetePage` (référence courte sans
+  caractère de contrôle, `null` sinon). `WhatsAppFab` consomme le module et refuse de rendre un
+  lien `wa.me` si le numéro ou la référence sont inexploitables — jamais de lien forgé.
+- Le fallback de numéro en dur disparaît du layout public : sans
+  `NEXT_PUBLIC_WHATSAPP_NUMBER`, le bouton ne rend rien plutôt qu'afficher un faux numéro.
+- En-têtes de sécurité consolidés : `Permissions-Policy` posé à la fois dans `next.config.ts`
+  et le middleware (écart détecté par le test), CSP sans `unsafe-eval` en production (conditionné
+  au dev pour React Refresh), middleware couvert par 4 tests unitaires (redirections et en-têtes).
+- Résultat : **139/139 tests**, `tsc --noEmit` propre, lint 0 erreur.
