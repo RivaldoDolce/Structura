@@ -153,4 +153,4 @@
 - En-têtes de sécurité consolidés : `Permissions-Policy` posé à la fois dans `next.config.ts`
   et le middleware (écart détecté par le test), CSP sans `unsafe-eval` en production (conditionné
   au dev pour React Refresh), middleware couvert par 4 tests unitaires (redirections et en-têtes).
-- Résultat : **139/139 tests**, `tsc --noEmit` propre, lint 0 erreur.
+- Résultat : **144/144 tests**, `tsc --noEmit` propre, lint 0 erreur.
