@@ -1,32 +1,37 @@
 # État Frontend — STRUCTURA
 
 Date : 2026-09-19. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
-Sprint 4 en cours — Chantier A livré.
+Sprint 4 en cours — Chantiers A et B livrés.
 
 ## Architecture
 
 Séparation stricte du skill 01 : `src/frontend/components/{ui,signature,sections,layout,providers}`,
-`src/frontend/{lib,hooks}`. `ui/` reçoit les primitives du chantier B, `signature/` porte les
-14 composants de marque, `sections/` compose les pages.
+`src/frontend/{lib,hooks}`. `ui/` porte les 16 primitives, `signature/` les 14 composants de
+marque, `sections/` compose les pages.
 
 ## État réel
 
 - **Tokens** : `globals.css` est la source unique (palette `rgba` conforme au guide, échelle
   typographique fluide, conteneur 1200 px, rayons, ombres, easings et durées, grain 3 %).
-  `tokens.ts` n'expose plus que des `var(--*)` et les listes de noms consommées par `cn.ts`.
+  `tokens.ts` n'expose que des `var(--*)` et les listes de noms consommées par `cn.ts`.
 - **Fusion de classes** : `tailwind-merge` 3 + `cn.ts` déclaré avec les échelles du thème.
   Sans cette déclaration, un `className` appelant écraserait silencieusement la taille ou la couleur.
 - **Mouvement** : `animations.ts` (cascade skill 04) consommé par `hero`, `stats`, `portfolio`,
   `services`, `stat-counter`. `MotionProvider` applique `prefers-reduced-motion` aux animations
   JavaScript ; `LenisProvider` reste actif sur les routes publiques seulement.
-- **Signature** : 12 composants sur 14 — manquent `PriceTag`, `StickyMobileCTA`, `SkeletonTech`,
-  `LoaderCrane` (chantier B). `BlueprintGrid` rend désormais la maille et les croix du kit.
-- **Primitives** : `ui/` est encore vide (chantier B).
+- **Signature** : 14/14 — `PriceTag`, `StickyMobileCTA` et `LoaderCrane` livrés au chantier B
+  (le « SkeletonTech » du plan est la primitive `ui/skeleton`).
+- **Primitives** : 16 composants dans `ui/` (button, input, textarea, label, card, badge,
+  separator, skeleton, checkbox, radio-group, select, tabs, dialog, sheet, table, toaster),
+  chacun avec ses tests (`form-controls`, `overlays`, `structure`).
 - **Layout** : `SiteHeader`, `MobileNav`, `SiteFooter`, `LenisProvider`, `WhatsAppFab` branchés sur
   `(public)/layout.tsx`. `next/font` alimente `--font-space-grotesk/--font-inter/--font-jetbrains-mono`.
 - **Pages** : `/devis`, `/demo/sections` (noindex). Le reste des routes publiques arrive au chantier D.
-- **Vérifications vertes** : 103/103 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
-  `<img>` assumés et documentés au README). Build à rejouer hors sandbox (binding SWC natif).
+- **Vérifications vertes** : 133/133 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
+  `<img>` assumés et documentés au README). Build à rejouer hors sandbox (`next build` se plante
+  par « Bus error » dans l'environnement actuel).
+- **Prochain chantier (C)** : `src/shared/constants` typé, durcissement des entrées client
+  (WhatsApp, UTM), `rel="noopener noreferrer"`, contrôle des en-têtes de sécurité et de la CSP.
 
 ## Références design
 

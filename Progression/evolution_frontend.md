@@ -1,5 +1,25 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-19 — Sprint 4 : chantier B livré puis hygiène des commentaires (A + B)
+
+- Primitives `ui/` complètes : button, input, textarea, label, checkbox, radio-group, select,
+  dialog, sheet, tabs, table, badge, card, separator, skeleton, toaster (sonner). Toutes thémées
+  par tokens, `cn()` sur chaque prop `className`, focus visible, aucune classe ad hoc.
+- Signature complétée : `PriceTag` (badge orange « vendu » ou prix formaté fr-FR),
+  `StickyMobileCTA` (pastille fixe bas, masquée ≥ md, padding `pb-20` à prévoir sur les pages),
+  `LoaderCrane` (flèche qui braque + charge qui hisse sur un même cycle 4,8 s, `role=status`,
+  SVG masqué si `prefers-reduced-motion`).
+- `Kicker` réaligné sur la maquette (crochets `//`, séparateur `·`), `TechDivider` avec croix
+  aux extrémités, `ButtonTech` : focus cyan visible, effet magnétique desktop, variantes
+  `conversion`/`primary`/`ghost` avec coins en L qui s'écartent au survol.
+- Tests : `form-controls`, `overlays`, `structure` (primitives), `price-tag`, `sticky-mobile-cta`,
+  `loader-crane` (signature). Total sprint : **133/133 tests verts**, `tsc --noEmit` propre,
+  ESLint 0 erreur (3 warnings `<img>` assumés, cf. README).
+- Hygiène sur A + B : tous les commentaires « narratifs » supprimés (`"use client"` explicatif,
+  répétitions de code, références GUIDE/skill/maquette), chaque commentaire restant justifie une
+  décision non visible dans le code. `toaster.tsx` : prop `limit` inexistante et `unstyled`
+  mal typé retirés ; grue : transition typée `Transition` (le `as const` ne passe pas sur `ease`).
+
 ## 2026-09-17 — Initialisation `feat/frontend-setup`
 
 - Branche créée depuis `develop`, propre.
