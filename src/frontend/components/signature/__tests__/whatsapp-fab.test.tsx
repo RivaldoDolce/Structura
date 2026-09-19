@@ -45,4 +45,9 @@ describe("WhatsAppFab", () => {
       "md:bottom-6",
     );
   });
+
+  it("ne rend rien si le numéro ou la référence sont inexploitables", () => {
+    const { container } = render(<WhatsAppFab phoneNumber="abc" />);
+    expect(container).toBeEmptyDOMElement();
+  });
 });

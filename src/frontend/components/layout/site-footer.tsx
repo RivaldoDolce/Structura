@@ -56,6 +56,8 @@ export function SiteFooter({
   className,
 }: SiteFooterProps) {
   const annee = new Date().getFullYear();
+  // Composition d'affichage : indicatif puis groupes de trois ; un numéro
+  // hors gabarit est affiché brut, jamais bloqué.
   const telephoneAffiche = telephone.replace(/(\+\d{3})(\d{3})(\d{3})(\d{3})/, "$1 $2 $3 $4");
 
   return (

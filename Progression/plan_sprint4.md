@@ -87,10 +87,43 @@ avant de passer au suivant, et `evolution_frontend.md` est mis à jour à la fin
 4. Tests de chaque primitive et composant, `demo/sections` complété.
 
 ### Chantier C — Sécurité et partagé (périmètre frontend strict)
-1. `src/shared/constants/` typé et consommé (roles, statuts, limites, navigation).
-2. Durcissement des entrées client (numéro WhatsApp, UTM), `rel="noopener noreferrer"` partout.
-3. Vérification des en-têtes de sécurité et de la CSP (le middleware et `next.config.ts` existent :
-   on les contrôle, on ne réécrit pas le backend).
+
+Vérifications préalables faites le 2026-09-19 :
+
+- `src/shared/constants/` existe (roles, navigation, statuts, limites), typé `as const`,
+  mais aucun import dans le frontend : le header et le footer maintiennent chacun leur
+  propre liste de liens (dé double source de vérité).
+- Aucun usage d'UTM/searchParams dans `src/` : la partie « UTM » du plan est abandonnée
+  (pas de code mort).
+- Un seul lien externe dans le frontend : `WhatsAppFab` (déjà `rel="noopener noreferrer"`),
+  le numéro est assaini localement. `tel:`/`mailto:` du footer non bordés.
+- En-têtes : `next.config.ts` et le middleware se recouvrent partiellement, le middleware
+  n'applique pas `Permissions-Policy` ; `unsafe-eval` en production inutile aujourd'hui
+  (aucun script CinetPay chargé côté frontend).
+
+Arbitrages :
+
+1. **`NAVIGATION` devient la source unique des liens publics** consommée par `site-header`
+   (filtre sur les pages métier). Le footer garde ses regroupements éditoriaux mais
+   importe les mêmes constantes quand les colonnes coïncident.
+2. **`src/frontend/lib/sanitize.ts`** (TDD) : `numeroInternational` (wa.me n'accepte que
+   des chiffres), `texteMessage` (borne le message pré-rempli), `etiquetePage` (référence
+   courte sans caractère de contrôle, `null` sinon). `WhatsAppFab` refuse de rendre un
+   lien wa.me si le numéro ou la référence sont inexploitables — jamais de lien forgé.
+3. **Le fallback `+237690000000` disparaît du layout** : sans `NEXT_PUBLIC_WHATSAPP_NUMBER`
+   le bouton ne rend rien, plutôt qu'un faux numéro. Le footer garde sa prop mais la valeur
+   par défaut est assumée comme donnée de démonstration, à surcharger par l'environnement.
+4. **Middleware testé unitairement** (simulacre NextRequest, environnement node) : redirection
+   anonyme → `/compte/connexion?callbackUrl=…`, session présente → pass, page d'auth +
+   session → `/compte`, et les quatre en-têtes de sécurité alignés sur `next.config.ts`.
+   `Permissions-Policy` ajouté au middleware (écart réel détecté par le test).
+5. **CSP : `unsafe-eval` conditionné au développement** (React Refresh l'exige en dev) ;
+   les sources CinetPay restent référencées, aucun script n'étant chargé aujourd'hui.
+   `callbackUrl` : le middleware ne transmet que le chemin d'origine (jamais la query),
+   donc aucune ouverture à un callback externe tant qu'Auth.js n'est pas branché.
+
+Livrables : `sanitize.test.ts` (6), `whatsapp-fab.test.tsx` (4, +1 cas invalide),
+`middleware.test.ts` (4). Tout le reste est consolidation, pas de code mort.
 
 ### Chantier D — Pages publiques
 Routes P0 du guide §4.1-4.2 : `/`, `/ingenierie`, `/plans`, `/plans/[reference]`, `/portfolio`,

@@ -5,18 +5,16 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { cn } from "@/frontend/lib/cn";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { NAVIGATION } from "@/shared/constants/navigation";
 import { MobileNav } from "./mobile-nav";
 import type { NavLink } from "./mobile-nav";
 import { ButtonTech } from "../signature/button-tech";
 
-// Liens partagés entre la barre desktop et l'overlay mobile.
-const LIENS_NAVIGATION: NavLink[] = [
-  { href: "/ingenierie", label: "Ingénierie" },
-  { href: "/ebenisterie", label: "Ébénisterie" },
-  { href: "/plans", label: "Plans" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/a-propos", label: "À propos" },
-];
+// Le header vitrine met en avant les pages métier ; l'accueil est atteint via
+// le logo, le tunnel de conversion via le CTA dédié.
+const LIENS_NAVIGATION: NavLink[] = NAVIGATION.public.filter(
+  (lien) => lien.href !== "/" && lien.href !== "/contact",
+);
 
 // En-tête fixe : logo + nav + CTA sur desktop, logo + hamburger sur mobile.
 // Le fond se floute après 24px de scroll pour garder le hero lisible.

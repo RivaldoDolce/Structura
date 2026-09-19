@@ -1,5 +1,27 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-19 — Sprint 4 : chantier C (sécurité et partagé)
+
+- `src/frontend/lib/sanitize.ts` créé en TDD : `numeroInternational`, `texteMessage`,
+  `etiquetePage`. `WhatsAppFab` consomme le module et refuse de rendre un lien wa.me si
+  le numéro est inexploitable ou la référence non sûre (jamais de lien forgé).
+- `(public)/layout.tsx` : fallback `+237690000000` supprimé — sans
+  `NEXT_PUBLIC_WHATSAPP_NUMBER`, le bouton ne rend rien plutôt qu'afficher un faux numéro.
+- `site-header.tsx` : la liste de liens locale disparaît, `NAVIGATION.public`
+  (`src/shared/constants/navigation.ts`) devient la source unique, filtrée sur les pages
+  métier (accueil via logo, contact via CTA).
+- `src/middleware.ts` : `Permissions-Policy` manquant ajouté (écart révélé par le test),
+  première suite de tests unitaires du middleware (4 : redirection anonyme avec
+  `callbackUrl`, session OK, page d'auth + session, en-têtes de sécurité).
+- `next.config.ts` : `unsafe-eval` de la CSP conditionné au développement (React Refresh),
+  supprimé en production. Sources CinetPay conservées, aucun script chargé à ce jour.
+- Abandon documenté au plan : la partie « UTM » — aucun `searchParams` consommé dans tout
+  `src/`, coder un assainissement sans consommateur serait du code mort.
+- `tests/setup.ts` : garde `typeof window !== "undefined"` pour que la suite passe aussi
+  en environnement node (tests middleware).
+- Résultat : **144/144 tests** (133 + 11), `tsc --noEmit` propre, ESLint 0 erreur
+  (3 warnings `<img>` assumés). Commit : chantier C complet.
+
 ## 2026-09-19 — Sprint 4 : chantier B livré puis hygiène des commentaires (A + B)
 
 - Primitives `ui/` complètes : button, input, textarea, label, checkbox, radio-group, select,

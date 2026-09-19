@@ -3,6 +3,7 @@ import * as React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { MessageCircle } from "lucide-react";
 import { cn } from "@/frontend/lib/cn";
+import { etiquetePage, numeroInternational, texteMessage } from "@/frontend/lib/sanitize";
 
 export interface WhatsAppFabProps {
   phoneNumber: string;
@@ -11,9 +12,9 @@ export interface WhatsAppFabProps {
   className?: string;
 }
 
-// Bouton flottant WhatsApp : apparaît après 400px de scroll, message
-// pré-rempli avec la référence de page. Le numéro est assaini (chiffres
-// seuls) car wa.me refuse les espaces et le « + ».
+// Numéro assaini (chiffres seuls) car wa.me refuse les espaces et le « + ».
+// Un numéro invalide ou une référence non sûre désactivent le bouton plutôt
+// que de produire un lien forgé.
 export function WhatsAppFab({
   phoneNumber,
   defaultMessage = "Bonjour, je suis intéressé par vos services",
@@ -29,9 +30,14 @@ export function WhatsAppFab({
     return () => window.removeEventListener("scroll", actualise);
   }, []);
 
-  const numero = phoneNumber.replace(/\D/g, "");
-  const message = reference ? `${defaultMessage} — ${reference}` : defaultMessage;
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(message)}`;
+  const numero = numeroInternational(phoneNumber);
+  const provenance = reference === undefined ? null : etiquetePage(reference);
+  if (!numero || (reference !== undefined && provenance === null)) return null;
+
+  const message = texteMessage(
+    provenance ? `${defaultMessage} — ${provenance}` : defaultMessage,
+  );
+  const url = `https://wa.me/${numero.slice(1)}?text=${encodeURIComponent(message)}`;
 
   return (
     <AnimatePresence>
