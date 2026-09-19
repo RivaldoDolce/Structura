@@ -126,10 +126,44 @@ Livrables : `sanitize.test.ts` (6), `whatsapp-fab.test.tsx` (4, +1 cas invalide)
 `middleware.test.ts` (4). Tout le reste est consolidation, pas de code mort.
 
 ### Chantier D — Pages publiques
-Routes P0 du guide §4.1-4.2 : `/`, `/ingenierie`, `/plans`, `/plans/[reference]`, `/portfolio`,
-`/portfolio/[slug]`, `/a-propos`, `/contact`, `/devis`, légal, 404/500. Données de démonstration
-isolées dans `src/frontend/data/` et documentées comme provisoires (skill 01 : `frontend/`
-n'importe jamais `backend/`).
+
+Routes P0 du guide §4.1-4.2. État vérifié le 2026-09-19 : toutes les routes existent sous
+`src/app/(public)/` mais aucune n'a de `page.tsx` (seul le layout est branché) ; `not-found.tsx`
+et `error.tsx` sont absents ; `src/frontend/data/` n'existe pas ; la page `/devis` du groupe
+`(conversion)` est vide alors que `DevisWizard` est prêt.
+
+Données de démonstration isolées dans `src/frontend/data/`, construites sur les photos réelles
+de `public/photos/` (chantiers, essences, immobilier, mobilier, journal, portraits, avant-après)
+et typées par les formes des sections (`PortfolioProject`, `ServiceItem`, `Jalon`) et des
+schémas `plan.schema.ts` / `lead.schema.ts`. Aucun import `backend/` (skill 01).
+
+Ordre de livraison :
+
+1. **Données** : `src/frontend/data/` (projets portfolio, plans catalogue, essences de bois,
+   jalons de chantier, journal, équipe) + tests de cohérence (références d'images existantes,
+   slugs uniques, prix positifs).
+2. **Accueil `/`** : composition Hero → Services → Portfolio → Stats → CTA devis, sur les
+   données de démonstration. L'assemblage est déjà couvert par
+   `sections/__tests__/accueil.integration.test.tsx` — la page est un assemblage serveur mince.
+3. **Catalogue `/plans`** : grille de cartes plan (WatermarkPreview + PriceTag), filtres par
+   type de bâtiment côté client.
+4. **Fiche plan `/plans/[reference]`** : filigrane, tableau de caractéristiques (`ui/table`),
+   prix double FCFA/EUR, `generateStaticParams` sur les données, `notFound()` sur référence
+   inconnue, StickyMobileCta d'achat.
+5. **Portfolio `/portfolio`** + **détail `/portfolio/[slug]`** : grille complète puis page
+   détail avec galerie journal et jalons.
+6. **Métier** : `/ingenierie`, `/ebenisterie`, `/immobilier` (compositions sections + avant/après).
+7. **`/a-propos`** : équipe (portraits), chiffres, approche.
+8. **`/contact`** : formulaire de contact (validation `lead.schema.ts` côté client, envoi vers
+   une route API dédiée), coordonnées, carte d'accès statique.
+9. **`/devis` (conversion)** : page tunnel sur `DevisWizard` + route API de dépôt.
+10. **Légal** (`mentions`, `cgv`, `confidentialite`) : pages statiques éditoriales.
+11. **`not-found.tsx`** et **`error.tsx`** globaux, dans le style blueprint (LoaderCrane pour
+    l'état de chargement, Kicker + ButtonTech pour le retour accueil).
+
+Critères de test : chaque page a un test de rendu minimal (titres, CTA, régions uniques) ;
+les routes dynamiques ont un test 200/404 ; les données ont des tests de cohérence. Aucune
+page ne régresse sur `vitest run` (144 tests au départ).
 
 ### Chantier E — Hero GSAP et SEO
 Chorégraphie complète du guide §3.3.1 (fond photo du kit, grille fondu 400 ms, croix en cascade,
