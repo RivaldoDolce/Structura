@@ -1,5 +1,4 @@
 "use client";
-// Curseur interactif au pointeur et au clavier avec état local : rendu client obligatoire.
 import { useCallback, useId, useRef, useState } from "react";
 import type { KeyboardEvent as ClavierEvenement, PointerEvent as PointeurEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";

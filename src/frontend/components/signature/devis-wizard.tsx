@@ -1,5 +1,4 @@
 "use client";
-// Tunnel en 3 étapes avec état local et reprise localStorage : rendu client obligatoire.
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Building2, Calculator, Ruler, Wrench, type LucideIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -72,9 +71,8 @@ const TYPES_PROJET: ReadonlyArray<{
   },
 ];
 
-// Tunnel de devis en 3 écrans d'après la maquette 02-05 : cartes visuelles,
-// besoin guidé, coordonnées avec téléphone requis. La référence définitive
-// sera attribuée par le serveur, le client n'émet qu'un brouillon horodaté.
+// Tunnel de devis en 3 écrans : la référence définitive est attribuée par le
+// serveur, le client n'émet qu'un brouillon horodaté.
 export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
   const [etape, setEtape] = useState(0);
   const [envoi, setEnvoi] = useState(false);

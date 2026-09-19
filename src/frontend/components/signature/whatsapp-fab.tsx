@@ -1,5 +1,4 @@
 "use client";
-// Apparition au scroll avec Motion : interaction donc rendu client.
 import * as React from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { MessageCircle } from "lucide-react";

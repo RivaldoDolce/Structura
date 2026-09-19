@@ -1,5 +1,4 @@
 "use client";
-// Overlay animé, focus trap et Escape : interaction donc rendu client.
 import { X } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";

@@ -23,8 +23,8 @@ const libelleStatut = {
   upcoming: "à venir",
 } as const;
 
-// Mise en page horizontale imposée par la maquette du journal (02-15),
-// identique à 360 px et au bureau, avec défilement sur petit écran.
+// Disposition horizontale identique à toutes les tailles d'écran, avec
+// défilement sur petit écran.
 export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
   return (
     <ol

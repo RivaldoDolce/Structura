@@ -1,5 +1,4 @@
 "use client";
-// Survol avec léger zoom (Motion) : micro-interaction donc rendu client.
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
@@ -18,8 +17,7 @@ export interface ProjectCardProps {
   className?: string;
 }
 
-// Carte réalisation : image 4:3, titre toujours visible, données techniques
-// en ligne sous le texte sur mobile (pas de survol tactile) et en panneau
+// Carte réalisation : données techniques en ligne sur mobile, panneau
 // coulissant au survol sur desktop.
 export function ProjectCard({
   title,

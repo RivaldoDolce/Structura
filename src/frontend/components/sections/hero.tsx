@@ -1,5 +1,5 @@
 "use client";
-// Chorégraphie d'entrée « le plan se dessine » : animation donc rendu client.
+
 import Link from "next/link";
 import { motion } from "motion/react";
 import { BlueprintGrid } from "../signature/blueprint-grid";
@@ -8,9 +8,7 @@ import { Kicker } from "../signature/kicker";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
 import { fadeItem, fadeUpItem, staggerContainer, titleReveal } from "@/frontend/lib/animations";
 
-// Premier écran de l'accueil : titre et CTA rendus au serveur pour le SEO et
-// pour l'utilisateur qui n'attend jamais, grille blueprint en fond, titre
-// révélé par masque vertical, annotations techniques en cascade (GUIDE §3.3.1).
+/** Premier écran de l'accueil : titre et CTA côté serveur, annotations en cascade. */
 export function Hero() {
   const animationsReduites = useReducedMotion();
 

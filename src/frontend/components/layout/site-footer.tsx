@@ -50,8 +50,6 @@ const COLONNES: ColonnePied[] = [
   },
 ];
 
-// Pied de page vitrine : marque + contact, 4 colonnes, signature datée.
-// Les coordonnées passent en props pour ne jamais disperser de hardcode.
 export function SiteFooter({
   telephone = "+237690000000",
   email = "contact@structura-cm.com",

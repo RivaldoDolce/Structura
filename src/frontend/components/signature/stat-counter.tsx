@@ -1,5 +1,5 @@
 "use client";
-// Compteur déclenché au scroll via Motion : interaction donc rendu client.
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { useCounter } from "@/frontend/hooks/use-counter";
@@ -15,8 +15,10 @@ export interface StatCounterProps {
   className?: string;
 }
 
-// Compteur animé une seule fois à l'entrée dans le viewport.
-// Le hook ne démarre que lorsque hasBeenVisible bascule, jamais avant.
+/**
+ * Compteur animé, déclenché une seule fois à l'entrée dans le viewport.
+ * Seuil porté à 40 % pour démarrer seulement quand le bloc est réellement lu.
+ */
 export function StatCounter({
   value,
   label,
@@ -38,8 +40,6 @@ export function StatCounter({
       variants={fadeUpItem}
       initial="hidden"
       whileInView="show"
-      // Seuil porté à 40 % : un compteur doit démarrer quand il est vraiment lu
-      // dans son ensemble (GUIDE §2.3.4), contrairement au reste des cascades.
       viewport={{ once: true, amount: 0.4 }}
       onViewportEnter={() => setVisible(true)}
       className={cn("flex flex-col items-center text-center", className)}

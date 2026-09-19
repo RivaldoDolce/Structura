@@ -6,8 +6,7 @@ const RACINE = 0;
 const GRILLE = 0;
 const CROIX = 1;
 
-// Références du kit visuel : maille fine de 32 px et croix de repérage
-// aux intersections majeures (160 px), cf. GUIDE §2.3.1.
+// Repères du kit : maille fine 32 px, croix de repérage 160 px.
 const TUILE_CROIX = "05-03_texture-croix-160.svg";
 
 function racine(container: HTMLElement): HTMLElement {

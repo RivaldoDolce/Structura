@@ -1,5 +1,4 @@
 "use client";
-// Cascade d'apparition au scroll : animation donc rendu client.
 import { Building2, Hammer, Home, Ruler } from "lucide-react";
 import * as React from "react";
 import { motion } from "motion/react";

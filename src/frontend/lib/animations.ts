@@ -2,17 +2,12 @@ import type { Variants } from "motion/react";
 import { durations, easings } from "./tokens";
 
 /**
- * Variantes partagées par tous les composants animés du site.
- *
- * Objectif : une signature de mouvement unique (skill 04 §3.2). Toute
- * animation ponctuelle réutilise ces variantes ou dérive explicitement de
- * l'une d'elles : aucune courbe ni durée ne doit être réinventée localement.
+ * Variantes de mouvement partagées : une seule signature d'animation pour tout
+ * le site. Toute animation ponctuelle réutilise ces variantes ou en dérive
+ * explicitement, aucune courbe ni durée ne doit être réinventée localement.
  */
 
-/**
- * Cascade parente : orchestre l'apparition décalée des enfants.
- * Le parent ne peint rien lui-même, il ne fait que rythmer.
- */
+/** Cascade parente : rythme l'apparition décalée des enfants. */
 export const staggerContainer: Variants = {
   hidden: {},
   show: {
@@ -22,7 +17,7 @@ export const staggerContainer: Variants = {
   },
 };
 
-/** Enfant standard : fondu et montée de 16 px sur la courbe expo-out. */
+/** Fondu et montée de 16 px sur la courbe expo-out. */
 export const fadeUpItem: Variants = {
   hidden: { opacity: 0, y: 16 },
   show: {
@@ -32,7 +27,7 @@ export const fadeUpItem: Variants = {
   },
 };
 
-/** Enfant léger : fondu seul, pour les blocs déjà en place (lignes, filets). */
+/** Fondu seul, pour les blocs déjà en place (filets, annotations). */
 export const fadeItem: Variants = {
   hidden: { opacity: 0 },
   show: {
@@ -42,9 +37,8 @@ export const fadeItem: Variants = {
 };
 
 /**
- * Révélation d'un titre par masque vertical.
- * À n'utiliser que dans un parent en `overflow-hidden`, sans quoi la ligne
- * reste visible pendant sa translation.
+ * Révélation d'un titre par masque vertical. À n'utiliser que dans un parent
+ * en `overflow-hidden`, sans quoi la ligne reste visible pendant sa translation.
  */
 export const titleReveal: Variants = {
   hidden: { y: "100%" },
@@ -55,9 +49,8 @@ export const titleReveal: Variants = {
 };
 
 /**
- * Configuration standard d'un déclenchement au défilement : une seule fois,
- * à 25 % de visibilité. Jamais de rejeu, jamais de contenu invisible si
- * l'utilisateur revient en arrière.
+ * Déclenchement standard au défilement : une seule fois, à 25 % de
+ * visibilité, jamais de rejeu.
  */
 export const inViewOnce = {
   initial: "hidden",

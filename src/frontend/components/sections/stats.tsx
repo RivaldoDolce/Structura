@@ -1,5 +1,4 @@
 "use client";
-// Compteurs déclenchés au défilement : animation donc rendu client.
 import { motion } from "motion/react";
 import { BlueprintGrid } from "../signature/blueprint-grid";
 import { Kicker } from "../signature/kicker";

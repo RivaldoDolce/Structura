@@ -1,13 +1,9 @@
 /**
- * Tokens du design system, exposés en JavaScript typé.
- *
- * Objectif : fournir une source unique pour tout ce qui ne peut pas passer par
- * une classe Tailwind (SVG, canvas, valeurs Motion, métadonnées). Les couleurs
- * renvoyées sont des variables CSS : aucun hexadécimal n'est dupliqué ici, donc
- * un changement de thème dans `globals.css` se propage sans toucher au code.
+ * Tokens du design system, exposés en JavaScript typé pour tout ce qui ne peut
+ * pas passer par une classe Tailwind : SVG, canvas, valeurs Motion,
+ * métadonnées. Les couleurs restent des variables CSS, donc un changement de
+ * thème dans `globals.css` se propage sans toucher au code.
  */
-
-/** Couleurs sémantiques, dans l'ordre de la palette du guide. */
 export const colors = {
   base: "var(--color-base)",
   surface: "var(--color-surface)",
@@ -29,13 +25,10 @@ export const colors = {
   danger: "var(--color-danger)",
 } as const;
 
-/** camelCase vers kebab-case : évite de maintenir deux fois la liste des noms. */
 const versKebab = (nom: string): string => nom.replace(/[A-Z]/g, (lettre) => `-${lettre.toLowerCase()}`);
 
-/** Suffixes kebab des couleurs, tels que les composent les classes (`bg-steel-deep`). */
 export const colorNames: readonly string[] = Object.keys(colors).map(versKebab);
 
-/** Tailles de l'échelle fluide (GUIDE §2.2.2). */
 export const textSizes: readonly string[] = [
   "display",
   "h1",
@@ -46,15 +39,13 @@ export const textSizes: readonly string[] = [
   "mono-xs",
 ];
 
-/** Rayons et ombres déclarés dans le thème. */
 export const radiusNames: readonly string[] = ["card", "control", "modal", "pill"];
 export const shadowNames: readonly string[] = ["card", "glow"];
 
-/** Familles et interlettrages déclarés dans le thème. */
 export const fontNames: readonly string[] = ["display", "sans", "mono"];
 export const trackingNames: readonly string[] = ["annotation"];
 
-/** Courbes d'animation, en tableaux prêts pour l'API Motion (skill 04). */
+/** Courbes d'animation, en tableaux prêts pour l'API Motion. */
 export const easings = {
   outExpo: [0.16, 1, 0.3, 1],
   spring: [0.34, 1.56, 0.64, 1],

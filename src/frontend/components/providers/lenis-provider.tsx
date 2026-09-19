@@ -1,5 +1,4 @@
 "use client";
-// Lenis pilote le défilement du document : accès DOM obligatoire, rendu client.
 import { ReactLenis } from "lenis/react";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";

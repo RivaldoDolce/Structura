@@ -13,11 +13,9 @@ import {
 /**
  * Fusion de classes du projet.
  *
- * `tailwind-merge` ne connaît que les échelles de Tailwind par défaut : sans
- * déclaration, nos utilitaires de thème (`text-h2`, `shadow-card`…) seraient
- * soit conservés en doublon, soit supprimés à tort — une prop `className`
- * passée par un appelant écraserait alors la couleur ou la taille du composant.
- * Les échelles sont donc déclarées depuis `tokens.ts`, source unique.
+ * `tailwind-merge` ignore les échelles de Tailwind personnalisées : nos
+ * utilitaires de thème (`text-h2`, `shadow-card`…) seraient sinon conservés en
+ * doublon ou supprimés à tort quand un appelant écrase une prop `className`.
  */
 const twMerge = extendTailwindMerge({
   extend: {
@@ -31,8 +29,8 @@ const twMerge = extendTailwindMerge({
       ease: [...easingNames],
     },
     classGroups: {
-      // `max-w-*` est une liste statique côté tailwind-merge : le conteneur du
-      // projet doit y être déclaré nommément pour être dédoublonné.
+      // `max-w-*` est une liste statique : le conteneur du projet doit y être
+      // déclaré pour être dédoublonné.
       "max-w": [{ "max-w": ["content"] }],
     },
   },

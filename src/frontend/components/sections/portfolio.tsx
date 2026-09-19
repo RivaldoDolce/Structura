@@ -1,5 +1,4 @@
 "use client";
-// Cascade d'apparition au scroll : animation donc rendu client.
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";

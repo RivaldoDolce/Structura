@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { PriceTag } from "../price-tag";
-import { PriceTag } from "../price-tag";
 
 describe("PriceTag", () => {
   it("formate le montant au format français", () => {

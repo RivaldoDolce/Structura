@@ -1,5 +1,4 @@
 "use client";
-// Scroll flouté, menu mobile et blocage du body : interaction donc client.
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";

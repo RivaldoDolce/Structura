@@ -1,5 +1,4 @@
 "use client";
-// Blocage du clic droit et du glisser-déposer : gestionnaires DOM donc rendu client obligatoire.
 import { useCallback } from "react";
 import type { DragEvent as GlisserEvenement, MouseEvent as SourisEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";

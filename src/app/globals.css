@@ -1,11 +1,8 @@
 @import "tailwindcss";
 
-/* ------------------------------------------------------------------ */
-/* Design tokens — direction artistique « Blueprint Futuriste »        */
-/* Source de vérité unique (GUIDE §2.2). Aucun composant ne porte de   */
-/* valeur brute : tout passe par ces variables, ce qui rend un thème   */
-/* clair ou une déclinaison de marque possible sans toucher au code.   */
-/* ------------------------------------------------------------------ */
+/* Design tokens « Blueprint Futuriste » : source unique de vérité.
+   Aucun composant ne porte de valeur brute, ce qui rend un thème clair ou une
+   déclinaison de marque possible sans toucher au code. */
 @theme {
   /* Fonds : du plus profond au plus proche */
   --color-base: #070b14;
@@ -40,7 +37,7 @@
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains-mono);
 
-  /* Échelle typographique fluide (GUIDE §2.2.2) — aucune media query */
+  /* Échelle typographique fluide, sans media query */
   --text-display: clamp(2.75rem, 5vw + 1rem, 4.75rem);
   --text-display--line-height: 1.02;
   --text-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
@@ -63,7 +60,7 @@
   /* Conteneur : 1200 px, padding latéral porté par les sections */
   --container-content: 75rem;
 
-  /* Rayons (GUIDE §2.2.3) */
+  /* Rayons */
   --radius-card: 16px;
   --radius-control: 10px;
   --radius-modal: 20px;
@@ -86,8 +83,8 @@
   --dur-cinematic: 700ms;
   --dur-stagger: 60ms;
 
-  /* Animations d'interface consommées par les primitives. Toutes reposent sur
-     `transform` ou `opacity` : aucun paint pendant l'animation (skill 04). */
+  /* Animations des primitives, limitées à transform et opacity : aucun paint
+   pendant l'animation. */
   --animate-sweep: st-sweep 1.4s ease-in-out infinite;
   --animate-overlay-in: st-overlay-in 150ms ease-out;
   --animate-content-in: st-content-in 200ms var(--ease-out-expo);
@@ -162,9 +159,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Grain de bruit du kit, 3 % d'opacité (GUIDE §2.2.3) : il donne à l'écran
-   la matière d'un tirage papier sans jamais gêner la lecture. Fixe et non
-   interactif, il ne participe ni au défilement ni aux clics. */
+/* Grain de bruit à 3 % : la matière d'un tirage papier sans gêner la lecture.
+   Fixe et non interactif, il ne capte ni défilement ni clic. */
 body::after {
   content: "";
   position: fixed;

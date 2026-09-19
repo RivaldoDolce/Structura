@@ -22,27 +22,15 @@ const MASQUES: Record<BlueprintFade, string | undefined> = {
 };
 
 /**
- * Tuile de croix de repérage du kit (160 px, trait de 16 px).
- *
- * Elle sert de masque alpha : un asset externe ne peut pas lire une variable
- * CSS, la teinte est donc appliquée par `backgroundColor`. Le kit dessine la
- * croix à 30 % d'alpha ; l'opacité reprend cette valeur pour rester fidèle au
- * visuel livré tout en laissant la couleur au token.
+ * Tuile de croix de repérage (160 px, trait 16 px), utilisée en masque
+ * alpha : un asset externe ne peut pas lire une variable CSS, la teinte passe
+ * donc par `backgroundColor`.
  */
 const TUILE_CROIX = "url(/textures/textures-overlays/05-03_texture-croix-160.svg)";
 const OPACITE_CROIX = 0.3;
 const MAILLE_CROIX = 160;
 
-/**
- * Fond « papier millimétré » du design system.
- *
- * Rendu en CSS pur (dégradés croisés) et en masque d'asset pour les croix :
- * aucune image de fond chargée dynamiquement, aucun coût de layout. Le filet
- * reprend exactement le tracé du kit (`rgba(148,163,184,.14)`, soit
- * `--color-line`), la croix reprend `--color-blueprint`.
- *
- * Purement décoratif : jamais porteur d'information, d'où `aria-hidden`.
- */
+/** Fond « papier millimétré », purement décoratif. */
 export function BlueprintGrid({ density = "fine", fade = "none", className }: BlueprintGridProps) {
   const maille = MAILLES[density];
   const masque = MASQUES[fade];
@@ -53,7 +41,7 @@ export function BlueprintGrid({ density = "fine", fade = "none", className }: Bl
       className={cn("pointer-events-none absolute inset-0", className)}
       style={{ maskImage: masque, WebkitMaskImage: masque }}
     >
-      {/* Maille principale */}
+      {/* Maille */}
       <div
         className="absolute inset-0"
         style={{
@@ -62,7 +50,7 @@ export function BlueprintGrid({ density = "fine", fade = "none", className }: Bl
         }}
       />
 
-      {/* Croix de repérage aux intersections majeures */}
+      {/* Croix de repérage */}
       <div
         className="absolute inset-0"
         style={{
