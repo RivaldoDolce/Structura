@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { durations, easings } from "@/frontend/lib/tokens";
 import { ButtonTech } from "../signature/button-tech";
 
 export interface NavLink {
@@ -84,7 +85,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
               <Link
                 href="/"
                 onClick={onClose}
-                className="font-heading text-xl font-bold tracking-tight text-[var(--color-ink)]"
+                className="font-display text-xl font-bold tracking-tight text-[var(--color-ink)]"
               >
                 STRUCTURA
               </Link>
@@ -94,7 +95,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                 onClick={onClose}
                 aria-label="Fermer le menu"
                 className={cn(
-                  "flex h-11 w-11 items-center justify-center rounded-[10px]",
+                  "flex h-11 w-11 items-center justify-center rounded-control",
                   "text-[var(--color-ink)] transition-colors hover:bg-[var(--color-elevated)]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)]",
                 )}
@@ -124,8 +125,8 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                         opacity: 1,
                         x: 0,
                         transition: {
-                          duration: animationsReduites ? 0 : 0.4,
-                          ease: [0.16, 1, 0.3, 1],
+                          duration: animationsReduites ? 0 : durations.reveal,
+                          ease: easings.outExpo,
                         },
                       },
                     }}
@@ -133,7 +134,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                     <Link
                       href={lien.href}
                       onClick={onClose}
-                      className="block font-heading text-3xl font-semibold text-[var(--color-ink)] transition-colors hover:text-[var(--color-blueprint)]"
+                      className="block font-display text-3xl font-semibold text-[var(--color-ink)] transition-colors hover:text-[var(--color-blueprint)]"
                     >
                       {lien.label}
                     </Link>

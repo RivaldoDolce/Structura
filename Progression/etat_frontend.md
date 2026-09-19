@@ -1,26 +1,40 @@
 # État Frontend — STRUCTURA
 
-Date : 2026-09-17. Branche : `feat/sprint3-demo-integration` (depuis `develop`). Sprint 3 en cours.
+Date : 2026-09-19. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
+Sprint 4 en cours — Chantier A livré.
 
 ## Architecture
 
-Séparation stricte skill 01 : `src/frontend/components/ui` (primitives shadcn), `signature` (marque), `sections` (pages), `hooks`, `lib` (cn, tokens, animations).
+Séparation stricte du skill 01 : `src/frontend/components/{ui,signature,sections,layout,providers}`,
+`src/frontend/{lib,hooks}`. `ui/` reçoit les primitives du chantier B, `signature/` porte les
+14 composants de marque, `sections/` compose les pages.
 
 ## État réel
 
-- `lib/cn.ts` conforme. `lib/tokens.ts` à migrer vers `var(--*)`. `lib/animations.ts` à aligner sur la cascade skill 04.
-- Dossiers `ui` encore vide. `signature` contient `JalonTimeline`, `BeforeAfter`, `WatermarkPreview`, `DevisWizard` avec tests, plus index limités à l'existant.
-- `hooks` contient `useReducedMotion`, `useCounter`. `providers` contient `LenisProvider` branché au layout public.
-- `layout` contient `SiteHeader`, `MobileNav`, `SiteFooter`. `sections` contient `Hero`, `Stats`, `Portfolio`, `Services`.
-- Tokens `@theme` complets : line, line-strong, safety-deep, whatsapp-deep ajoutés.
-- Dépendances installées via npm (gestionnaire officiel, lockfile committé) : motion, lenis, cva, Radix, sonner, Testing Library, jsdom, playwright, plugin TS ESLint.
-- `demo/sections` : galerie interne (noindex) des sections et primitifs avec visuels réels.
-- Vérifications vertes : 88/88 tests Vitest, typecheck propre, lint 0 erreur (3 avertissements `<img>` assumés), Prisma généré. Build à rejouer hors sandbox (SWC natif pendu ici).
-- Sprint 3 : page d'accueil assemblée, page `/devis` avec DevisWizard, tests E2E Playwright.
+- **Tokens** : `globals.css` est la source unique (palette `rgba` conforme au guide, échelle
+  typographique fluide, conteneur 1200 px, rayons, ombres, easings et durées, grain 3 %).
+  `tokens.ts` n'expose plus que des `var(--*)` et les listes de noms consommées par `cn.ts`.
+- **Fusion de classes** : `tailwind-merge` 3 + `cn.ts` déclaré avec les échelles du thème.
+  Sans cette déclaration, un `className` appelant écraserait silencieusement la taille ou la couleur.
+- **Mouvement** : `animations.ts` (cascade skill 04) consommé par `hero`, `stats`, `portfolio`,
+  `services`, `stat-counter`. `MotionProvider` applique `prefers-reduced-motion` aux animations
+  JavaScript ; `LenisProvider` reste actif sur les routes publiques seulement.
+- **Signature** : 12 composants sur 14 — manquent `PriceTag`, `StickyMobileCTA`, `SkeletonTech`,
+  `LoaderCrane` (chantier B). `BlueprintGrid` rend désormais la maille et les croix du kit.
+- **Primitives** : `ui/` est encore vide (chantier B).
+- **Layout** : `SiteHeader`, `MobileNav`, `SiteFooter`, `LenisProvider`, `WhatsAppFab` branchés sur
+  `(public)/layout.tsx`. `next/font` alimente `--font-space-grotesk/--font-inter/--font-jetbrains-mono`.
+- **Pages** : `/devis`, `/demo/sections` (noindex). Le reste des routes publiques arrive au chantier D.
+- **Vérifications vertes** : 103/103 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
+  `<img>` assumés et documentés au README). Build à rejouer hors sandbox (binding SWC natif).
 
 ## Références design
 
-- Journal chantier : `docs/ui-maquettes/mobile/02-15_journal-chantier-diaspora.png` (timeline horizontale à 360px).
-- Tunnel devis : `docs/ui-maquettes/mobile/02-05_tunnel-devis-4-ecrans.png` (3 étapes, cartes visuelles).
-- Fiche plan : `docs/mockups/06-03_iphone15-fiche-plan-blueprint.png` (filigrane diagonal, tableau mono, barre sticky).
-- Détail : `Progression/plan_sprint1.md`, `Progression/audit_sprint1.md`.
+- Accueil mobile : `docs/ui-maquettes/mobile/02-01_accueil-page-scrollee.png` (kicker à crochets,
+  trois portes numérotées, barre CTA fixe sous le FAB WhatsApp).
+- Fiche plan : `docs/mockups/06-03_iphone15-fiche-plan-blueprint.png` et
+  `docs/ui-maquettes/mobile/02-04_fiche-plan-achat-sticky.png` (filigrane diagonal, tableau mono,
+  prix double FCFA/EUR, barre d'achat).
+- Journal chantier : `docs/ui-maquettes/mobile/02-15_journal-chantier-diaspora.png`.
+- Tunnel devis : `docs/ui-maquettes/mobile/02-05_tunnel-devis-4-ecrans.png`.
+- Détail : `Progression/plan_sprint4.md`, `Progression/evolution_frontend.md`.

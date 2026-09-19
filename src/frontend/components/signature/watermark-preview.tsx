@@ -33,7 +33,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
       onContextMenu={bloqueMenu}
       className={cn("relative [-webkit-touch-callout:none] select-none", className)}
     >
-      <div className="relative overflow-hidden rounded-[16px] bg-[var(--color-surface)]">
+      <div className="relative overflow-hidden rounded-card bg-[var(--color-surface)]">
         <img
           src={imageUrl}
           alt="Aperçu du plan avec filigrane de protection"
@@ -60,7 +60,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             {Array.from({ length: REPETITIONS_FILIGRANE }).map((_, ligne) => (
               <p
                 key={`filigrane-${ligne}`}
-                className="whitespace-nowrap font-mono text-2xl font-bold uppercase tracking-[0.2em] text-[var(--color-blueprint)]/40"
+                className="whitespace-nowrap font-mono text-2xl font-bold uppercase tracking-annotation text-[var(--color-blueprint)]/40"
               >
                 {watermarkText}
               </p>
@@ -70,7 +70,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-[16px] border-2 border-[var(--color-line-strong)]"
+          className="pointer-events-none absolute inset-0 rounded-card border-2 border-[var(--color-line-strong)]"
         />
       </div>
 
@@ -89,7 +89,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
-        <p className="font-mono text-xs uppercase tracking-[0.08em]">
+        <p className="font-mono text-mono-xs uppercase">
           Aperçu protégé — Achat requis pour télécharger
         </p>
       </div>

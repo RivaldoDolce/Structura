@@ -93,7 +93,7 @@ export function BeforeAfter({
         onPointerUp={finGlisse}
         onPointerLeave={finGlisse}
         onPointerCancel={finGlisse}
-        className="relative aspect-[16/9] cursor-ew-resize touch-none overflow-hidden rounded-[16px] bg-[var(--color-surface)]"
+        className="relative aspect-[16/9] cursor-ew-resize touch-none overflow-hidden rounded-card bg-[var(--color-surface)]"
       >
         <img
           src={beforeImage}
@@ -124,10 +124,10 @@ export function BeforeAfter({
         </div>
 
         <div className="pointer-events-none absolute inset-0 flex items-center justify-between p-4">
-          <span className="rounded-[10px] bg-[var(--color-base)]/80 px-3 py-1 font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink)] backdrop-blur-sm">
+          <span className="rounded-control bg-[var(--color-base)]/80 px-3 py-1 font-mono text-mono-xs uppercase text-[var(--color-ink)] backdrop-blur-sm">
             {beforeLabel}
           </span>
-          <span className="rounded-[10px] bg-[var(--color-base)]/80 px-3 py-1 font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink)] backdrop-blur-sm">
+          <span className="rounded-control bg-[var(--color-base)]/80 px-3 py-1 font-mono text-mono-xs uppercase text-[var(--color-ink)] backdrop-blur-sm">
             {afterLabel}
           </span>
         </div>

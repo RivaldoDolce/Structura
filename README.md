@@ -378,7 +378,18 @@ vercel --prod
 
 ## Déviations
 
-_Aucune déviation pour l'instant. Toute entorse aux règles sera documentée ici._
+Toute entorse assumée à une règle du guide ou d'un skill est consignée ici, avec sa raison.
+Une règle ignorée en silence serait une dette invisible.
+
+1. **`JalonTimeline` horizontal à toutes les tailles.** Le skill 03 prévoit une timeline
+   verticale sur mobile et horizontale sur desktop ; la maquette
+   `docs/ui-maquettes/mobile/02-15_journal-chantier-diaspora.png` impose une timeline horizontale
+   compacte à 360 px. La maquette prime, le défilement latéral remplace l'empilement.
+2. **`<img>` plutôt que `next/image` dans `BeforeAfter` et `WatermarkPreview`.** Le voile du
+   comparateur repose sur un `clip-path` animé et l'aperçu protégé sur un filigrane superposé :
+   l'optimiseur de Next impose un conteneur et un `object-fit` qui cassent ces deux rendus.
+   Les images concernées sont des aperçus, pas les visuels de contenu. Les trois avertissements
+   ESLint correspondants sont assumés et visibles en CI.
 
 ---
 

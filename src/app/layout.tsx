@@ -1,22 +1,27 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { MotionProvider } from "@/frontend/components/providers";
+import { THEME_COLOR } from "@/frontend/lib/tokens";
 import "./globals.css";
 
+// Les variables posées ici sont consommées par le @theme de globals.css
+// (--font-display / --font-sans / --font-mono) : next/font reste la seule
+// source des polices, auto-hébergées et sans décalage de mise en page.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-heading",
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-body",
+  variable: "--font-inter",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -74,7 +79,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#070B14",
+  themeColor: THEME_COLOR,
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -91,8 +96,8 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-base font-body text-ink antialiased">
-        {children}
+      <body className="min-h-screen bg-base font-sans text-ink antialiased">
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

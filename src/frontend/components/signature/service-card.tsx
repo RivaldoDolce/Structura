@@ -24,7 +24,7 @@ export function ServiceCard({
   return (
     <article
       className={cn(
-        "group relative overflow-hidden rounded-[16px] border border-[var(--color-line)] bg-[var(--color-surface)] p-8 transition-colors hover:border-[var(--color-steel)]",
+        "group relative overflow-hidden rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] p-8 transition-colors hover:border-[var(--color-steel)]",
         className,
       )}
     >
@@ -32,10 +32,10 @@ export function ServiceCard({
         <span aria-hidden="true" className="text-[var(--color-blueprint)]">
           {icon}
         </span>
-        <span className="font-mono text-sm text-[var(--color-ink-muted)]">{number}</span>
+        <span className="font-mono text-sm text-[var(--color-ink-mute)]">{number}</span>
       </div>
 
-      <h3 className="mt-6 font-heading text-2xl font-semibold text-[var(--color-ink)]">
+      <h3 className="mt-6 font-display text-2xl font-semibold text-[var(--color-ink)]">
         {title}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">

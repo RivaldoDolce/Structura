@@ -170,7 +170,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
   if (reference) {
     return (
       <div className={cn("mx-auto max-w-lg text-center", className)}>
-        <div className="rounded-[16px] border border-[var(--color-ok)] bg-[var(--color-surface)] p-8">
+        <div className="rounded-card border border-[var(--color-ok)] bg-[var(--color-surface)] p-8">
           <div
             aria-hidden="true"
             className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[var(--color-ok)]/20"
@@ -189,7 +189,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
               />
             </svg>
           </div>
-          <h2 className="font-heading text-2xl font-bold text-[var(--color-ink)]">
+          <h2 className="font-display text-2xl font-bold text-[var(--color-ink)]">
             Devis envoyé avec succès !
           </h2>
           <p className="mt-4 text-[var(--color-ink-soft)]">
@@ -215,7 +215,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
 
       <div className="mb-8">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
+          <span className="font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">
             Étape {etape + 1} sur 3
           </span>
           <span className="font-mono text-xs uppercase text-[var(--color-blueprint)]">
@@ -242,7 +242,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
         {etape === 0 ? (
           <div className="space-y-6">
             <div>
-              <h2 className="font-heading text-xl font-semibold text-[var(--color-ink)]">
+              <h2 className="font-display text-xl font-semibold text-[var(--color-ink)]">
                 Quel est votre projet ?
               </h2>
               <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
@@ -262,14 +262,14 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                     data-selected={selectionne}
                     onClick={() => setValue("typeProjet", type.id, { shouldValidate: true })}
                     className={cn(
-                      "relative rounded-[16px] border-2 p-6 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2",
+                      "relative rounded-card border-2 p-6 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2",
                       selectionne
                         ? "border-[var(--color-blueprint)] bg-[var(--color-blueprint)]/10"
                         : "border-[var(--color-line)] bg-[var(--color-surface)] hover:border-[var(--color-steel)]",
                     )}
                   >
                     <Icone aria-hidden="true" className="h-8 w-8 text-[var(--color-blueprint)]" />
-                    <span className="mt-3 block font-heading text-lg font-semibold text-[var(--color-ink)]">
+                    <span className="mt-3 block font-display text-lg font-semibold text-[var(--color-ink)]">
                       {type.label}
                     </span>
                     <span className="mt-1 block text-sm text-[var(--color-ink-soft)]">
@@ -290,7 +290,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
         {etape === 1 ? (
           <div className="space-y-6">
             <div>
-              <h2 className="font-heading text-xl font-semibold text-[var(--color-ink)]">
+              <h2 className="font-display text-xl font-semibold text-[var(--color-ink)]">
                 Décrivez votre besoin
               </h2>
               <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
@@ -313,13 +313,13 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 placeholder="Ex : villa duplex de 200 m² à Odza, terrain déjà acquis."
                 {...register("description")}
                 className={cn(
-                  "w-full rounded-[10px] border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
+                  "w-full rounded-control border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-mute)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
                   errors.description
                     ? "border-[var(--color-danger)]"
                     : "border-[var(--color-line-strong)]",
                 )}
               />
-              <p id="devis-description-aide" className="mt-2 text-xs text-[var(--color-ink-muted)]">
+              <p id="devis-description-aide" className="mt-2 text-xs text-[var(--color-ink-mute)]">
                 Bâtiment, surface, localisation, contraintes particulières.
               </p>
               {errors.description ? (
@@ -340,9 +340,9 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 type="file"
                 multiple
                 accept="image/*,.pdf"
-                className="w-full rounded-[10px] border border-dashed border-[var(--color-line-strong)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink-soft)] file:mr-3 file:rounded-[10px] file:border-0 file:bg-[var(--color-elevated)] file:px-3 file:py-1 file:text-sm file:text-[var(--color-ink)]"
+                className="w-full rounded-control border border-dashed border-[var(--color-line-strong)] bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink-soft)] file:mr-3 file:rounded-control file:border-0 file:bg-[var(--color-elevated)] file:px-3 file:py-1 file:text-sm file:text-[var(--color-ink)]"
               />
-              <p className="mt-2 text-xs text-[var(--color-ink-muted)]">
+              <p className="mt-2 text-xs text-[var(--color-ink-mute)]">
                 Plans, photos du terrain, croquis.
               </p>
             </div>
@@ -352,7 +352,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
         {etape === 2 ? (
           <div className="space-y-6">
             <div>
-              <h2 className="font-heading text-xl font-semibold text-[var(--color-ink)]">
+              <h2 className="font-display text-xl font-semibold text-[var(--color-ink)]">
                 Vos coordonnées
               </h2>
               <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
@@ -377,13 +377,13 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 aria-describedby="devis-telephone-aide"
                 {...register("telephone")}
                 className={cn(
-                  "w-full rounded-[10px] border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
+                  "w-full rounded-control border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-mute)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
                   errors.telephone
                     ? "border-[var(--color-danger)]"
                     : "border-[var(--color-line-strong)]",
                 )}
               />
-              <p id="devis-telephone-aide" className="mt-2 text-xs text-[var(--color-ink-muted)]">
+              <p id="devis-telephone-aide" className="mt-2 text-xs text-[var(--color-ink-mute)]">
                 Numéro camerounais à 9 chiffres commençant par 6.
               </p>
               {errors.telephone ? (
@@ -408,7 +408,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 aria-invalid={Boolean(errors.email)}
                 {...register("email")}
                 className={cn(
-                  "w-full rounded-[10px] border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
+                  "w-full rounded-control border bg-[var(--color-surface)] px-4 py-3 text-sm text-[var(--color-ink)] transition-colors placeholder:text-[var(--color-ink-mute)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2",
                   errors.email ? "border-[var(--color-danger)]" : "border-[var(--color-line-strong)]",
                 )}
               />
@@ -429,7 +429,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 <label htmlFor="devis-whatsapp" className="text-sm font-medium text-[var(--color-ink)]">
                   Me contacter par WhatsApp
                 </label>
-                <p className="mt-1 text-xs text-[var(--color-ink-muted)]">
+                <p className="mt-1 text-xs text-[var(--color-ink-mute)]">
                   Canal privilégié pour le Cameroun et la diaspora.
                 </p>
               </div>
@@ -442,7 +442,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
             <button
               type="button"
               onClick={retour}
-              className="inline-flex h-12 items-center rounded-[10px] border border-[var(--color-line-strong)] px-8 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2"
+              className="inline-flex h-12 items-center rounded-control border border-[var(--color-line-strong)] px-8 text-sm font-medium text-[var(--color-ink)] transition-colors hover:bg-[var(--color-elevated)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2"
             >
               Retour
             </button>
@@ -453,7 +453,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
             <button
               type="button"
               onClick={suivant}
-              className="inline-flex h-12 items-center rounded-[10px] bg-[var(--color-steel)] px-8 text-sm font-medium text-white transition-colors hover:bg-[var(--color-steel-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2"
+              className="inline-flex h-12 items-center rounded-control bg-[var(--color-steel)] px-8 text-sm font-medium text-white transition-colors hover:bg-[var(--color-steel-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2"
             >
               Suivant
             </button>
@@ -462,7 +462,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
               type="submit"
               disabled={envoi}
               aria-busy={envoi}
-              className="inline-flex h-12 items-center rounded-[10px] bg-[var(--color-safety)] px-8 text-sm font-semibold text-[var(--color-base)] transition-colors hover:bg-[var(--color-safety-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 disabled:opacity-50"
+              className="inline-flex h-12 items-center rounded-control bg-[var(--color-safety)] px-8 text-sm font-semibold text-[var(--color-base)] transition-colors hover:bg-[var(--color-safety-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 disabled:opacity-50"
             >
               {envoi ? "Envoi en cours…" : "Envoyer ma demande"}
             </button>
@@ -470,7 +470,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
         </div>
       </form>
 
-      <div className="mt-8 rounded-[10px] bg-[var(--color-elevated)] p-4">
+      <div className="mt-8 rounded-control bg-[var(--color-elevated)] p-4">
         <p className="text-sm text-[var(--color-ink-soft)]">
           Vos données restent confidentielles. Réponse garantie sous 24 h ouvrées.
         </p>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import * as React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
+import { easings } from "@/frontend/lib/tokens";
 
 export interface ProjectCardProps {
   title: string;
@@ -39,9 +40,9 @@ export function ProjectCard({
   const contenu = (
     <motion.article
       whileHover={{ scale: 1.01 }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.4, ease: easings.outExpo }}
       className={cn(
-        "group relative overflow-hidden rounded-[16px] bg-[var(--color-surface)]",
+        "group relative overflow-hidden rounded-card bg-[var(--color-surface)]",
         className,
       )}
     >
@@ -60,16 +61,16 @@ export function ProjectCard({
       </div>
 
       <div className="relative p-6">
-        <h3 className="font-heading text-xl font-semibold text-[var(--color-ink)]">
+        <h3 className="font-display text-xl font-semibold text-[var(--color-ink)]">
           {title}
         </h3>
         <p className="mt-2 text-sm text-[var(--color-ink-soft)]">{description}</p>
 
         {donnees.length > 0 ? (
-          <dl className="mt-4 grid grid-cols-2 gap-3 font-mono text-xs uppercase tracking-[0.08em] md:hidden">
+          <dl className="mt-4 grid grid-cols-2 gap-3 font-mono text-mono-xs uppercase md:hidden">
             {donnees.map((entree) => (
               <div key={entree.terme}>
-                <dt className="text-[var(--color-ink-muted)]">{entree.terme}</dt>
+                <dt className="text-[var(--color-ink-mute)]">{entree.terme}</dt>
                 <dd className="mt-1 text-[var(--color-blueprint)]">{entree.valeur}</dd>
               </div>
             ))}
@@ -78,10 +79,10 @@ export function ProjectCard({
 
         {donnees.length > 0 ? (
           <div className="pointer-events-none absolute inset-x-0 bottom-0 hidden translate-y-full border-t border-[var(--color-line)] bg-[var(--color-elevated)] p-6 transition-transform duration-500 group-hover:translate-y-0 md:block">
-            <dl className="grid grid-cols-2 gap-4 font-mono text-xs uppercase tracking-[0.08em]">
+            <dl className="grid grid-cols-2 gap-4 font-mono text-mono-xs uppercase">
               {donnees.map((entree) => (
                 <div key={entree.terme}>
-                  <dt className="text-[var(--color-ink-muted)]">{entree.terme}</dt>
+                  <dt className="text-[var(--color-ink-mute)]">{entree.terme}</dt>
                   <dd className="mt-1 text-[var(--color-blueprint)]">{entree.valeur}</dd>
                 </div>
               ))}

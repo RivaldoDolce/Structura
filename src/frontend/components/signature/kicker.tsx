@@ -12,7 +12,7 @@ export function Kicker({ number, label, className }: KickerProps) {
   return (
     <p
       className={cn(
-        "flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-blueprint)]",
+        "flex items-center gap-3 font-mono text-mono-xs uppercase tracking-annotation text-[var(--color-blueprint)]",
         className,
       )}
     >

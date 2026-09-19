@@ -52,7 +52,7 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
     ref,
   ) => {
     const classes = cn(
-      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-[10px] font-medium transition-all",
+      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-control font-medium transition-all",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-base)]",
       "disabled:pointer-events-none disabled:opacity-50",
       CLASSES_VARIANTES[variant],
@@ -82,7 +82,7 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 overflow-hidden rounded-[10px]"
+          className="pointer-events-none absolute inset-0 overflow-hidden rounded-control"
         >
           <span className="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
           <span className="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />

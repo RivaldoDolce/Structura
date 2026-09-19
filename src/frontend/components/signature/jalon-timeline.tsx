@@ -69,7 +69,7 @@ export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
           <div className="mt-3">
             <p
               className={cn(
-                "font-heading text-sm font-semibold",
+                "font-display text-sm font-semibold",
                 jalon.status === "completed" && "text-[var(--color-blueprint)]",
                 jalon.status === "current" && "text-[var(--color-ink)]",
                 jalon.status === "upcoming" && "text-[var(--color-ink-soft)]",
@@ -81,7 +81,7 @@ export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
             {jalon.date ? (
               <time
                 dateTime={jalon.date}
-                className="mt-1 block font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]"
+                className="mt-1 block font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]"
               >
                 {format(new Date(`${jalon.date}T00:00:00`), "d MMM yyyy", { locale: fr })}
               </time>

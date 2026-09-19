@@ -66,12 +66,12 @@ export function SiteFooter({
       aria-label="Pied de page STRUCTURA"
       className={cn("border-t border-[var(--color-line)] bg-[var(--color-surface)]", className)}
     >
-      <div className="mx-auto max-w-[1200px] px-4 py-16 md:px-6 md:py-24">
+      <div className="mx-auto max-w-content px-4 py-16 md:px-6 md:py-24">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-5">
           <div className="md:col-span-1">
             <Link
               href="/"
-              className="font-heading text-2xl font-bold tracking-tight text-[var(--color-ink)]"
+              className="font-display text-2xl font-bold tracking-tight text-[var(--color-ink)]"
             >
               STRUCTURA
             </Link>
@@ -107,7 +107,7 @@ export function SiteFooter({
 
           {COLONNES.map((colonne) => (
             <nav key={colonne.titre} aria-label={`Pied de page — ${colonne.titre}`}>
-              <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
+              <h3 className="font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">
                 {colonne.titre}
               </h3>
               <ul className="mt-4 space-y-3">
@@ -128,10 +128,10 @@ export function SiteFooter({
 
         <div className="mt-16 border-t border-[var(--color-line)] pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-[var(--color-ink-muted)]">
+            <p className="text-sm text-[var(--color-ink-mute)]">
               © {annee} STRUCTURA. Tous droits réservés.
             </p>
-            <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
+            <p className="font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">
               Fait avec rigueur à Yaoundé
             </p>
           </div>

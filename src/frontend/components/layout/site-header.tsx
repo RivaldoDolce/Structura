@@ -53,12 +53,12 @@ export function SiteHeader() {
           !animationsReduites && "transition-all duration-300",
         )}
       >
-        <div className="mx-auto max-w-[1200px] px-4 md:px-6">
+        <div className="mx-auto max-w-content px-4 md:px-6">
           <div className="flex h-16 items-center justify-between md:h-20">
             <Link
               href="/"
               aria-label="STRUCTURA - Accueil"
-              className="font-heading text-xl font-bold tracking-tight text-[var(--color-ink)] md:text-2xl"
+              className="font-display text-xl font-bold tracking-tight text-[var(--color-ink)] md:text-2xl"
             >
               STRUCTURA
             </Link>
@@ -92,7 +92,7 @@ export function SiteHeader() {
               aria-expanded={menuOuvert}
               aria-controls="mobile-nav"
               className={cn(
-                "flex h-11 w-11 items-center justify-center rounded-[10px]",
+                "flex h-11 w-11 items-center justify-center rounded-control",
                 "text-[var(--color-ink)] transition-colors hover:bg-[var(--color-elevated)]",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)]",
                 "md:hidden",

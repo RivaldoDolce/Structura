@@ -16,7 +16,7 @@ export function TechDivider({ label, className }: TechDividerProps) {
     >
       <span aria-hidden="true" className="h-px flex-1 bg-[var(--color-line)]" />
       {label ? (
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-ink-muted)]">
+        <span className="font-mono text-mono-xs uppercase tracking-annotation text-[var(--color-ink-mute)]">
           {label}
         </span>
       ) : null}
