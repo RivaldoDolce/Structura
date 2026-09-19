@@ -1,5 +1,22 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-19 — Sprint 4 : chantier D (pages publiques)
+
+- Données de démonstration `src/frontend/data/` : `portfolio.ts` (6 projets, slugs uniques),
+  `plans.ts` (4 plans, références uniques, prix et surfaces positifs), `jalons.ts` (4 jalons avec
+  images journal), `equipe.ts` (5 essences, 4 entrées journal, 3 portraits). Test de cohérence :
+  chaque image référencée existe dans `public/`.
+- Pages livrées : accueil (Hero → Stats → Services → Portfolio → avant/après → CTA devis),
+  catalogue `/plans` (filtres par type côté client), fiche `/plans/[reference]`
+  (`generateStaticParams`, `notFound()`, tableau `ui/table`, prix FCFA + ≈ EUR, StickyMobileCta),
+  `/portfolio` + `/portfolio/[slug]` (galerie journal, jalons, équipe), `/ingenierie`,
+  `/ebenisterie` (grille essences), `/immobilier`, `/a-propos`, `/contact` (formulaire validé :
+  nom, téléphone camerounais 9 chiffres, message), `/devis` (tunnel `DevisWizard`), légal
+  (mentions, CGV, confidentialité), `not-found.tsx` et `error.tsx` style blueprint.
+- Tests des pages isolés dans `src/frontend/app-tests/` (jsdom) : 17 tests couvrant titres, CTA,
+  régions uniques et cas 200/404 des routes dynamiques.
+- Résultat : **164/164 tests**, `tsc --noEmit` propre, ESLint 0 erreur sur le périmètre.
+
 ## 2026-09-19 — Sprint 4 : chantier C (sécurité et partagé)
 
 - `src/frontend/lib/sanitize.ts` créé en TDD : `numeroInternational`, `texteMessage`,

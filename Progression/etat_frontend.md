@@ -1,7 +1,7 @@
 # État Frontend — STRUCTURA
 
 Date : 2026-09-19. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
-Sprint 4 en cours — Chantiers A, B et C livrés.
+Sprint 4 en cours — Chantiers A, B, C et D livrés.
 
 ## Architecture
 
@@ -33,13 +33,16 @@ marque, `sections/` compose les pages.
   d'environnement, le bouton ne rend rien). `src/shared/constants/navigation.ts` est la source
   unique des liens publics consommés par le header et le footer. En-têtes de sécurité consolidés
   (`Permissions-Policy`, CSP sans `unsafe-eval` en production), middleware couvert par tests.
-- **Pages** : `/devis`, `/demo/sections` (noindex). Le reste des routes publiques arrive au chantier D.
-- **Vérifications vertes** : 133/133 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
+- **Pages** : accueil, `/plans` + `/plans/[reference]`, `/portfolio` + `/portfolio/[slug]`,
+  `/ingenierie`, `/ebenisterie`, `/immobilier`, `/a-propos`, `/contact`, `/devis`, légal
+  (mentions, CGV, confidentialité), `not-found.tsx`, `error.tsx`. Données de démonstration
+  isolées dans `src/frontend/data/`, tests des pages dans `src/frontend/app-tests/`.
+- **Vérifications vertes** : 164/164 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
   `<img>` assumés et documentés au README). Build à rejouer hors sandbox (`next build` se plante
   par « Bus error » dans l'environnement actuel).
-- **Prochain chantier (D)** : pages publiques — accueil complet (sections assemblées sur données
-  de démonstration), `/ingenierie`, `/plans`, `/plans/[reference]`, `/portfolio`, `/portfolio/[slug]`,
-  `/a-propos`, `/contact`, légal, 404/500. Données provisoires isolées dans `src/frontend/data/`.
+- **Prochain chantier (E)** : hero GSAP et SEO — chorégraphie « le plan se dessine » (fond photo,
+  grille, croix en cascade, titre par masque, isométrie au scroll, parallax), `sitemap.ts`,
+  `robots.ts`, JSON-LD, OG.
 
 ## Références design
 
