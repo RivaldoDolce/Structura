@@ -17,7 +17,9 @@ describe("PriceTag", () => {
   });
 
   it("ajoute un appel à l'action quand href est fourni", () => {
-    render(<PriceTag amount={3200000} unit="FCFA / m²" href="/contact" hrefLabel="Obtenir un devis" />);
+    render(
+      <PriceTag amount={3200000} unit="FCFA / m²" href="/contact" hrefLabel="Obtenir un devis" />
+    );
 
     const lien = screen.getByRole("link", { name: /Obtenir un devis/ });
     expect(lien).toHaveAttribute("href", "/contact");

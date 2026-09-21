@@ -44,14 +44,14 @@ export function BeforeAfter({
       setGlisse(true);
       placeCurseur(evenement.clientX);
     },
-    [placeCurseur],
+    [placeCurseur]
   );
 
   const pendantGlisse = useCallback(
     (evenement: PointeurEvenement<HTMLDivElement>) => {
       if (glisse) placeCurseur(evenement.clientX);
     },
-    [glisse, placeCurseur],
+    [glisse, placeCurseur]
   );
 
   const finGlisse = useCallback(() => setGlisse(false), []);
@@ -80,7 +80,7 @@ export function BeforeAfter({
       evenement.preventDefault();
       setPosition(cible);
     },
-    [position],
+    [position]
   );
 
   return (
@@ -92,7 +92,7 @@ export function BeforeAfter({
         onPointerUp={finGlisse}
         onPointerLeave={finGlisse}
         onPointerCancel={finGlisse}
-        className="relative aspect-[16/9] cursor-ew-resize touch-none overflow-hidden rounded-card bg-[var(--color-surface)]"
+        className="rounded-card bg-surface relative aspect-[16/9] cursor-ew-resize touch-none overflow-hidden"
       >
         <img
           src={beforeImage}
@@ -123,10 +123,10 @@ export function BeforeAfter({
         </div>
 
         <div className="pointer-events-none absolute inset-0 flex items-center justify-between p-4">
-          <span className="rounded-control bg-[var(--color-base)]/80 px-3 py-1 font-mono text-mono-xs uppercase text-[var(--color-ink)] backdrop-blur-sm">
+          <span className="rounded-control bg-fond/80 text-mono-xs text-ink px-3 py-1 font-mono uppercase backdrop-blur-sm">
             {beforeLabel}
           </span>
-          <span className="rounded-control bg-[var(--color-base)]/80 px-3 py-1 font-mono text-mono-xs uppercase text-[var(--color-ink)] backdrop-blur-sm">
+          <span className="rounded-control bg-fond/80 text-mono-xs text-ink px-3 py-1 font-mono uppercase backdrop-blur-sm">
             {afterLabel}
           </span>
         </div>
@@ -134,7 +134,7 @@ export function BeforeAfter({
         <div
           aria-hidden="true"
           style={{ left: `${position}%` }}
-          className="pointer-events-none absolute top-0 h-full w-0.5 bg-[var(--color-steel)]"
+          className="bg-steel pointer-events-none absolute top-0 h-full w-0.5"
         />
 
         <div
@@ -148,7 +148,7 @@ export function BeforeAfter({
           aria-orientation="horizontal"
           onKeyDown={toucheClavier}
           style={{ left: `${position}%` }}
-          className="absolute top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center rounded-full border-2 border-[var(--color-steel)] bg-[var(--color-surface)] shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 active:cursor-grabbing"
+          className="border-steel bg-surface focus-visible:ring-blueprint absolute top-1/2 z-10 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 cursor-grab items-center justify-center rounded-full border-2 shadow-lg transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none active:cursor-grabbing"
         >
           <svg
             width="20"
@@ -156,7 +156,7 @@ export function BeforeAfter({
             viewBox="0 0 20 20"
             fill="none"
             aria-hidden="true"
-            className="text-[var(--color-ink)]"
+            className="text-ink"
           >
             <path
               d="M6 10H2m0 0l3-3m-3 3l3 3m8-3h4m0 0l-3-3m3 3l-3 3"
@@ -170,8 +170,8 @@ export function BeforeAfter({
       </div>
 
       <p id={aideId} className="sr-only">
-        Utilisez les flèches gauche et droite pour ajuster la comparaison. Origine pour tout
-        avant, Fin pour tout après.
+        Utilisez les flèches gauche et droite pour ajuster la comparaison. Origine pour tout avant,
+        Fin pour tout après.
       </p>
     </div>
   );

@@ -9,13 +9,13 @@ function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxP
   return (
     <CheckboxPrimitive.Root
       className={cn(
-        "peer h-5 w-5 shrink-0 rounded-[4px] border border-[var(--color-line-strong)] bg-[var(--color-surface)]",
+        "peer border-line-strong bg-surface h-5 w-5 shrink-0 rounded-[4px] border",
         // Zone cliquable portée à 44 px minimum sans agrandir le visuel.
         "after:absolute after:-inset-x-3 after:-inset-y-2.5",
-        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-base)]",
-        "data-[state=checked]:border-[var(--color-blueprint)] data-[state=checked]:bg-[var(--color-blueprint)] data-[state=checked]:text-[var(--color-base)]",
+        "focus-visible:ring-blueprint focus-visible:ring-offset-fond transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+        "data-[state=checked]:border-blueprint data-[state=checked]:bg-blueprint data-[state=checked]:text-fond",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        className,
+        className
       )}
       {...props}
     >

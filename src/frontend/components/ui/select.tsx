@@ -17,19 +17,19 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-11 w-full items-center justify-between gap-2 rounded-control border border-[var(--color-line)] bg-[var(--color-surface)] px-3 text-small text-[var(--color-ink)]",
-        "data-[placeholder]:text-[var(--color-ink-mute)]",
-        "transition-colors focus-visible:border-[var(--color-line-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)]",
-        "aria-invalid:border-[var(--color-danger)]",
+        "rounded-control border-line bg-surface text-small text-ink flex h-11 w-full items-center justify-between gap-2 border px-3",
+        "data-[placeholder]:text-ink-mute",
+        "focus-visible:border-line-strong focus-visible:ring-blueprint transition-colors focus-visible:ring-2 focus-visible:outline-none",
+        "aria-invalid:border-danger",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "[&>span]:line-clamp-1",
-        className,
+        className
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDown className="h-4 w-4 shrink-0 text-[var(--color-ink-mute)]" aria-hidden="true" />
+        <ChevronDown className="text-ink-mute h-4 w-4 shrink-0" aria-hidden="true" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -46,39 +46,38 @@ function SelectContent({
       <SelectPrimitive.Content
         position={position}
         className={cn(
-          "relative z-50 max-h-[min(24rem,var(--radix-select-content-available-height))] min-w-[8rem] overflow-hidden rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] shadow-elevated",
+          "rounded-card border-line bg-surface shadow-elevated relative z-50 max-h-[min(24rem,var(--radix-select-content-available-height))] min-w-[8rem] overflow-hidden border",
           "data-[state=open]:animate-content-in",
-          position === "popper" && "max-h-[min(24rem,var(--radix-select-content-available-height))]",
-          className,
+          position === "popper" &&
+            "max-h-[min(24rem,var(--radix-select-content-available-height))]",
+          className
         )}
         {...props}
       >
         <SelectPrimitive.ScrollUpButton className="flex items-center justify-center py-1">
-          <ChevronUp className="h-4 w-4 text-[var(--color-ink-mute)]" aria-hidden="true" />
+          <ChevronUp className="text-ink-mute h-4 w-4" aria-hidden="true" />
         </SelectPrimitive.ScrollUpButton>
         <SelectPrimitive.Viewport
           className={cn(
             "p-1",
-            position === "popper" && "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+            position === "popper" &&
+              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
           )}
         >
           {children}
         </SelectPrimitive.Viewport>
         <SelectPrimitive.ScrollDownButton className="flex items-center justify-center py-1">
-          <ChevronDown className="h-4 w-4 text-[var(--color-ink-mute)]" aria-hidden="true" />
+          <ChevronDown className="text-ink-mute h-4 w-4" aria-hidden="true" />
         </SelectPrimitive.ScrollDownButton>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );
 }
 
-function SelectLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof SelectPrimitive.Label>) {
+function SelectLabel({ className, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
-      className={cn("px-2 py-1.5 font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]", className)}
+      className={cn("text-mono-xs text-ink-mute px-2 py-1.5 font-mono uppercase", className)}
       {...props}
     />
   );
@@ -92,10 +91,10 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-[6px] py-2 pl-8 pr-2 text-small outline-none",
-        "focus-visible:bg-[var(--color-elevated)] data-[state=checked]:text-[var(--color-blueprint)]",
+        "text-small relative flex w-full cursor-default items-center rounded-[6px] py-2 pr-2 pl-8 outline-none select-none",
+        "focus-visible:bg-elevated data-[state=checked]:text-blueprint",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className,
+        className
       )}
       {...props}
     >
@@ -114,10 +113,7 @@ function SelectSeparator({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
-    <SelectPrimitive.Separator
-      className={cn("-mx-1 my-1 h-px bg-[var(--color-line)]", className)}
-      {...props}
-    />
+    <SelectPrimitive.Separator className={cn("bg-line -mx-1 my-1 h-px", className)} {...props} />
   );
 }
 

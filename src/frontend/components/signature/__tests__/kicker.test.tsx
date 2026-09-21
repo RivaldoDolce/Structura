@@ -14,10 +14,7 @@ describe("Kicker", () => {
     render(<Kicker label="ÉTUDE & PLANS" />);
 
     expect(screen.getByText("ÉTUDE & PLANS")).toBeInTheDocument();
-    expect(screen.getByText("ÉTUDE & PLANS").parentElement).toHaveClass(
-      "font-mono",
-      "uppercase",
-    );
+    expect(screen.getByText("ÉTUDE & PLANS").parentElement).toHaveClass("font-mono", "uppercase");
   });
 
   it("fusionne les classes complémentaires", () => {

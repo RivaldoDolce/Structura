@@ -61,7 +61,7 @@ describe("Assemblage page d'accueil", () => {
         <Stats />
         <Portfolio projects={projets} />
         <Services services={expertises} />
-      </>,
+      </>
     );
 
     expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
@@ -75,12 +75,13 @@ describe("Assemblage page d'accueil", () => {
       <>
         <Hero />
         <Portfolio projects={projets} />
-      </>,
+      </>
     );
 
-    expect(
-      screen.getByRole("link", { name: /demander un devis/i }),
-    ).toHaveAttribute("href", "/devis");
+    expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
+      "href",
+      "/devis"
+    );
     const carte = screen.getByText("Villa Moderne Douala").closest("a");
     expect(carte).toHaveAttribute("href", "/portfolio/villa-moderne-douala");
   });

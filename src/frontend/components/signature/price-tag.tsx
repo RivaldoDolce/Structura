@@ -16,14 +16,14 @@ export interface PriceTagProps {
 export function PriceTag({ amount, unit = "FCFA", href, hrefLabel, className }: PriceTagProps) {
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <p className="font-display text-h2 font-semibold text-[var(--color-ink)]">
+      <p className="font-display text-h2 text-ink font-semibold">
         <span>{formateurMontant.format(amount)}</span>
-        <span className="ml-2 text-small font-medium text-[var(--color-ink-soft)]">{unit}</span>
+        <span className="text-small text-ink-soft ml-2 font-medium">{unit}</span>
       </p>
       {href ? (
         <Link
           href={href}
-          className="group inline-flex h-11 w-fit items-center gap-2 rounded-control border border-[var(--color-line-strong)] px-5 text-small font-medium text-[var(--color-ink)] transition-colors hover:border-[var(--color-blueprint)] hover:text-[var(--color-blueprint)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-base)]"
+          className="group rounded-control border-line-strong text-small text-ink hover:border-blueprint hover:text-blueprint focus-visible:ring-blueprint focus-visible:ring-offset-fond inline-flex h-11 w-fit items-center gap-2 border px-5 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {hrefLabel ?? "En savoir plus"}
           <ArrowRight

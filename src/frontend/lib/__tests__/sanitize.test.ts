@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  etiquetePage,
-  numeroInternational,
-  texteMessage,
-} from "../sanitize";
+import { etiquetePage, numeroInternational, texteMessage } from "../sanitize";
 
 describe("numeroInternational", () => {
   it("conserve les chiffres et un indicatif explicite", () => {

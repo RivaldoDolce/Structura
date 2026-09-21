@@ -31,8 +31,7 @@ export const essences: EssenceBois[] = [
   {
     id: "iroko",
     nom: "Iroko",
-    description:
-      "Le « teck africain » : portes, terrasses et ouvrages exposés aux intempéries.",
+    description: "Le « teck africain » : portes, terrasses et ouvrages exposés aux intempéries.",
     imageUrl: "/photos/essences/04-06_macro-essence-iroko.png",
   },
   {
@@ -45,15 +44,13 @@ export const essences: EssenceBois[] = [
   {
     id: "ebene",
     nom: "Ébène",
-    description:
-      "Bois noir précieux, boiseries fines et détails d'ébénisterie d'art.",
+    description: "Bois noir précieux, boiseries fines et détails d'ébénisterie d'art.",
     imageUrl: "/photos/essences/04-09_macro-essence-ebene.png",
   },
   {
     id: "ayous",
     nom: "Ayous",
-    description:
-      "Bois clair et léger, coffrages, lambris et charpentes intérieures.",
+    description: "Bois clair et léger, coffrages, lambris et charpentes intérieures.",
     imageUrl: "/photos/essences/04-10_macro-essence-ayous.png",
   },
 ];
@@ -79,8 +76,7 @@ export const journal: EntreeJournal[] = [
     id: "journal-plancher",
     titre: "Coulage du plancher — R+4 Odza",
     date: "2025-03-21",
-    extrait:
-      "180 m² coulés en une passe, vibration contrôlée et cure humide pendant sept jours.",
+    extrait: "180 m² coulés en une passe, vibration contrôlée et cure humide pendant sept jours.",
     imageUrl: "/photos/journal/04-23_journal-coulage-plancher.png",
   },
   {

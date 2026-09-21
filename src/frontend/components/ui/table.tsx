@@ -4,35 +4,25 @@ import { cn } from "@/frontend/lib/cn";
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div className="relative w-full overflow-x-auto">
-      <table className={cn("w-full caption-bottom text-small text-[var(--color-ink)]", className)} {...props} />
+      <table className={cn("text-small text-ink w-full caption-bottom", className)} {...props} />
     </div>
   );
 }
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return <thead className={cn("border-b border-[var(--color-line)]", className)} {...props} />;
+  return <thead className={cn("border-line border-b", className)} {...props} />;
 }
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
-  return <tbody className={cn("divide-y divide-[var(--color-line)]", className)} {...props} />;
+  return <tbody className={cn("divide-line divide-y", className)} {...props} />;
 }
 
 function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
-  return (
-    <tfoot
-      className={cn("border-t border-[var(--color-line)] bg-[var(--color-elevated)]", className)}
-      {...props}
-    />
-  );
+  return <tfoot className={cn("border-line bg-elevated border-t", className)} {...props} />;
 }
 
 function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
-  return (
-    <tr
-      className={cn("transition-colors hover:bg-[var(--color-elevated)]/60", className)}
-      {...props}
-    />
-  );
+  return <tr className={cn("hover:bg-elevated/60 transition-colors", className)} {...props} />;
 }
 
 function TableHead({ className, ...props }: React.ComponentProps<"th">) {
@@ -40,8 +30,8 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       scope="col"
       className={cn(
-        "h-11 px-4 text-left align-middle font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]",
-        className,
+        "text-mono-xs text-ink-mute h-11 px-4 text-left align-middle font-mono uppercase",
+        className
       )}
       {...props}
     />
@@ -53,21 +43,7 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
 }
 
 function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
-  return (
-    <caption
-      className={cn("mt-4 text-small text-[var(--color-ink-soft)]", className)}
-      {...props}
-    />
-  );
+  return <caption className={cn("text-small text-ink-soft mt-4", className)} {...props} />;
 }
 
-export {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-};
+export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

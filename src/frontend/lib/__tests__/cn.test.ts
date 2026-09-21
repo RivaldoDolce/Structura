@@ -29,7 +29,7 @@ describe("cn", () => {
 
   it("conserve une taille du thème et une couleur arbitraire sur variable CSS", () => {
     expect(cn("text-mono-xs", "text-[var(--color-blueprint)]")).toBe(
-      "text-mono-xs text-[var(--color-blueprint)]",
+      "text-mono-xs text-[var(--color-blueprint)]"
     );
   });
 
@@ -48,14 +48,14 @@ describe("cn", () => {
   });
 
   it("traite les modificateurs séparément des classes de base", () => {
-    expect(cn("hover:bg-base", "bg-surface", "hover:bg-surface")).toBe(
-      "bg-surface hover:bg-surface",
+    expect(cn("hover:bg-fond", "bg-surface", "hover:bg-surface")).toBe(
+      "bg-surface hover:bg-surface"
     );
   });
 
   it("laisse intactes les classes hors thème", () => {
     expect(cn("group", "aria-hidden:pointer-events-none", "grid-cols-2")).toBe(
-      "group aria-hidden:pointer-events-none grid-cols-2",
+      "group aria-hidden:pointer-events-none grid-cols-2"
     );
   });
 
@@ -72,7 +72,15 @@ describe("cn", () => {
     const ombresFusionnees = shadowNames.map((ombre) => cn(`shadow-${ombre}`, "shadow-none"));
     expect(ombresFusionnees.every((fusion) => fusion === "shadow-none")).toBe(true);
 
-    const couleursFusionnees = colorNames.map((couleur) => cn(`bg-${couleur}`, "bg-base"));
-    expect(couleursFusionnees.every((fusion) => fusion === "bg-base")).toBe(true);
+    const couleursFusionnees = colorNames.map((couleur) => cn(`bg-${couleur}`, "bg-fond"));
+    expect(couleursFusionnees.every((fusion) => fusion === "bg-fond")).toBe(true);
+  });
+
+  // Garde-fou critique : la taille text-base ne doit jamais manger une
+  // couleur de texte (regression : text-base collidait avec la couleur base,
+  // renommée fond depuis).
+  it("conserve la couleur de texte face à la taille text-base", () => {
+    expect(cn("text-ink", "text-base")).toBe("text-ink text-base");
+    expect(cn("text-fond", "text-base")).toBe("text-fond text-base");
   });
 });

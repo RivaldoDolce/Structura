@@ -44,14 +44,12 @@ export function StatCounter({
       onViewportEnter={() => setVisible(true)}
       className={cn("flex flex-col items-center text-center", className)}
     >
-      <span className="font-display text-5xl font-bold tracking-tight text-[var(--color-ink)] md:text-6xl">
+      <span className="font-display text-ink text-5xl font-bold tracking-tight md:text-6xl">
         {prefix}
         {formate}
         {suffix}
       </span>
-      <span className="mt-2 font-mono text-mono-xs uppercase text-[var(--color-ink-soft)]">
-        {label}
-      </span>
+      <span className="text-mono-xs text-ink-soft mt-2 font-mono uppercase">{label}</span>
     </motion.div>
   );
 }

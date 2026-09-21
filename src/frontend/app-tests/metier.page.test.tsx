@@ -30,7 +30,10 @@ describe("Pages métier", () => {
     render(<PageIngenierie />);
 
     expect(screen.getByRole("heading", { name: /ingénierie structure/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute("href", "/devis");
+    expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
+      "href",
+      "/devis"
+    );
   });
 
   it("présente l'ébénisterie avec les essences du catalogue", () => {
@@ -40,13 +43,21 @@ describe("Pages métier", () => {
     for (const essence of essences) {
       expect(screen.getByText(essence.nom)).toBeInTheDocument();
     }
+    const ctas = screen.getAllByRole("link", { name: /commander du sur-mesure/i });
+    expect(ctas.length).toBeGreaterThanOrEqual(1);
+    for (const cta of ctas) {
+      expect(cta).toHaveAttribute("href", "/devis");
+    }
   });
 
   it("présente l'immobilier avec CTA contact", () => {
     render(<PageImmobilier />);
 
     expect(screen.getByRole("heading", { name: /immobilier/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /prendre contact/i })).toHaveAttribute("href", "/contact");
+    expect(screen.getByRole("link", { name: /prendre contact/i })).toHaveAttribute(
+      "href",
+      "/contact"
+    );
   });
 });
 

@@ -66,19 +66,21 @@ export function LoaderCrane({ label = "Chargement" }: LoaderCraneProps) {
           </g>
           <rect x="44" y="60" width="16" height="22" fill="var(--color-steel)" />
 
-          <motion.g
-            animate={{ y: [0, -34, 0] }}
-            transition={TRANSITION_CYCLE}
-          >
-            <line x1="212" y1="60" x2="212" y2="182" stroke="var(--color-ink-soft)" strokeWidth="1" />
+          <motion.g animate={{ y: [0, -34, 0] }} transition={TRANSITION_CYCLE}>
+            <line
+              x1="212"
+              y1="60"
+              x2="212"
+              y2="182"
+              stroke="var(--color-ink-soft)"
+              strokeWidth="1"
+            />
             <rect x="180" y="182" width="64" height="30" fill="var(--color-blueprint)" />
           </motion.g>
         </motion.g>
       </svg>
 
-      <p className="font-mono text-mono-xs uppercase tracking-annotation text-[var(--color-ink-mute)]">
-        {label}
-      </p>
+      <p className="text-mono-xs tracking-annotation text-ink-mute font-mono uppercase">{label}</p>
     </div>
   );
 }

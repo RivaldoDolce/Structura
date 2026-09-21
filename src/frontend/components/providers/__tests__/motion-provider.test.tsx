@@ -7,7 +7,7 @@ describe("MotionProvider", () => {
     render(
       <MotionProvider>
         <p>Contenu animé</p>
-      </MotionProvider>,
+      </MotionProvider>
     );
 
     expect(screen.getByText("Contenu animé")).toBeInTheDocument();

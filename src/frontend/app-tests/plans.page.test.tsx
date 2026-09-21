@@ -46,20 +46,24 @@ describe("Catalogue des plans", () => {
 });
 
 describe("Fiche plan", () => {
-  it("rend la fiche pour une référence connue", () => {
+  it("rend la fiche pour une référence connue", async () => {
     const plan = PLANS[0] as Plan;
-    render(PageFichePlan({ params: { reference: plan.reference } }) as React.ReactElement);
+    render(
+      (await PageFichePlan({
+        params: Promise.resolve({ reference: plan.reference }),
+      })) as React.ReactElement
+    );
 
     expect(screen.getByText(plan.titre)).toBeInTheDocument();
     expect(trouverPlan(plan.reference)).toBeDefined();
   });
 
-  it("appelle notFound pour une référence inconnue", () => {
+  it("appelle notFound pour une référence inconnue", async () => {
     const faux = notFound as unknown as ReturnType<typeof vi.fn>;
 
-    expect(() =>
-      render(PageFichePlan({ params: { reference: "INCONNU" } }) as React.ReactElement),
-    ).toThrow("NEXT_NOT_FOUND");
+    await expect(
+      PageFichePlan({ params: Promise.resolve({ reference: "INCONNU" }) })
+    ).rejects.toThrow("NEXT_NOT_FOUND");
     expect(faux).toHaveBeenCalled();
   });
 });

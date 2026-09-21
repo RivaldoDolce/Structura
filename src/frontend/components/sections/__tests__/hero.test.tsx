@@ -29,11 +29,11 @@ describe("Hero", () => {
 
     expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
       "href",
-      "/devis",
+      "/devis"
     );
     expect(screen.getByRole("link", { name: /voir nos réalisations/i })).toHaveAttribute(
       "href",
-      "/portfolio",
+      "/portfolio"
     );
   });
 
@@ -49,5 +49,26 @@ describe("Hero", () => {
 
     expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
     expect(container.querySelector(".px-4.md\\:px-6")).toBeInTheDocument();
+  });
+
+  it("affiche le plan isométrique déjà dessiné sans JavaScript", () => {
+    const { container } = render(<Hero />);
+
+    const traces = container.querySelectorAll("[data-trace]");
+    expect(traces.length).toBeGreaterThanOrEqual(20);
+    for (const trace of Array.from(traces)) {
+      expect(trace).not.toHaveAttribute("stroke-dasharray");
+    }
+  });
+
+  it("expose les trois couches de parallax du scénario GSAP", () => {
+    const { container } = render(<Hero />);
+
+    const couches = container.querySelectorAll("[data-parallax]");
+    const vitesses = Array.from(couches).map(
+      (couche) => (couche as HTMLElement).dataset.parallaxVitesse
+    );
+    expect(vitesses).toContain("0.94");
+    expect(vitesses).toContain("1");
   });
 });

@@ -8,8 +8,8 @@ function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimi
   return (
     <TabsPrimitive.List
       className={cn(
-        "inline-flex items-center gap-1 rounded-control border border-[var(--color-line)] bg-[var(--color-surface)] p-1",
-        className,
+        "rounded-control border-line bg-surface inline-flex items-center gap-1 border p-1",
+        className
       )}
       {...props}
     />
@@ -23,10 +23,10 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        "rounded-[6px] px-4 py-2 text-small font-medium text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)]",
-        "data-[state=active]:bg-[var(--color-elevated)] data-[state=active]:text-[var(--color-ink)]",
-        className,
+        "text-small text-ink-soft hover:text-ink rounded-[6px] px-4 py-2 font-medium transition-colors",
+        "focus-visible:ring-blueprint focus-visible:ring-2 focus-visible:outline-none",
+        "data-[state=active]:bg-elevated data-[state=active]:text-ink",
+        className
       )}
       {...props}
     />
@@ -37,8 +37,8 @@ function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPr
   return (
     <TabsPrimitive.Content
       className={cn(
-        "mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)]",
-        className,
+        "focus-visible:ring-blueprint mt-4 focus-visible:ring-2 focus-visible:outline-none",
+        className
       )}
       {...props}
     />

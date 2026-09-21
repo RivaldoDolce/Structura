@@ -36,7 +36,7 @@ describe("Navigation header et menu mobile", () => {
     expect(document.body.style.overflow).toBe("");
     expect(screen.getByRole("button", { name: /ouvrir le menu/i })).toHaveAttribute(
       "aria-expanded",
-      "false",
+      "false"
     );
   });
 

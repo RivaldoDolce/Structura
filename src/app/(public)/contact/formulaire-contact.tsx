@@ -36,9 +36,9 @@ export function FormulaireContact() {
 
   if (envoye) {
     return (
-      <div role="status" className="rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
-        <p className="font-medium text-[var(--color-ink)]">Message bien reçu, {nom.trim()}.</p>
-        <p className="mt-2 text-small text-[var(--color-ink-soft)]">
+      <div role="status" className="rounded-card border-line bg-surface border p-6">
+        <p className="text-ink font-medium">Message bien reçu, {nom.trim()}.</p>
+        <p className="text-small text-ink-soft mt-2">
           Nous vous rappelons sous 24 h ouvrées au {telephone.replace(/\D/g, "")}.
         </p>
       </div>
@@ -46,7 +46,11 @@ export function FormulaireContact() {
   }
 
   return (
-    <form onSubmit={soumettre} noValidate className="rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+    <form
+      onSubmit={soumettre}
+      noValidate
+      className="rounded-card border-line bg-surface border p-6"
+    >
       <div className="space-y-5">
         <div>
           <Label htmlFor="contact-nom">Nom</Label>
@@ -83,7 +87,7 @@ export function FormulaireContact() {
           />
         </div>
         {erreur ? (
-          <p role="alert" className="text-small text-[var(--color-danger)]">
+          <p role="alert" className="text-small text-danger">
             {erreur}
           </p>
         ) : null}

@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "STRUCTURA — L'ingénierie qui construit en confiance",
   description:
     "Ingénierie structure, ébénisterie d'art et immobilier à Yaoundé : calculs, plans, mobilier sur-mesure et réalisations livrées clé en main.",
+  alternates: { canonical: "/" },
 };
 
 const EXPERTISES: Parameters<typeof Services>[0]["services"] = [
@@ -65,9 +66,9 @@ export default function PageAccueil() {
         beforeImage="/photos/avant-apres/04-19_avant-batiment-fissure-mokolo.png"
         afterImage="/photos/avant-apres/04-20_apres-batiment-repare-mokolo.png"
       />
-      <section aria-label="Appel à l'action" className="mx-auto max-w-content px-4 py-24 md:px-6">
+      <section aria-label="Appel à l'action" className="max-w-content mx-auto px-4 py-24 md:px-6">
         <Kicker number="05" label="DÉMARRER" className="mb-4" />
-        <h2 className="max-w-2xl font-display text-h2 font-bold text-[var(--color-ink)]">
+        <h2 className="font-display text-h2 text-ink max-w-2xl font-bold">
           Votre projet mérite un calcul juste et une finition noble.
         </h2>
         <div className="mt-8">

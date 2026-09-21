@@ -26,7 +26,7 @@ describe("Page d'accueil", () => {
     expect(screen.getByRole("region", { name: /services/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /demander un devis gratuit/i })).toHaveAttribute(
       "href",
-      "/devis",
+      "/devis"
     );
   });
 

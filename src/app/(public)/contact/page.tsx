@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { Kicker } from "@/frontend/components/signature/kicker";
 import { FormulaireContact } from "./formulaire-contact";
 
@@ -17,33 +18,35 @@ const COORDONNEES = [
 
 export default function PageContact() {
   return (
-    <div className="mx-auto max-w-content px-4 py-24 md:px-6">
+    <div className="max-w-content mx-auto px-4 py-24 md:px-6">
+      <FilAriane items={[{ label: "Contact" }]} className="mb-6" />
       <Kicker number="09" label="CONTACT" className="mb-4" />
-      <h1 className="max-w-3xl font-display text-h1 font-bold text-[var(--color-ink)]">
-        Parlons de votre projet
-      </h1>
-      <p className="mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">
+      <h1 className="font-display text-h1 text-ink max-w-3xl font-bold">Parlons de votre projet</h1>
+      <p className="text-body text-ink-soft mt-4 max-w-2xl">
         Réponse garantie sous 24 h ouvrées. Décrivez le besoin, nous préparons le reste.
       </p>
 
       <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-2">
         <FormulaireContact />
-        <aside aria-label="Coordonnées" className="h-fit rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] p-6">
+        <aside
+          aria-label="Coordonnées"
+          className="rounded-card border-line bg-surface h-fit border p-6"
+        >
           <ul className="space-y-5">
             {COORDONNEES.map((coordonnee) => (
               <li key={coordonnee.libelle}>
-                <p className="font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">
+                <p className="text-mono-xs text-ink-mute font-mono uppercase">
                   {coordonnee.libelle}
                 </p>
                 {coordonnee.href ? (
                   <a
                     href={coordonnee.href}
-                    className="mt-1 block font-medium text-[var(--color-ink)] hover:text-[var(--color-blueprint)]"
+                    className="text-ink hover:text-blueprint mt-1 block font-medium"
                   >
                     {coordonnee.valeur}
                   </a>
                 ) : (
-                  <p className="mt-1 font-medium text-[var(--color-ink)]">{coordonnee.valeur}</p>
+                  <p className="text-ink mt-1 font-medium">{coordonnee.valeur}</p>
                 )}
               </li>
             ))}

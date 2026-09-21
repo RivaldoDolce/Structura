@@ -1,20 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it } from "vitest";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "../dialog";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetTitle,
-  SheetTrigger,
-} from "../sheet";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../dialog";
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "../sheet";
 import { toast, Toaster } from "../toaster";
 
 afterEach(() => {
@@ -31,7 +19,7 @@ describe("Dialog", () => {
           <DialogTitle>Devis express</DialogTitle>
           <DialogDescription>Réponse sous 48 h ouvrées.</DialogDescription>
         </DialogContent>
-      </Dialog>,
+      </Dialog>
     );
 
     await utilisateur.click(screen.getByRole("button", { name: "Demander un devis" }));
@@ -53,7 +41,7 @@ describe("Dialog", () => {
         <DialogContent>
           <DialogTitle>Confirmation</DialogTitle>
         </DialogContent>
-      </Dialog>,
+      </Dialog>
     );
 
     await utilisateur.click(screen.getByRole("button", { name: "Ouvrir" }));
@@ -73,7 +61,7 @@ describe("Sheet", () => {
           <SheetTitle>Filtres</SheetTitle>
           <SheetDescription>Superficie, essence, budget.</SheetDescription>
         </SheetContent>
-      </Sheet>,
+      </Sheet>
     );
 
     await utilisateur.click(screen.getByRole("button", { name: "Filtrer les plans" }));

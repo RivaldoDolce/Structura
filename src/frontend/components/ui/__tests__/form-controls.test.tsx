@@ -14,7 +14,7 @@ describe("Input", () => {
       <>
         <Label htmlFor="telephone">Téléphone</Label>
         <Input id="telephone" placeholder="+237 6 90 00 00 00" />
-      </>,
+      </>
     );
 
     const champ = screen.getByLabelText("Téléphone");
@@ -47,7 +47,7 @@ describe("Checkbox", () => {
       <>
         <Checkbox id="cgv" />
         <Label htmlFor="cgv">J&apos;accepte les conditions</Label>
-      </>,
+      </>
     );
 
     const caseACocher = screen.getByRole("checkbox");
@@ -66,7 +66,7 @@ describe("RadioGroup", () => {
       <RadioGroup aria-label="Type de projet" defaultValue="villa">
         <RadioGroupItem value="villa" aria-label="Villa" />
         <RadioGroupItem value="immeuble" aria-label="Immeuble" />
-      </RadioGroup>,
+      </RadioGroup>
     );
 
     expect(screen.getByRole("radio", { name: "Villa" })).toHaveAttribute("data-state", "checked");
@@ -75,12 +75,9 @@ describe("RadioGroup", () => {
 
     expect(screen.getByRole("radio", { name: "Immeuble" })).toHaveAttribute(
       "data-state",
-      "checked",
+      "checked"
     );
-    expect(screen.getByRole("radio", { name: "Villa" })).toHaveAttribute(
-      "data-state",
-      "unchecked",
-    );
+    expect(screen.getByRole("radio", { name: "Villa" })).toHaveAttribute("data-state", "unchecked");
   });
 });
 
@@ -96,7 +93,7 @@ describe("Select", () => {
         <SelectContent>
           <SelectItem value="padouk">Padouk</SelectItem>
         </SelectContent>
-      </Select>,
+      </Select>
     );
 
     const declencheur = screen.getByLabelText("Essence");

@@ -8,8 +8,7 @@ function requete(chemin: string, cookies: Record<string, string> = {}) {
     nextUrl: url,
     url: url.toString(),
     cookies: {
-      get: (nom: string) =>
-        nom in cookies ? { name: nom, value: cookies[nom] } : undefined,
+      get: (nom: string) => (nom in cookies ? { name: nom, value: cookies[nom] } : undefined),
     },
   } as unknown as Parameters<typeof middleware>[0];
 }
@@ -20,7 +19,7 @@ describe("middleware d'authentification", () => {
 
     expect(reponse.status).toBe(307);
     expect(reponse.headers.get("location")).toBe(
-      "https://structura.test/compte/connexion?callbackUrl=%2Fgestion%2Fplanning",
+      "https://structura.test/compte/connexion?callbackUrl=%2Fgestion%2Fplanning"
     );
   });
 
@@ -30,10 +29,15 @@ describe("middleware d'authentification", () => {
     expect(reponse.status).toBe(200);
   });
 
+  it("laisse le tunnel de devis ouvert aux visiteurs", () => {
+    const reponse = middleware(requete("/devis?plan=ST-VILLA-R1-PAD"));
+
+    expect(reponse.status).toBe(200);
+    expect(reponse.headers.get("location")).toBeNull();
+  });
+
   it("renvoie un anonyme vers l'accueil depuis une page d'authentification", () => {
-    const reponse = middleware(
-      requete("/compte/connexion", { "authjs.session-token": "jeton" }),
-    );
+    const reponse = middleware(requete("/compte/connexion", { "authjs.session-token": "jeton" }));
 
     expect(reponse.headers.get("location")).toBe("https://structura.test/compte");
   });
@@ -43,11 +47,9 @@ describe("middleware d'authentification", () => {
 
     expect(reponse.headers.get("x-frame-options")).toBe("DENY");
     expect(reponse.headers.get("x-content-type-options")).toBe("nosniff");
-    expect(reponse.headers.get("referrer-policy")).toBe(
-      "strict-origin-when-cross-origin",
-    );
+    expect(reponse.headers.get("referrer-policy")).toBe("strict-origin-when-cross-origin");
     expect(reponse.headers.get("permissions-policy")).toBe(
-      "camera=(), microphone=(), geolocation=()",
+      "camera=(), microphone=(), geolocation=()"
     );
   });
 });

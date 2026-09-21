@@ -5,10 +5,7 @@ import { cn } from "@/frontend/lib/cn";
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "rounded-card border border-[var(--color-line)] bg-[var(--color-surface)] shadow-card",
-        className,
-      )}
+      className={cn("rounded-card border-line bg-surface shadow-card border", className)}
       {...props}
     />
   );
@@ -19,16 +16,11 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
-  return (
-    <h3
-      className={cn("font-display text-h3 font-semibold text-[var(--color-ink)]", className)}
-      {...props}
-    />
-  );
+  return <h3 className={cn("font-display text-h3 text-ink font-semibold", className)} {...props} />;
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
-  return <p className={cn("text-small text-[var(--color-ink-soft)]", className)} {...props} />;
+  return <p className={cn("text-small text-ink-soft", className)} {...props} />;
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -38,10 +30,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "flex items-center gap-3 border-t border-[var(--color-line)] px-6 py-4",
-        className,
-      )}
+      className={cn("border-line flex items-center gap-3 border-t px-6 py-4", className)}
       {...props}
     />
   );

@@ -43,9 +43,7 @@ describe("WatermarkPreview", () => {
   it("annonce la protection aux lecteurs d'écran", () => {
     render(<WatermarkPreview {...props} />);
 
-    expect(
-      screen.getByRole("group", { name: /aperçu protégé du plan/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: /aperçu protégé du plan/i })).toBeInTheDocument();
     expect(screen.getByText(/aperçu protégé/i)).toBeInTheDocument();
   });
 

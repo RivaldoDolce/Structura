@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { JalonTimeline } from "@/frontend/components/signature/jalon-timeline";
 import { Kicker } from "@/frontend/components/signature/kicker";
+import { StickyMobileCta } from "@/frontend/components/signature/sticky-mobile-cta";
 import { PROJETS_PORTFOLIO } from "@/frontend/data/portfolio";
 import { equipe, journal } from "@/frontend/data/equipe";
 import { JALONS_CHANTIER } from "@/frontend/data/jalons";
@@ -14,50 +16,58 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const projet = PROJETS_PORTFOLIO.find((item) => item.slug === params.slug);
+  const { slug } = await params;
+  const projet = PROJETS_PORTFOLIO.find((item) => item.slug === slug);
   return {
     title: projet ? `${projet.title} — STRUCTURA` : "Réalisation introuvable — STRUCTURA",
     description: projet?.description,
   };
 }
 
-export default function PageDetailPortfolio({ params }: { params: { slug: string } }) {
-  const projet = PROJETS_PORTFOLIO.find((item) => item.slug === params.slug);
+export default async function PageDetailPortfolio({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const projet = PROJETS_PORTFOLIO.find((item) => item.slug === slug);
   if (!projet) notFound();
 
   return (
-    <div className="mx-auto max-w-content px-4 py-24 md:px-6">
+    <div className="max-w-content mx-auto px-4 pt-24 pb-32 md:px-6 md:pb-24">
+      <FilAriane
+        items={[{ label: "Portfolio", href: "/portfolio" }, { label: projet.title }]}
+        className="mb-6"
+      />
       <Kicker number="03" label="RÉALISATION" className="mb-4" />
-      <h1 className="max-w-3xl font-display text-h1 font-bold text-[var(--color-ink)]">
-        {projet.title}
-      </h1>
-      <p className="mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">{projet.description}</p>
+      <h1 className="font-display text-h1 text-ink max-w-3xl font-bold">{projet.title}</h1>
+      <p className="text-body text-ink-soft mt-4 max-w-2xl">{projet.description}</p>
       {[projet.location, projet.year, projet.surface].filter(Boolean).length > 0 ? (
-        <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-2 font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">
+        <dl className="text-mono-xs text-ink-mute mt-6 flex flex-wrap gap-x-8 gap-y-2 font-mono uppercase">
           {projet.location ? (
             <div className="flex gap-2">
               <dt>Lieu</dt>
-              <dd className="text-[var(--color-ink-soft)]">{projet.location}</dd>
+              <dd className="text-ink-soft">{projet.location}</dd>
             </div>
           ) : null}
           {projet.year ? (
             <div className="flex gap-2">
               <dt>Année</dt>
-              <dd className="text-[var(--color-ink-soft)]">{projet.year}</dd>
+              <dd className="text-ink-soft">{projet.year}</dd>
             </div>
           ) : null}
           {projet.surface ? (
             <div className="flex gap-2">
               <dt>Surface</dt>
-              <dd className="text-[var(--color-ink-soft)]">{projet.surface}</dd>
+              <dd className="text-ink-soft">{projet.surface}</dd>
             </div>
           ) : null}
         </dl>
       ) : null}
 
-      <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-card">
+      <div className="rounded-card relative mt-10 aspect-[16/9] overflow-hidden">
         <Image
           src={projet.imageUrl}
           alt={projet.title}
@@ -68,20 +78,26 @@ export default function PageDetailPortfolio({ params }: { params: { slug: string
       </div>
 
       <section aria-label="Journal de chantier" className="mt-16">
-        <h2 className="font-display text-h2 font-bold text-[var(--color-ink)]">Journal de chantier</h2>
+        <h2 className="font-display text-h2 text-ink font-bold">Journal de chantier</h2>
         <ul className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
           {journal.map((entree) => (
             <li
               key={entree.id}
-              className="overflow-hidden rounded-card border border-[var(--color-line)] bg-[var(--color-surface)]"
+              className="rounded-card border-line bg-surface overflow-hidden border"
             >
               <div className="relative aspect-[16/10]">
-                <Image src={entree.imageUrl} alt={entree.titre} fill sizes="50vw" className="object-cover" />
+                <Image
+                  src={entree.imageUrl}
+                  alt={entree.titre}
+                  fill
+                  sizes="50vw"
+                  className="object-cover"
+                />
               </div>
               <div className="p-5">
-                <p className="font-mono text-mono-xs uppercase text-[var(--color-ink-mute)]">{entree.date}</p>
-                <h3 className="mt-2 font-display text-h3 font-semibold text-[var(--color-ink)]">{entree.titre}</h3>
-                <p className="mt-2 text-small text-[var(--color-ink-soft)]">{entree.extrait}</p>
+                <p className="text-mono-xs text-ink-mute font-mono uppercase">{entree.date}</p>
+                <h3 className="font-display text-h3 text-ink mt-2 font-semibold">{entree.titre}</h3>
+                <p className="text-small text-ink-soft mt-2">{entree.extrait}</p>
               </div>
             </li>
           ))}
@@ -89,28 +105,36 @@ export default function PageDetailPortfolio({ params }: { params: { slug: string
       </section>
 
       <section aria-label="Progression du chantier" className="mt-16">
-        <h2 className="font-display text-h2 font-bold text-[var(--color-ink)]">Progression</h2>
+        <h2 className="font-display text-h2 text-ink font-bold">Progression</h2>
         <div className="mt-8">
           <JalonTimeline jalons={JALONS_CHANTIER} />
         </div>
       </section>
 
       <section aria-label="Équipe" className="mt-16">
-        <h2 className="font-display text-h2 font-bold text-[var(--color-ink)]">Équipe</h2>
+        <h2 className="font-display text-h2 text-ink font-bold">Équipe</h2>
         <ul className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {equipe.map((membre) => (
             <li key={membre.id} className="flex items-center gap-4">
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full">
-                <Image src={membre.photoUrl} alt={membre.nom} fill sizes="64px" className="object-cover" />
+                <Image
+                  src={membre.photoUrl}
+                  alt={membre.nom}
+                  fill
+                  sizes="64px"
+                  className="object-cover"
+                />
               </div>
               <div>
-                <p className="font-medium text-[var(--color-ink)]">{membre.nom}</p>
-                <p className="text-small text-[var(--color-ink-soft)]">{membre.role}</p>
+                <p className="text-ink font-medium">{membre.nom}</p>
+                <p className="text-small text-ink-soft">{membre.role}</p>
               </div>
             </li>
           ))}
         </ul>
       </section>
+
+      <StickyMobileCta label="Un projet similaire ?" href="/devis" />
     </div>
   );
 }

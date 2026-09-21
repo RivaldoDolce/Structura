@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import Link from "next/link";
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Badge } from "../badge";
 import { Button } from "../button";
@@ -8,6 +10,18 @@ import { Separator } from "../separator";
 import { Skeleton } from "../skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../tabs";
+
+vi.mock("next/link", () => ({
+  default: ({
+    children,
+    href,
+    ...reste
+  }: AnchorHTMLAttributes<HTMLAnchorElement> & { children: ReactNode; href: string }) => (
+    <a href={href} {...reste}>
+      {children}
+    </a>
+  ),
+}));
 
 describe("Button", () => {
   it("rend un bouton natif de type button par défaut", () => {
@@ -21,18 +35,18 @@ describe("Button", () => {
     render(
       <Button variant="destructive" size="icon" aria-label="Supprimer">
         <span aria-hidden="true">x</span>
-      </Button>,
+      </Button>
     );
 
     const bouton = screen.getByRole("button", { name: "Supprimer" });
-    expect(bouton).toHaveClass("bg-[var(--color-danger)]", "h-11", "w-11");
+    expect(bouton).toHaveClass("bg-danger", "h-11", "w-11");
   });
 
   it("transmet l'enfant en mode asChild sans rendre de bouton imbriqué", () => {
     const { container } = render(
       <Button asChild>
-        <a href="/plans">Voir les plans</a>
-      </Button>,
+        <Link href="/plans">Voir les plans</Link>
+      </Button>
     );
 
     expect(screen.getByRole("link", { name: "Voir les plans" })).toHaveAttribute("href", "/plans");
@@ -45,7 +59,7 @@ describe("Button", () => {
     render(
       <Button disabled onClick={clic}>
         Envoyer
-      </Button>,
+      </Button>
     );
 
     await utilisateur.click(screen.getByRole("button", { name: "Envoyer" }));
@@ -62,7 +76,7 @@ describe("Card", () => {
           <CardDescription>Plan architecte R+1</CardDescription>
         </CardHeader>
         <CardContent>240 m² habitables</CardContent>
-      </Card>,
+      </Card>
     );
 
     expect(screen.getByRole("heading", { name: "Villa Iroko", level: 3 })).toBeInTheDocument();
@@ -75,7 +89,7 @@ describe("Badge", () => {
   it("applique la teinte sémantique demandée", () => {
     render(<Badge variant="safety">Paiement en attente</Badge>);
 
-    expect(screen.getByText("Paiement en attente")).toHaveClass("bg-[var(--color-safety)]");
+    expect(screen.getByText("Paiement en attente")).toHaveClass("bg-safety");
   });
 });
 
@@ -120,7 +134,7 @@ describe("Table", () => {
             <TableCell>Payé</TableCell>
           </TableRow>
         </TableBody>
-      </Table>,
+      </Table>
     );
 
     expect(screen.getByRole("table")).toBeInTheDocument();
@@ -140,7 +154,7 @@ describe("Tabs", () => {
         </TabsList>
         <TabsContent value="facade">Vue façade</TabsContent>
         <TabsContent value="masse">Vue masse</TabsContent>
-      </Tabs>,
+      </Tabs>
     );
 
     expect(screen.getByRole("tab", { name: "Façade" })).toHaveAttribute("data-state", "active");

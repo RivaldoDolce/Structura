@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 
 export default function PageNotFound() {
   return (
-    <div className="mx-auto flex min-h-[60vh] max-w-content flex-col items-start justify-center px-4 py-24 md:px-6">
+    <div className="max-w-content mx-auto flex min-h-[60vh] flex-col items-start justify-center px-4 py-24 md:px-6">
       <Kicker number="404" label="PLAN NON TROUVÉ" className="mb-4" />
-      <h1 className="font-display text-h1 font-bold text-[var(--color-ink)]">
+      <h1 className="font-display text-h1 text-ink font-bold">
         Cette cote n&apos;est sur aucun plan.
       </h1>
-      <p className="mt-4 max-w-xl text-body text-[var(--color-ink-soft)]">
-        La page demandée n&apos;existe pas ou a été déplacée. Revenez à l&apos;accueil ou
-        demandez un devis.
+      <p className="text-body text-ink-soft mt-4 max-w-xl">
+        La page demandée n&apos;existe pas ou a été déplacée. Revenez à l&apos;accueil ou demandez
+        un devis.
       </p>
       <div className="mt-8 flex flex-col gap-4 sm:flex-row">
         <ButtonTech asChild variant="primary" size="lg">

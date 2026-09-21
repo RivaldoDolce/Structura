@@ -8,8 +8,8 @@ function Label({ className, ...props }: React.ComponentProps<typeof LabelPrimiti
   return (
     <LabelPrimitive.Root
       className={cn(
-        "text-small font-medium text-[var(--color-ink-soft)] peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
-        className,
+        "text-small text-ink-soft font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+        className
       )}
       {...props}
     />

@@ -30,9 +30,9 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
       role="group"
       aria-label="Aperçu protégé du plan. Le téléchargement nécessite un achat."
       onContextMenu={bloqueMenu}
-      className={cn("relative [-webkit-touch-callout:none] select-none", className)}
+      className={cn("relative select-none [-webkit-touch-callout:none]", className)}
     >
-      <div className="relative overflow-hidden rounded-card bg-[var(--color-surface)]">
+      <div className="rounded-card bg-surface relative overflow-hidden">
         <img
           src={imageUrl}
           alt="Aperçu du plan avec filigrane de protection"
@@ -59,7 +59,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             {Array.from({ length: REPETITIONS_FILIGRANE }).map((_, ligne) => (
               <p
                 key={`filigrane-${ligne}`}
-                className="whitespace-nowrap font-mono text-2xl font-bold uppercase tracking-annotation text-[var(--color-blueprint)]/40"
+                className="tracking-annotation text-blueprint/40 font-mono text-2xl font-bold whitespace-nowrap uppercase"
               >
                 {watermarkText}
               </p>
@@ -69,11 +69,11 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-card border-2 border-[var(--color-line-strong)]"
+          className="rounded-card border-line-strong pointer-events-none absolute inset-0 border-2"
         />
       </div>
 
-      <div className="mt-3 flex items-center gap-2 text-[var(--color-ink-soft)]">
+      <div className="text-ink-soft mt-3 flex items-center gap-2">
         <svg
           aria-hidden="true"
           fill="none"
@@ -88,7 +88,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
-        <p className="font-mono text-mono-xs uppercase">
+        <p className="text-mono-xs font-mono uppercase">
           Aperçu protégé — Achat requis pour télécharger
         </p>
       </div>

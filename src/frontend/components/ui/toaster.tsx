@@ -18,12 +18,11 @@ function notifier(type: TypeNotification, message: React.ReactNode) {
 
   return toastSonner[type](message, {
     icon: React.createElement(Icone, {
-      className: "h-4 w-4 text-[var(--color-blueprint)]",
+      className: "h-4 w-4 text-blueprint",
       "aria-hidden": true,
     }),
-    className:
-      "!rounded-control !border !border-[var(--color-line)] !bg-[var(--color-surface)] !text-[var(--color-ink)] !shadow-elevated",
-    descriptionClassName: "!text-[var(--color-ink-soft)]",
+    className: "!rounded-control !border !border-line !bg-surface !text-ink !shadow-elevated",
+    descriptionClassName: "!text-ink-soft",
   });
 }
 
@@ -36,12 +35,7 @@ export const toast = Object.assign((message: React.ReactNode) => notifier("info"
 
 export interface ToasterProps {
   position?:
-    | "top-left"
-    | "top-center"
-    | "top-right"
-    | "bottom-left"
-    | "bottom-center"
-    | "bottom-right";
+    "top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right";
 }
 
 export function Toaster({ position = "bottom-right" }: ToasterProps) {
@@ -54,11 +48,10 @@ export function Toaster({ position = "bottom-right" }: ToasterProps) {
       richColors={false}
       toastOptions={{
         classNames: {
-          toast:
-            "!rounded-control !border !border-[var(--color-line)] !bg-[var(--color-surface)] !text-[var(--color-ink)] !shadow-elevated",
-          description: "!text-[var(--color-ink-soft)]",
-          actionButton: "!bg-[var(--color-steel)] !text-white",
-          cancelButton: "!bg-[var(--color-elevated)] !text-[var(--color-ink)]",
+          toast: "!rounded-control !border !border-line !bg-surface !text-ink !shadow-elevated",
+          description: "!text-ink-soft",
+          actionButton: "!bg-steel !text-white",
+          cancelButton: "!bg-elevated !text-ink",
         },
       }}
     />

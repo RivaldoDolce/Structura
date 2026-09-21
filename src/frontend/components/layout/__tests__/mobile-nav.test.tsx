@@ -49,7 +49,7 @@ describe("MobileNav", () => {
     expect(screen.getByRole("link", { name: "Plans" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
       "href",
-      "/devis",
+      "/devis"
     );
   });
 
@@ -57,16 +57,14 @@ describe("MobileNav", () => {
     render(<MobileNav isOpen onClose={() => undefined} navLinks={liens} />);
 
     await waitFor(() =>
-      expect(screen.getByRole("button", { name: /fermer le menu/i })).toHaveFocus(),
+      expect(screen.getByRole("button", { name: /fermer le menu/i })).toHaveFocus()
     );
   });
 
   it("ferme via le bouton, un lien, l'overlay et Escape", async () => {
     const ferme = vi.fn();
     const utilisateur = userEvent.setup();
-    const { rerender } = render(
-      <MobileNav isOpen onClose={ferme} navLinks={liens} />,
-    );
+    const { rerender } = render(<MobileNav isOpen onClose={ferme} navLinks={liens} />);
 
     await utilisateur.click(screen.getByRole("button", { name: /fermer le menu/i }));
     expect(ferme).toHaveBeenCalledTimes(1);

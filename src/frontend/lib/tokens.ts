@@ -5,7 +5,7 @@
  * thème dans `globals.css` se propage sans toucher au code.
  */
 export const colors = {
-  base: "var(--color-base)",
+  fond: "var(--color-fond)",
   surface: "var(--color-surface)",
   elevated: "var(--color-elevated)",
   line: "var(--color-line)",
@@ -25,7 +25,8 @@ export const colors = {
   danger: "var(--color-danger)",
 } as const;
 
-const versKebab = (nom: string): string => nom.replace(/[A-Z]/g, (lettre) => `-${lettre.toLowerCase()}`);
+const versKebab = (nom: string): string =>
+  nom.replace(/[A-Z]/g, (lettre) => `-${lettre.toLowerCase()}`);
 
 export const colorNames: readonly string[] = Object.keys(colors).map(versKebab);
 
@@ -66,6 +67,6 @@ export const durations = {
  * Couleur de la barre du navigateur mobile.
  *
  * Seul hexadécimal légitime du code : une balise `<meta name="theme-color">`
- * n'accepte pas `var()`. La valeur doit rester celle de `--color-base`.
+ * n'accepte pas `var()`. La valeur doit rester celle de `--color-fond`.
  */
 export const THEME_COLOR = "#070B14";

@@ -18,27 +18,24 @@ const CHIFFRES = [
 // les chiffres portent seuls. Deux colonnes sur mobile, quatre sur desktop.
 export function Stats() {
   return (
-    <section role="region" aria-label="Chiffres clés" className="relative overflow-hidden py-24 md:py-32">
+    <section
+      role="region"
+      aria-label="Chiffres clés"
+      className="relative overflow-hidden py-24 md:py-32"
+    >
       <div data-blueprint-grid aria-hidden="true">
         <BlueprintGrid density="major" fade="both" className="absolute inset-0" />
       </div>
 
-      <div className="relative mx-auto max-w-content px-4 md:px-6">
-        <motion.div
-          variants={staggerContainer}
-          {...inViewOnce}
-          className="mb-16 text-center"
-        >
+      <div className="max-w-content relative mx-auto px-4 md:px-6">
+        <motion.div variants={staggerContainer} {...inViewOnce} className="mb-16 text-center">
           <motion.div variants={fadeUpItem}>
             <Kicker number="02" label="CHIFFRES" className="mb-4 justify-center" />
           </motion.div>
 
-          <motion.h2
-            variants={fadeUpItem}
-            className="font-display text-h2 font-bold text-[var(--color-ink)]"
-          >
+          <motion.h2 variants={fadeUpItem} className="font-display text-h2 text-ink font-bold">
             Une expertise qui se{" "}
-            <span className="bg-gradient-to-r from-[var(--color-steel)] to-[var(--color-blueprint)] bg-clip-text text-transparent">
+            <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
               mesure
             </span>
           </motion.h2>

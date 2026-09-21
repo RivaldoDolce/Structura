@@ -19,7 +19,7 @@ describe("WhatsAppFab", () => {
         phoneNumber="+237690000000"
         defaultMessage="Bonjour STRUCTURA"
         reference="DV-2026-042"
-      />,
+      />
     );
 
     Object.defineProperty(window, "scrollY", { value: 500, writable: true, configurable: true });
@@ -28,7 +28,7 @@ describe("WhatsAppFab", () => {
     const lien = screen.getByRole("link", { name: /whatsapp/i });
     expect(lien).toHaveAttribute(
       "href",
-      expect.stringContaining("https://wa.me/237690000000?text="),
+      expect.stringContaining("https://wa.me/237690000000?text=")
     );
     expect(lien).toHaveAttribute("target", "_blank");
     expect(lien).toHaveAttribute("rel", "noopener noreferrer");
@@ -40,10 +40,7 @@ describe("WhatsAppFab", () => {
     Object.defineProperty(window, "scrollY", { value: 500, writable: true, configurable: true });
     fireEvent.scroll(window);
 
-    expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveClass(
-      "bottom-24",
-      "md:bottom-6",
-    );
+    expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveClass("bottom-24", "md:bottom-6");
   });
 
   it("ne rend rien si le numéro ou la référence sont inexploitables", () => {

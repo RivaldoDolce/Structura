@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DevisWizard } from "@/frontend/components/signature/devis-wizard";
+import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { Kicker } from "@/frontend/components/signature/kicker";
 
 export const metadata: Metadata = {
@@ -15,12 +16,11 @@ async function deposerDevis(donnees: { reference: string }) {
 
 export default function PageDevis() {
   return (
-    <div className="mx-auto max-w-content px-4 py-24 md:px-6">
+    <div className="max-w-content mx-auto px-4 py-24 md:px-6">
+      <FilAriane items={[{ label: "Devis" }]} className="mb-6" />
       <Kicker number="10" label="DEVIS" className="mb-4" />
-      <h1 className="max-w-3xl font-display text-h1 font-bold text-[var(--color-ink)]">
-        Demander un devis
-      </h1>
-      <p className="mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">
+      <h1 className="font-display text-h1 text-ink max-w-3xl font-bold">Demander un devis</h1>
+      <p className="text-body text-ink-soft mt-4 max-w-2xl">
         Trois écrans, deux minutes, zéro engagement. Votre saisie reste sur cet appareil
         jusqu&apos;à l&apos;envoi.
       </p>

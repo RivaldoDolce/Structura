@@ -9,18 +9,14 @@ export interface TechDividerProps {
 // Le rôle separator expose la rupture de section aux technologies d'assistance.
 export function TechDivider({ label, className }: TechDividerProps) {
   return (
-    <div
-      role="separator"
-      aria-label={label}
-      className={cn("flex items-center gap-4", className)}
-    >
-      <span aria-hidden="true" className="h-px flex-1 bg-[var(--color-line)]" />
+    <div role="separator" aria-label={label} className={cn("flex items-center gap-4", className)}>
+      <span aria-hidden="true" className="bg-line h-px flex-1" />
       {label ? (
-        <span className="font-mono text-mono-xs uppercase tracking-annotation text-[var(--color-ink-mute)]">
+        <span className="text-mono-xs tracking-annotation text-ink-mute font-mono uppercase">
           {label}
         </span>
       ) : null}
-      <span aria-hidden="true" className="h-px flex-1 bg-[var(--color-line)]" />
+      <span aria-hidden="true" className="bg-line h-px flex-1" />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { BeforeAfter } from "@/frontend/components/signature/before-after";
 import { ButtonTech } from "@/frontend/components/signature/button-tech";
+import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { Kicker } from "@/frontend/components/signature/kicker";
 import { Stats } from "@/frontend/components/sections/stats";
 
@@ -14,14 +15,13 @@ export const metadata: Metadata = {
 export default function PageIngenierie() {
   return (
     <>
-      <div className="mx-auto max-w-content px-4 pt-24 md:px-6">
+      <div className="max-w-content mx-auto px-4 pt-24 md:px-6">
+        <FilAriane items={[{ label: "Ingénierie" }]} className="mb-6" />
         <Kicker number="01" label="INGÉNIERIE" className="mb-4" />
-        <h1 className="max-w-3xl font-display text-h1 font-bold text-[var(--color-ink)]">
-          Ingénierie structure
-        </h1>
-        <p className="mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">
-          Descente de charges vérifiée, ferraillage contrôlé à chaque phase, réception
-          technique documentée. Vos ouvrages tiennent parce qu&apos;ils sont calculés.
+        <h1 className="font-display text-h1 text-ink max-w-3xl font-bold">Ingénierie structure</h1>
+        <p className="text-body text-ink-soft mt-4 max-w-2xl">
+          Descente de charges vérifiée, ferraillage contrôlé à chaque phase, réception technique
+          documentée. Vos ouvrages tiennent parce qu&apos;ils sont calculés.
         </p>
         <div className="mt-8">
           <ButtonTech asChild variant="conversion" size="lg">

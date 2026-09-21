@@ -9,13 +9,9 @@ vi.mock("next/image", () => ({
 }));
 
 vi.mock("next/link", () => ({
-  default: ({
-    children,
-    href,
-  }: {
-    children: React.ReactNode;
-    href: string;
-  }) => <a href={href}>{children}</a>,
+  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
 const projet = {
@@ -35,7 +31,7 @@ describe("ProjectCard", () => {
     expect(screen.getByText("Villa contemporaine de standing")).toBeInTheDocument();
     expect(screen.getByRole("img", { name: "Villa Moderne Douala" })).toHaveAttribute(
       "src",
-      "/test/villa.jpg",
+      "/test/villa.jpg"
     );
   });
 
@@ -55,13 +51,7 @@ describe("ProjectCard", () => {
   });
 
   it("omet les données absentes sans casser la grille", () => {
-    render(
-      <ProjectCard
-        title="Studio"
-        description="Petit budget"
-        imageUrl="/test/studio.jpg"
-      />,
-    );
+    render(<ProjectCard title="Studio" description="Petit budget" imageUrl="/test/studio.jpg" />);
 
     expect(screen.queryByText("Localisation")).not.toBeInTheDocument();
   });

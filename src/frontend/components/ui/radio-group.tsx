@@ -9,12 +9,7 @@ function RadioGroup({
   className,
   ...props
 }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
-  return (
-    <RadioGroupPrimitive.Root
-      className={cn("grid gap-3", className)}
-      {...props}
-    />
-  );
+  return <RadioGroupPrimitive.Root className={cn("grid gap-3", className)} {...props} />;
 }
 
 function RadioGroupItem({
@@ -24,12 +19,12 @@ function RadioGroupItem({
   return (
     <RadioGroupPrimitive.Item
       className={cn(
-        "aspect-square h-5 w-5 shrink-0 rounded-full border border-[var(--color-line-strong)] bg-[var(--color-surface)]",
+        "border-line-strong bg-surface aspect-square h-5 w-5 shrink-0 rounded-full border",
         "after:absolute after:-inset-x-3 after:-inset-y-2.5",
-        "transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-blueprint)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-base)]",
-        "data-[state=checked]:border-[var(--color-blueprint)] data-[state=checked]:text-[var(--color-blueprint)]",
+        "focus-visible:ring-blueprint focus-visible:ring-offset-fond transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+        "data-[state=checked]:border-blueprint data-[state=checked]:text-blueprint",
         "disabled:cursor-not-allowed disabled:opacity-50",
-        className,
+        className
       )}
       {...props}
     >

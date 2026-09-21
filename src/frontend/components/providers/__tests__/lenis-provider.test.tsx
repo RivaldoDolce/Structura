@@ -6,9 +6,7 @@ import { LenisProvider } from "../lenis-provider";
 
 vi.mock("next/navigation", () => ({ usePathname: vi.fn(() => "/") }));
 vi.mock("lenis/react", () => ({
-  ReactLenis: ({ children }: { children: ReactNode }) => (
-    <div data-lenis="actif">{children}</div>
-  ),
+  ReactLenis: ({ children }: { children: ReactNode }) => <div data-lenis="actif">{children}</div>,
 }));
 
 const cheminSimule = usePathname as Mock;
@@ -36,7 +34,7 @@ describe("LenisProvider", () => {
     const { container } = render(
       <LenisProvider>
         <p>Contenu de test</p>
-      </LenisProvider>,
+      </LenisProvider>
     );
 
     expect(screen.getByText("Contenu de test")).toBeInTheDocument();
@@ -48,7 +46,7 @@ describe("LenisProvider", () => {
     const { container } = render(
       <LenisProvider>
         <p>Formulaire devis</p>
-      </LenisProvider>,
+      </LenisProvider>
     );
 
     expect(screen.getByText("Formulaire devis")).toBeInTheDocument();
@@ -60,7 +58,7 @@ describe("LenisProvider", () => {
     const { container } = render(
       <LenisProvider>
         <p>Formulaire contact</p>
-      </LenisProvider>,
+      </LenisProvider>
     );
 
     expect(container.querySelector('[data-lenis="actif"]')).not.toBeInTheDocument();
@@ -71,7 +69,7 @@ describe("LenisProvider", () => {
     const { container } = render(
       <LenisProvider>
         <p>Contenu sobre</p>
-      </LenisProvider>,
+      </LenisProvider>
     );
 
     expect(screen.getByText("Contenu sobre")).toBeInTheDocument();

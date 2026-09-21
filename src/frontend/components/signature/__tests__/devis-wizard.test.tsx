@@ -27,14 +27,12 @@ describe("DevisWizard", () => {
     const utilisateur = userEvent.setup();
     render(<DevisWizard onSubmit={mockSoumission} />);
 
-    await utilisateur.click(
-      screen.getByRole("radio", { name: /construction neuve/i }),
-    );
+    await utilisateur.click(screen.getByRole("radio", { name: /construction neuve/i }));
     await utilisateur.click(screen.getByRole("button", { name: /suivant/i }));
 
     expect(screen.getByRole("status")).toHaveTextContent(/étape 2 sur 3/i);
     expect(window.localStorage.getItem("devis-wizard")).toContain(
-      '"typeProjet":"construction-neuve"',
+      '"typeProjet":"construction-neuve"'
     );
   });
 
@@ -107,7 +105,7 @@ describe("DevisWizard", () => {
     await utilisateur.click(await screen.findByRole("button", { name: /envoyer/i }));
 
     expect(mockSoumission).toHaveBeenCalledWith(
-      expect.objectContaining({ reference: expect.stringMatching(/^DV-\d{4}-\d{3}$/) }),
+      expect.objectContaining({ reference: expect.stringMatching(/^DV-\d{4}-\d{3}$/) })
     );
     expect(await screen.findByText("DV-2026-042")).toBeInTheDocument();
     expect(await screen.findByText(/sous 24 h ouvrées/i)).toBeInTheDocument();
@@ -123,7 +121,7 @@ describe("DevisWizard", () => {
     expect(screen.getByRole("status")).toHaveTextContent(/étape 1 sur 3/i);
     expect(screen.getByRole("radio", { name: /rénovation/i })).toHaveAttribute(
       "data-selected",
-      "true",
+      "true"
     );
   });
 });

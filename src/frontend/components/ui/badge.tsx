@@ -8,24 +8,20 @@ const badgeVariantes = cva(
   {
     variants: {
       variant: {
-        default:
-          "border-[var(--color-steel)]/40 bg-[var(--color-steel)]/15 text-[var(--color-steel)]",
-        blueprint:
-          "border-[var(--color-blueprint)]/40 bg-[var(--color-blueprint)]/15 text-[var(--color-blueprint)]",
-        safety: "border-transparent bg-[var(--color-safety)] text-[var(--color-base)]",
-        ok: "border-[var(--color-ok)]/40 bg-[var(--color-ok)]/15 text-[var(--color-ok)]",
-        danger:
-          "border-[var(--color-danger)]/40 bg-[var(--color-danger)]/15 text-[var(--color-danger)]",
-        outline: "border-[var(--color-line-strong)] text-[var(--color-ink-soft)]",
+        default: "border-steel/40 bg-steel/15 text-steel",
+        blueprint: "border-blueprint/40 bg-blueprint/15 text-blueprint",
+        safety: "border-transparent bg-safety text-fond",
+        ok: "border-ok/40 bg-ok/15 text-ok",
+        danger: "border-danger/40 bg-danger/15 text-danger",
+        outline: "border-line-strong text-ink-soft",
       },
     },
     defaultVariants: { variant: "default" },
-  },
+  }
 );
 
 export interface BadgeProps
-  extends React.ComponentProps<"span">,
-    VariantProps<typeof badgeVariantes> {}
+  extends React.ComponentProps<"span">, VariantProps<typeof badgeVariantes> {}
 
 function Badge({ className, variant, ...props }: BadgeProps) {
   return <span className={cn(badgeVariantes({ variant }), className)} {...props} />;

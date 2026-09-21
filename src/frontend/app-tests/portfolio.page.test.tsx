@@ -40,17 +40,21 @@ describe("Portfolio", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
-  it("rend le détail d'un projet connu avec sa galerie", () => {
+  it("rend le détail d'un projet connu avec sa galerie", async () => {
     const projet = PROJETS_PORTFOLIO[0];
     if (!projet) throw new Error("Jeu de démonstration vide");
-    render(PageDetailPortfolio({ params: { slug: projet.slug } }) as React.ReactElement);
+    render(
+      (await PageDetailPortfolio({
+        params: Promise.resolve({ slug: projet.slug }),
+      })) as React.ReactElement
+    );
 
-    expect(screen.getByText(projet.title)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: projet.title })).toBeInTheDocument();
   });
 
-  it("signale un slug inconnu", () => {
-    expect(() =>
-      render(PageDetailPortfolio({ params: { slug: "introuvable" } }) as React.ReactElement),
-    ).toThrow("NEXT_NOT_FOUND");
+  it("signale un slug inconnu", async () => {
+    await expect(
+      PageDetailPortfolio({ params: Promise.resolve({ slug: "introuvable" }) })
+    ).rejects.toThrow("NEXT_NOT_FOUND");
   });
 });

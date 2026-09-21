@@ -29,22 +29,26 @@ export interface PortfolioProps {
 export function Portfolio({ projects, className }: PortfolioProps) {
   return (
     <section role="region" aria-label="Portfolio" className={cn("py-24 md:py-32", className)}>
-      <div className="mx-auto max-w-content px-4 md:px-6">
+      <div className="max-w-content mx-auto px-4 md:px-6">
         <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <Kicker number="03" label="PORTFOLIO" className="mb-4" />
-            <h2 className="font-display text-h2 font-bold text-[var(--color-ink)]">
+            <h2 className="font-display text-h2 text-ink font-bold">
               Nos{" "}
-              <span className="bg-gradient-to-r from-[var(--color-steel)] to-[var(--color-blueprint)] bg-clip-text text-transparent">
+              <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
                 réalisations
               </span>
             </h2>
-            <p className="mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">
+            <p className="text-body text-ink-soft mt-4 max-w-2xl">
               Chaque projet est une histoire de rigueur et de confiance, livrée quelque part au
               Cameroun.
             </p>
           </div>
-          <ButtonTech asChild variant="ghost" icon={<ArrowRight aria-hidden="true" className="h-4 w-4" />}>
+          <ButtonTech
+            asChild
+            variant="ghost"
+            icon={<ArrowRight aria-hidden="true" className="h-4 w-4" />}
+          >
             <Link href="/portfolio">Voir tout le portfolio</Link>
           </ButtonTech>
         </div>

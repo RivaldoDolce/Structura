@@ -34,9 +34,7 @@ export function WhatsAppFab({
   const provenance = reference === undefined ? null : etiquetePage(reference);
   if (!numero || (reference !== undefined && provenance === null)) return null;
 
-  const message = texteMessage(
-    provenance ? `${defaultMessage} — ${provenance}` : defaultMessage,
-  );
+  const message = texteMessage(provenance ? `${defaultMessage} — ${provenance}` : defaultMessage);
   const url = `https://wa.me/${numero.slice(1)}?text=${encodeURIComponent(message)}`;
 
   return (
@@ -54,8 +52,8 @@ export function WhatsAppFab({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           className={cn(
-            "fixed bottom-24 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--color-whatsapp)] text-white shadow-lg transition-colors hover:bg-[var(--color-whatsapp-deep)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-whatsapp)] focus-visible:ring-offset-2 md:bottom-6",
-            className,
+            "bg-whatsapp hover:bg-whatsapp-deep focus-visible:ring-whatsapp fixed right-6 bottom-24 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:bottom-6",
+            className
           )}
         >
           <MessageCircle aria-hidden="true" className="h-6 w-6" />

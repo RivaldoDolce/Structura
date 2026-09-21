@@ -10,10 +10,10 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       aria-hidden="true"
-      className={cn("relative overflow-hidden rounded-control bg-[var(--color-elevated)]", className)}
+      className={cn("rounded-control bg-elevated relative overflow-hidden", className)}
       {...props}
     >
-      <span className="absolute inset-0 animate-sweep bg-gradient-to-r from-transparent via-[var(--color-line-strong)] to-transparent" />
+      <span className="animate-sweep via-line-strong absolute inset-0 bg-gradient-to-r from-transparent to-transparent" />
     </div>
   );
 }

@@ -37,18 +37,18 @@ export function Services({ services, className }: ServicesProps) {
     <section
       role="region"
       aria-label="Services"
-      className={cn("bg-[var(--color-surface)] py-24 md:py-32", className)}
+      className={cn("bg-surface py-24 md:py-32", className)}
     >
-      <div className="mx-auto max-w-content px-4 md:px-6">
+      <div className="max-w-content mx-auto px-4 md:px-6">
         <div className="mb-16 text-center">
           <Kicker number="04" label="SERVICES" className="mb-4 justify-center" />
-          <h2 className="font-display text-h2 font-bold text-[var(--color-ink)]">
+          <h2 className="font-display text-h2 text-ink font-bold">
             Nos{" "}
-            <span className="bg-gradient-to-r from-[var(--color-steel)] to-[var(--color-blueprint)] bg-clip-text text-transparent">
+            <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
               expertises
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-body text-[var(--color-ink-soft)]">
+          <p className="text-body text-ink-soft mx-auto mt-4 max-w-2xl">
             Trois pôles d&apos;expertise pour accompagner votre projet de A à Z, de l&apos;étude à
             la livraison.
           </p>
