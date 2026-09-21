@@ -45,11 +45,10 @@ marque, `sections/` compose les pages.
   `/admin`, `/api`), JSON-LD `Organization` + `WebSite` dans le layout racine, `metadataBase`
   - canoniques (accueil, fiche plan) + OG fiche plan. Constantes dans
     `src/shared/constants/site.ts`.
-- **Vérifications vertes** : 179/179 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
-  `<img>` assumés et documentés au README). Dev réel OK : toutes les pages en 200
-  (`/`, `/plans`, `/portfolio`, détails, métier, légal), sans erreur `params`.
-  Correctifs du 2026-09-21 (SWC, PostCSS, collision `text-base`, liens morts, `FilAriane`,
-  icônes) détaillés dans `evolution_frontend.md`. `next build` reste à valider en CI.
+- **Vérifications vertes** : 179/179 tests Vitest, `tsc --noEmit` propre, **ESLint 0 problème**
+  (plus aucun `<img>` hors mocks de test). Dev réel OK : optimiseur d'images vérifié
+  (449 Ko → 21 Ko AVIF), toutes les pages en 200. Correctifs détaillés dans
+  `evolution_frontend.md`. `next build` reste à valider en CI.
 
 ## Références design
 

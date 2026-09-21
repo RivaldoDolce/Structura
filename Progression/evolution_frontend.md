@@ -1,5 +1,29 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-21 — Images et audit Manus (optimisation)
+
+- **`sharp` réparé** : binaire natif absent (postinstall bloqué) + paquet
+  libvips incomplet. Épinglé `@img/sharp-libvips-linux-x64@1.0.4` (version exacte
+  exigée par sharp 0.33.5, la 1.3.3 ne fournit plus le `.so.42` attendu).
+  Preuve runtime : 449 Ko PNG → 21 Ko AVIF via `/_next/image` (−95 %).
+- **`next/image` partout** : `BeforeAfter` (fill + voile clip-path conservé,
+  le rognage porte sur le parent donc l'optimiseur ne le casse pas) et
+  `WatermarkPreview` (largeur fluide, ratio intrinsèque gardé) migrés.
+  Zéro `<img>` restant hors mocks — **lint à 0 problème**.
+- **LCP et `sizes`** : hero fiche portfolio en `priority`, grilles journal et
+  essences corrigées en `100vw` sur mobile (elles servaient du `50vw`/`33vw`).
+- **Prop `replace`** : `sticky-mobile-cta` transmet `undefined` au lieu de
+  `false` — DOM propre même avec `next/link` simulé.
+- **Bruit jsdom** : mocks `next/link` des tests de navigation avec
+  `preventDefault` (le clic ferme le menu, jsdom ne tente plus de naviguer).
+- **Audit npm trié, sans `--force`** : `npm audit fix` compatible appliqué
+  (prisma 6.19.3 → 6.12.0, seule correction non cassante). Restent des
+  montées majeures refusées à raison : next 16 (postcss, build-time, sources
+  propres uniquement), vitest 5/esbuild (dev local uniquement), sharp 0.35
+  (ne parse que nos assets statiques, aucun upload utilisateur ne passe
+  par sharp aujourd'hui). À rejouer avec réseau en CI.
+- Résultat : **179/179 tests**, `tsc` propre, **ESLint 0 problème**.
+
 ## 2026-09-21 — Correctifs relevés en dev réel (production)
 
 - **Environnement** : `npm run dev` plantait en `Bus error` — binaire
