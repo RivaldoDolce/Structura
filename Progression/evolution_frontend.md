@@ -1,5 +1,63 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-21 — Correctifs relevés en dev réel (production)
+
+- **Environnement** : `npm run dev` plantait en `Bus error` — binaire
+  `@next/swc-linux-x64-gnu` corrompu (6,9 Mo, plantage au simple `require`).
+  Réinstallé proprement (`SWC OK`). `postcss.config.js` passée en CommonJS
+  (`module.exports`, le projet n'a pas `"type": "module"`) : Next 15 refusait
+  la config ESM et toutes les pages répondaient 500.
+- **APIs dynamiques Next 15** : `params` des routes `/plans/[reference]` et
+  `/portfolio/[slug]` (pages + `generateMetadata`) passés en `Promise` +
+  `await`. Les erreurs `sync-dynamic-apis` des logs disparaissent, tests
+  `app-tests` alignés sur l'asynchrone.
+- **Collision `tailwind-merge`** : `text-base` (taille) mangeait toute couleur
+  de texte précédente car la couleur `base` partageait son nom — le bouton
+  fantôme du hero perdait `text-ink` (invisible), les boutons orange/bleu
+  perdaient leur texte sombre. Token couleur renommé `base` → `fond`
+  (`globals.css`, `tokens.ts`), 435 classes migrées vers les utilitaires
+  sémantiques (`text-[var(--color-ink)]` → `text-ink`), garde-fou ajouté à
+  `cn.test.ts`. Vérifié dans le HTML servi : les deux CTA gardent leurs couleurs.
+- **Voile inexistant** : `--color-overlay` utilisé par Dialog/Sheet mais jamais
+  défini → modales sans fond. Token ajouté (`rgba(2,6,23,.72)`).
+- **Liens morts** : `/blog` retiré de la nav et du footer (page P1 inexistante),
+  `/ebenisterie/sur-mesure` → `/devis` (test verrouillé),
+  `/legal/mentions` → `/legal/mentions-legales`. `favicon.ico` et
+  `apple-touch-icon.png` générés depuis le monogramme (les 404 parasites des
+  logs disparaissent).
+- **Navigation retour** : nouveau `FilAriane` (TDD, 3 tests, `aria-current`,
+  tronqué mobile) déployé sur les 12 pages intérieures. `StickyMobileCta`
+  ajouté à `/portfolio/[slug]`, `/ebenisterie`, `/a-propos` (avec réserve basse
+  `pb-32` mobile) ; le menu mobile portait déjà le CTA devis.
+- Normalisation prettier sur `src/` (les commits précédents avaient contourné
+  lint-staged) : diff large mais mécanique, tout reste vert.
+- Résultat : **179/179 tests**, `tsc --noEmit` propre, ESLint 0 erreur,
+  toutes les pages en 200 sans erreur `params` en dev réel.
+
+## 2026-09-19 — Sprint 4 : chantier E (hero GSAP + SEO)
+
+- `PlanDessin` (`sections/plan-dessin.tsx`) : villa isométrique en traits, ~30 tracés
+  `data-trace`, entièrement visible sans JS (le scénario GSAP pose les pointillés au montage,
+  jamais l'inverse). `HeroScenario` (`sections/hero-scenario.tsx`) : `import()` GSAP +
+  ScrollTrigger au montage (hors chemin critique), tracé au scroll en scrub, remplissages à
+  8 %, annotations révélées, parallax 3 couches (0.94/1.0/1.06 via `data-parallax-vitesse`),
+  coupé sous 768 px et en mouvement réduit. Décalage des tracés repris de `durations.stagger`.
+- `Hero` câblé : grille (0.94) + plan (1.0) + annotations (1.06), grille 2 colonnes sur
+  desktop, empilé sur mobile. `gsap` déclaré en dépendance (import dynamique uniquement).
+- SEO : `src/app/sitemap.ts` (vitrine + 4 plans + 6 projets), `src/app/robots.ts`
+  (prive `/compte`, `/gestion`, `/admin`, `/api`), JSON-LD `Organization` + `WebSite` dans
+  `src/app/layout.tsx`, `metadataBase` + canoniques (accueil, fiche plan) + OG fiche plan.
+  Constantes factorisées dans `src/shared/constants/site.ts` (`SITE_URL` sur
+  `NEXT_PUBLIC_APP_URL` avec repli prod).
+- Correctifs de robustesse : `/devis` sorti des routes protégées du middleware (tunnel public,
+  test dédié), `StickyMobileCta` simplifié (un seul état, durées du design system, variable
+  CSS morte supprimée), tests `hero-scenario` réparés (import `afterEach`, stubs morts
+  retirés, `useReducedMotion` réarmé à chaque test), `structure.test` passé sur `next/link`.
+- Arbitrage documenté : fond photo du kit écarté du hero (512 Ko de PNG pour 2 fichiers,
+  incompatible avec le budget LCP C1 < 120 Ko). La grille + l'isométrie portent déjà la
+  signature « plan qui se dessine », sans alourdir le premier écran.
+- Résultat : **175/175 tests**, `tsc --noEmit` propre, ESLint 0 erreur sur le périmètre.
+
 ## 2026-09-19 — Sprint 4 : chantier D (pages publiques)
 
 - Données de démonstration `src/frontend/data/` : `portfolio.ts` (6 projets, slugs uniques),
@@ -65,6 +123,7 @@
 - Dépendances déclarées sans installation : `motion`, `lenis`, `class-variance-authority`, 9 Radix, `sonner`, Testing Library + `jsdom`.
 - Config adéquate : `test:e2e` ajouté, `vitest.config.ts` avec `environmentMatchGlobs` frontend/jsdom, `tests/setup.ts`.
 - Existant relevé : `cn.ts` OK, `tokens.ts` à migrer vers `var(--*)`, `animations.ts` à aligner cascade skill 04, `ui/` et `signature/` vides.
+
 ## 2026-09-17 — Sprint 1 `feat/sprint1-frontend-components-avancees`
 
 - Branche créée depuis `feat/frontend-setup` (contient le setup déclaré).

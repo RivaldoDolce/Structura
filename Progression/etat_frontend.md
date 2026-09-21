@@ -1,7 +1,7 @@
 # État Frontend — STRUCTURA
 
-Date : 2026-09-19. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
-Sprint 4 en cours — Chantiers A, B, C et D livrés.
+Date : 2026-09-21. Branche : `feat/sprint4-frontend-completion` (depuis `develop`, `83fbb9f`).
+Sprint 4 terminé + correctifs dev réel — en attente de PR vers `develop`.
 
 ## Architecture
 
@@ -33,16 +33,23 @@ marque, `sections/` compose les pages.
   d'environnement, le bouton ne rend rien). `src/shared/constants/navigation.ts` est la source
   unique des liens publics consommés par le header et le footer. En-têtes de sécurité consolidés
   (`Permissions-Policy`, CSP sans `unsafe-eval` en production), middleware couvert par tests.
+  Le tunnel `/devis` reste public : le réserver aux connectés tuerait la conversion.
 - **Pages** : accueil, `/plans` + `/plans/[reference]`, `/portfolio` + `/portfolio/[slug]`,
   `/ingenierie`, `/ebenisterie`, `/immobilier`, `/a-propos`, `/contact`, `/devis`, légal
   (mentions, CGV, confidentialité), `not-found.tsx`, `error.tsx`. Données de démonstration
   isolées dans `src/frontend/data/`, tests des pages dans `src/frontend/app-tests/`.
-- **Vérifications vertes** : 164/164 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
-  `<img>` assumés et documentés au README). Build à rejouer hors sandbox (`next build` se plante
-  par « Bus error » dans l'environnement actuel).
-- **Prochain chantier (E)** : hero GSAP et SEO — chorégraphie « le plan se dessine » (fond photo,
-  grille, croix en cascade, titre par masque, isométrie au scroll, parallax), `sitemap.ts`,
-  `robots.ts`, JSON-LD, OG.
+- **Hero GSAP + SEO (chantier E)** : `PlanDessin` (isométrie SVG statique sans JS, ~30 tracés
+  `data-trace`) rejoué au scroll par `HeroScenario` (`import()` GSAP + ScrollTrigger, scrub,
+  parallax 3 couches 0.94/1.0/1.06, coupé sous 768 px et en mouvement réduit). SEO :
+  `sitemap.ts` (vitrine + plans + portfolio), `robots.ts` (prive `/compte`, `/gestion`,
+  `/admin`, `/api`), JSON-LD `Organization` + `WebSite` dans le layout racine, `metadataBase`
+  - canoniques (accueil, fiche plan) + OG fiche plan. Constantes dans
+    `src/shared/constants/site.ts`.
+- **Vérifications vertes** : 179/179 tests Vitest, `tsc --noEmit` propre, lint 0 erreur (3 warnings
+  `<img>` assumés et documentés au README). Dev réel OK : toutes les pages en 200
+  (`/`, `/plans`, `/portfolio`, détails, métier, légal), sans erreur `params`.
+  Correctifs du 2026-09-21 (SWC, PostCSS, collision `text-base`, liens morts, `FilAriane`,
+  icônes) détaillés dans `evolution_frontend.md`. `next build` reste à valider en CI.
 
 ## Références design
 
