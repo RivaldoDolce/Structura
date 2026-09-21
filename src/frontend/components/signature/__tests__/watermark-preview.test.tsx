@@ -1,6 +1,25 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import type { DragEventHandler } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { WatermarkPreview } from "../watermark-preview";
+
+vi.mock("next/image", () => ({
+  default: ({
+    alt,
+    src,
+    draggable,
+    onDragStart,
+  }: {
+    alt: string;
+    src: string;
+    draggable?: boolean;
+    onDragStart?: DragEventHandler<HTMLImageElement>;
+  }) => (
+    // Simulacre volontaire : on vérifie le cadrage, pas l'optimiseur.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img alt={alt} src={src} draggable={draggable} onDragStart={onDragStart} />
+  ),
+}));
 
 const props = { imageUrl: "/test/plan.jpg", watermarkText: "STRUCTURA APERCU" };
 

@@ -59,7 +59,7 @@ export function StickyMobileCta({ label, href, className }: StickyMobileCtaProps
     >
       <Link
         href={href}
-        replace={pathname === href}
+        replace={pathname === href ? true : undefined}
         className="rounded-control text-small bg-blueprint text-fond focus-visible:ring-blueprint focus-visible:ring-offset-surface flex h-11 items-center justify-center gap-2 font-semibold transition-opacity hover:opacity-90 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
       >
         {label}

@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useCallback } from "react";
 import type { DragEvent as GlisserEvenement, MouseEvent as SourisEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";
@@ -33,14 +34,15 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
       className={cn("relative select-none [-webkit-touch-callout:none]", className)}
     >
       <div className="rounded-card bg-surface relative overflow-hidden">
-        <img
+        <Image
           src={imageUrl}
           alt="Aperçu du plan avec filigrane de protection"
-          loading="lazy"
-          decoding="async"
+          width={0}
+          height={0}
+          sizes="(max-width: 1200px) 100vw, 1200px"
           draggable={false}
           onDragStart={bloqueGlisse}
-          className="block h-full w-full object-contain"
+          style={{ width: "100%", height: "auto" }}
         />
 
         <div

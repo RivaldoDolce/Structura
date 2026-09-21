@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useCallback, useId, useRef, useState } from "react";
 import type { KeyboardEvent as ClavierEvenement, PointerEvent as PointeurEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";
@@ -94,13 +95,13 @@ export function BeforeAfter({
         onPointerCancel={finGlisse}
         className="rounded-card bg-surface relative aspect-[16/9] cursor-ew-resize touch-none overflow-hidden"
       >
-        <img
+        <Image
           src={beforeImage}
           alt={beforeLabel}
-          loading="lazy"
-          decoding="async"
+          fill
+          sizes="(max-width: 1200px) 100vw, 1200px"
           draggable={false}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="object-cover"
         />
 
         <div
@@ -112,13 +113,13 @@ export function BeforeAfter({
             transition: mouvementReduit ? "none" : "clip-path 0.1s ease-out",
           }}
         >
-          <img
+          <Image
             src={afterImage}
             alt={afterLabel}
-            loading="lazy"
-            decoding="async"
+            fill
+            sizes="(max-width: 1200px) 100vw, 1200px"
             draggable={false}
-            className="absolute inset-0 h-full w-full object-cover"
+            className="object-cover"
           />
         </div>
 

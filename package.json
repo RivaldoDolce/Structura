@@ -84,5 +84,12 @@
     "*.{json,md,css}": [
       "prettier --write"
     ]
+  },
+  "allowScripts": {
+    "sharp@0.33.5": true,
+    "esbuild": true,
+    "@prisma/client@6.12.0": true,
+    "@prisma/engines@6.12.0": true,
+    "prisma@6.12.0": true
   }
 }

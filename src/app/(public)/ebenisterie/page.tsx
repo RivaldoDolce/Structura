@@ -35,7 +35,7 @@ export default function PageEbenisterie() {
                 src={essence.imageUrl}
                 alt={essence.nom}
                 fill
-                sizes="33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 className="object-cover"
               />
             </div>

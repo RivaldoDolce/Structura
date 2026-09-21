@@ -72,6 +72,7 @@ export default async function PageDetailPortfolio({
           src={projet.imageUrl}
           alt={projet.title}
           fill
+          priority
           sizes="(max-width: 1200px) 100vw, 1200px"
           className="object-cover"
         />
@@ -90,7 +91,7 @@ export default async function PageDetailPortfolio({
                   src={entree.imageUrl}
                   alt={entree.titre}
                   fill
-                  sizes="50vw"
+                  sizes="(max-width: 640px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
