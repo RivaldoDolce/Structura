@@ -19,7 +19,7 @@ export interface FilArianeProps {
 export function FilAriane({ items, className }: FilArianeProps) {
   return (
     <nav aria-label="Fil d'Ariane" className={cn("text-mono-xs font-mono uppercase", className)}>
-      <ol className="text-ink-mute flex flex-wrap items-center gap-1.5">
+      <ol className="text-ink-soft flex flex-wrap items-center gap-1.5">
         <li className="flex items-center gap-1.5">
           <Link href="/" className="hover:text-ink flex items-center gap-1.5 transition-colors">
             <House aria-hidden="true" className="h-3.5 w-3.5" />

@@ -3,6 +3,8 @@ export { BandeauAlterne } from "./bandeau-alterne";
 export type { BandeauAlterneItem, BandeauAlterneProps, SurfaceBandeau } from "./bandeau-alterne";
 export { CtaChaud } from "./cta-chaud";
 export type { ActionCta, CtaChaudProps } from "./cta-chaud";
+export { FonduPlanPhoto } from "./fondu-plan-photo";
+export type { FonduPlanPhotoProps } from "./fondu-plan-photo";
 export { Hero } from "./hero";
 export { HeroEnTete } from "./hero-en-tete";
 export type { HeroEnTeteProps } from "./hero-en-tete";

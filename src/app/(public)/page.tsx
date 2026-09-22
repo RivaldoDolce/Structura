@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { BandeauAlterne } from "@/frontend/components/sections/bandeau-alterne";
 import { CtaChaud } from "@/frontend/components/sections/cta-chaud";
+import { FonduPlanPhoto } from "@/frontend/components/sections/fondu-plan-photo";
 import { Hero } from "@/frontend/components/sections/hero";
 import { MosaiqueAsymetrique } from "@/frontend/components/sections/mosaique-asymetrique";
 import { PleinLargeurEditorial } from "@/frontend/components/sections/plein-largeur-editorial";
@@ -180,6 +181,12 @@ export default function PageAccueil() {
         titre="Le chantier en direct"
         accroche="Fouilles, ferraillage, coulage, charpente : chaque étape est datée et photographiée."
         promesse="Votre suivi, jour après jour — du premier coup de pioche à la remise des clés."
+        fondu={
+          <FonduPlanPhoto
+            photoSrc="/photos/chantiers/04-04_chantier-r2-yaounde.png"
+            photoAlt="Chantier R+2 en cours d'élévation à Yaoundé"
+          />
+        }
       />
 
       {/* 6 — La méthode, démontrée sur un cas réel */}

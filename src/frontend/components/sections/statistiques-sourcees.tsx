@@ -73,7 +73,7 @@ export function StatistiquesSourcees({
                 label={chiffre.label}
                 suffix={chiffre.suffix ?? ""}
               />
-              <p className="text-small text-ink-mute mt-3 max-w-[18rem] text-center">
+              <p className="text-small text-ink-soft mt-3 max-w-[18rem] text-center">
                 {chiffre.source}
               </p>
             </div>

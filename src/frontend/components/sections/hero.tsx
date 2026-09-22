@@ -118,7 +118,7 @@ export function Hero() {
               variants={fadeItem}
               data-parallax=""
               data-parallax-vitesse="1.06"
-              className="text-mono-xs text-blueprint/60 absolute bottom-32 left-8 hidden items-center gap-2 font-mono uppercase md:flex"
+              className="text-mono-xs text-blueprint/60 absolute bottom-10 left-8 hidden items-center gap-2 font-mono uppercase md:flex"
             >
               <span>8.40 m</span>
               <span className="bg-blueprint/60 h-px w-8" />

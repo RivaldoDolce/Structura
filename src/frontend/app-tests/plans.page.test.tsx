@@ -66,4 +66,50 @@ describe("Fiche plan", () => {
     ).rejects.toThrow("NEXT_NOT_FOUND");
     expect(faux).toHaveBeenCalled();
   });
+
+  it("détaille le contenu du dossier livré", async () => {
+    const plan = PLANS[0] as Plan;
+    render(
+      (await PageFichePlan({
+        params: Promise.resolve({ reference: plan.reference }),
+      })) as React.ReactElement
+    );
+
+    expect(screen.getByRole("heading", { name: /contenu du dossier/i })).toBeInTheDocument();
+    expect(screen.getByText("Note de calcul")).toBeInTheDocument();
+    expect(screen.getByText("Plans de ferraillage")).toBeInTheDocument();
+  });
+
+  it("propose l'adaptation au terrain et un WhatsApp pré-rempli", async () => {
+    // Sans numéro valide, le bouton WhatsApp ne rend rien par conception.
+    vi.stubEnv("NEXT_PUBLIC_WHATSAPP_NUMBER", "237690000000");
+    try {
+      const plan = PLANS[0] as Plan;
+      render(
+        (await PageFichePlan({
+          params: Promise.resolve({ reference: plan.reference }),
+        })) as React.ReactElement
+      );
+
+      expect(
+        screen.getByRole("heading", { name: /un terrain particulier/i })
+      ).toBeInTheDocument();
+      const whatsapp = screen.getByRole("link", { name: /question sur ce plan/i });
+      expect(whatsapp.getAttribute("href")).toContain(plan.reference);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("affiche la réassurance sous le prix", async () => {
+    const plan = PLANS[0] as Plan;
+    render(
+      (await PageFichePlan({
+        params: Promise.resolve({ reference: plan.reference }),
+      })) as React.ReactElement
+    );
+
+    expect(screen.getByText(/facture OHADA/i)).toBeInTheDocument();
+    expect(screen.getByText(/CinetPay/i)).toBeInTheDocument();
+  });
 });

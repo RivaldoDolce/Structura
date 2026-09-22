@@ -299,7 +299,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                   errors.description ? "border-danger" : "border-line-strong"
                 )}
               />
-              <p id="devis-description-aide" className="text-ink-mute mt-2 text-xs">
+              <p id="devis-description-aide" className="text-ink-soft mt-2 text-xs">
                 Bâtiment, surface, localisation, contraintes particulières.
               </p>
               {errors.description ? (
@@ -319,7 +319,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 accept="image/*,.pdf"
                 className="rounded-control border-line-strong bg-surface text-ink-soft file:rounded-control file:bg-elevated file:text-ink w-full border border-dashed px-4 py-3 text-sm file:mr-3 file:border-0 file:px-3 file:py-1 file:text-sm"
               />
-              <p className="text-ink-mute mt-2 text-xs">Plans, photos du terrain, croquis.</p>
+              <p className="text-ink-soft mt-2 text-xs">Plans, photos du terrain, croquis.</p>
             </div>
           </div>
         ) : null}
@@ -349,7 +349,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                   errors.telephone ? "border-danger" : "border-line-strong"
                 )}
               />
-              <p id="devis-telephone-aide" className="text-ink-mute mt-2 text-xs">
+              <p id="devis-telephone-aide" className="text-ink-soft mt-2 text-xs">
                 Numéro camerounais à 9 chiffres commençant par 6.
               </p>
               {errors.telephone ? (
@@ -392,7 +392,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                 <label htmlFor="devis-whatsapp" className="text-ink text-sm font-medium">
                   Me contacter par WhatsApp
                 </label>
-                <p className="text-ink-mute mt-1 text-xs">
+                <p className="text-ink-soft mt-1 text-xs">
                   Canal privilégié pour le Cameroun et la diaspora.
                 </p>
               </div>

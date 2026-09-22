@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, type RefObject } from "react";
-import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { useScenarioActif } from "@/frontend/hooks/use-scenario-actif";
 import { durations } from "@/frontend/lib/tokens";
 
 export interface HeroScenarioProps {
   racine: RefObject<HTMLElement | null>;
 }
 
-const SEUIL_DESKTOP = "(min-width: 768px)";
 const AMPLITUDE_PARALLAX = 120;
 const DUREE_TRACE = 0.6;
 
@@ -22,14 +21,11 @@ const DUREE_TRACE = 0.6;
  * réduit — le plan reste alors affiché complet, comme sans JavaScript.
  */
 export function HeroScenario({ racine }: HeroScenarioProps) {
-  const animationsReduites = useReducedMotion();
+  const actif = useScenarioActif();
 
   useEffect(() => {
     const section = racine.current;
-    if (!section || animationsReduites) return;
-    if (typeof window.matchMedia !== "function" || !window.matchMedia(SEUIL_DESKTOP).matches) {
-      return;
-    }
+    if (!section || !actif) return;
 
     let annule = false;
     let nettoyage: (() => void) | undefined;
@@ -107,7 +103,7 @@ export function HeroScenario({ racine }: HeroScenarioProps) {
       annule = true;
       nettoyage?.();
     };
-  }, [racine, animationsReduites]);
+  }, [racine, actif]);
 
   return null;
 }

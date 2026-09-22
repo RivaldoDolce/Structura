@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Image from "next/image";
 import { motion } from "motion/react";
+import type { ReactNode } from "react";
 import { cn } from "@/frontend/lib/cn";
 import { blurSettle, fadeUpItem, inViewOnce, staggerContainer } from "@/frontend/lib/animations";
 import { presentationStatut, type StatutJalon } from "@/frontend/lib/statuts-jalon";
@@ -26,6 +27,11 @@ export interface TimelineHorizontaleProps {
   accroche: string;
   /** Phrase de promesse affichée sous la piste — prépare l'espace client. */
   promesse: string;
+  /**
+   * Média narratif optionnel entre l'en-tête et la piste (fondu plan→photo
+   * sur l'accueil). Absent par défaut : la piste reste le cœur.
+   */
+  fondu?: ReactNode;
   className?: string;
 }
 
@@ -43,6 +49,7 @@ export function TimelineHorizontale({
   titre,
   accroche,
   promesse,
+  fondu,
   className,
 }: TimelineHorizontaleProps) {
   return (
@@ -57,6 +64,7 @@ export function TimelineHorizontale({
         <Kicker number={kicker.number} label={kicker.label} className="mb-4" />
         <h2 className="font-display text-h2 text-ink-soft max-w-3xl font-bold">{titre}</h2>
         <p className="text-body text-ink-soft mt-4 max-w-2xl">{accroche}</p>
+        {fondu ? <div className="mt-10">{fondu}</div> : null}
       </div>
 
       <motion.ol
@@ -114,7 +122,7 @@ export function TimelineHorizontale({
         })}
       </motion.ol>
 
-      <p className="text-body text-safety mx-auto mt-8 max-w-content px-4 font-medium md:px-6">
+      <p className="text-body text-safety max-w-content mx-auto mt-8 px-4 font-medium md:px-6">
         {promesse}
       </p>
     </section>

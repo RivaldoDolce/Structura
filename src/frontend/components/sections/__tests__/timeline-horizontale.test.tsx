@@ -53,12 +53,41 @@ describe("TimelineHorizontale", () => {
         titre="Le chantier en direct"
         accroche="Chaque étape, documentée et datée."
         promesse="Votre suivi, jour après jour."
-      />,
+      />
     );
 
     expect(screen.getByRole("region", { name: /journal de chantier/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(/chantier en direct/i);
     expect(screen.getByText("Votre suivi, jour après jour.")).toBeInTheDocument();
+  });
+
+  it("affiche le média narratif optionnel entre l'en-tête et la piste", () => {
+    const { container } = render(
+      <TimelineHorizontale
+        jalons={jalons}
+        kicker={{ number: "05", label: "JOURNAL" }}
+        titre="Le chantier en direct"
+        accroche="Chaque étape, documentée et datée."
+        promesse="Votre suivi, jour après jour."
+        fondu={<div data-fondu-test>Du plan au réel</div>}
+      />
+    );
+
+    expect(container.querySelector("[data-fondu-test]")).toHaveTextContent(/du plan au réel/i);
+  });
+
+  it("ne réserve aucune place au fondu absent", () => {
+    const { container } = render(
+      <TimelineHorizontale
+        jalons={jalons}
+        kicker={{ number: "05", label: "JOURNAL" }}
+        titre="Le chantier en direct"
+        accroche="Chaque étape, documentée et datée."
+        promesse="Votre suivi, jour après jour."
+      />
+    );
+
+    expect(container.querySelector("[data-fondu-test]")).not.toBeInTheDocument();
   });
 
   it("défile en scroll-snap horizontal, une carte par jalon", () => {
@@ -69,7 +98,7 @@ describe("TimelineHorizontale", () => {
         titre="Le chantier en direct"
         accroche="Chaque étape, documentée et datée."
         promesse="Votre suivi, jour après jour."
-      />,
+      />
     );
 
     const piste = container.querySelector("[data-piste]");
@@ -86,7 +115,7 @@ describe("TimelineHorizontale", () => {
         titre="Le chantier en direct"
         accroche="Chaque étape, documentée et datée."
         promesse="Votre suivi, jour après jour."
-      />,
+      />
     );
 
     // Deux jalons terminés, un en cours, un à venir : les libellés sont
