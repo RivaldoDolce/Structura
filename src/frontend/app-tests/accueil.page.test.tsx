@@ -17,13 +17,18 @@ vi.mock("next/link", () => ({
 }));
 
 describe("Page d'accueil", () => {
-  it("assemble Hero, chiffres, services, portfolio et CTA devis", () => {
+  it("assemble les sept actes et le tunnel de devis", () => {
     render(<PageAccueil />);
 
     expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /chiffres clés/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /portfolio/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /services/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /expertises/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /trois histoires construites/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /journal de chantier/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: /réparation structurelle à mokolo/i })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /démarrer/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /demander un devis gratuit/i })).toHaveAttribute(
       "href",
       "/devis"
@@ -33,7 +38,7 @@ describe("Page d'accueil", () => {
   it("n'expose que des projets présents dans les données", () => {
     render(<PageAccueil />);
 
-    for (const projet of PROJETS_PORTFOLIO.slice(0, 3)) {
+    for (const projet of PROJETS_PORTFOLIO.slice(0, 4)) {
       expect(screen.getByText(projet.title)).toBeInTheDocument();
     }
   });

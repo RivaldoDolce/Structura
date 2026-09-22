@@ -52,7 +52,11 @@ export function WhatsAppFab({
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           className={cn(
-            "bg-whatsapp hover:bg-whatsapp-deep focus-visible:ring-whatsapp fixed right-6 bottom-24 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:bottom-6",
+            // Contraste : la variante dédiée garantit un ratio > 3:1 pour
+            // l'icône blanche (le vert de marque seul est trop clair).
+            // Encapsulation : halo profond + filet de lumière, l'élément
+            // flottant se détache du fond sans bordure décorative.
+            "bg-whatsapp-contraste hover:bg-whatsapp-deep focus-visible:ring-whatsapp fixed right-6 bottom-24 z-50 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-[0_12px_32px_-8px_rgba(2,6,23,0.7)] ring-1 ring-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none md:bottom-6",
             className
           )}
         >

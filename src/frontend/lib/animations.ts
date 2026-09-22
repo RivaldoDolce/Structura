@@ -57,3 +57,41 @@ export const inViewOnce = {
   whileInView: "show",
   viewport: { once: true, amount: 0.25 },
 } as const;
+
+/* ------------------------------------------------------------------ */
+/* Vitesse narrative (audit §7.2)                                      */
+/*                                                                     */
+/* Ces trois variantes dérivent des mêmes tokens que les précédentes : */
+/* c'est le scroll qui les pilote, mais elles restent descriptibles et */
+/* coupables en mouvement réduit. Elles ne s'utilisent que sur les      */
+/* compositions narratives (hero, journal, pleine largeur).            */
+/* ------------------------------------------------------------------ */
+
+/** Révélation d'une photo pleine largeur : léger grossissement d'assise. */
+export const scaleReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.96 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: durations.cinematic, ease: easings.outExpo },
+  },
+};
+
+/** Tracé d'un trait de cote (SVG) : `pathLength` anime le contour. */
+export const drawLine: Variants = {
+  hidden: { pathLength: 0 },
+  show: {
+    pathLength: 1,
+    transition: { duration: durations.cinematic, ease: easings.outExpo },
+  },
+};
+
+/** Photo du journal : elle se pose, du flou à net. */
+export const blurSettle: Variants = {
+  hidden: { opacity: 0, filter: "blur(8px)" },
+  show: {
+    opacity: 1,
+    filter: "blur(0px)",
+    transition: { duration: durations.cinematic, ease: easings.outExpo },
+  },
+};

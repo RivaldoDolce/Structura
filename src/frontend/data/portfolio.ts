@@ -64,7 +64,7 @@ export const PROJETS_PORTFOLIO: PortfolioProject[] = [
     id: "table-reunion-padouk",
     title: "Mobilier de bureau en padouk",
     description:
-      "Table de réunion de douze places et console d'accueil, essences locales selecting et finition mate.",
+      "Table de réunion de douze places et console d'accueil, essences locales sélectionnées et finition mate.",
     imageUrl: "/photos/mobilier/04-11_table-reunion-padouk.png",
     location: "Atelier, Yaoundé",
     year: "2024",

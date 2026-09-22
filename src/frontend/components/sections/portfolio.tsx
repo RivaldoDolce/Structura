@@ -33,11 +33,8 @@ export function Portfolio({ projects, className }: PortfolioProps) {
         <div className="mb-16 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
           <div>
             <Kicker number="03" label="PORTFOLIO" className="mb-4" />
-            <h2 className="font-display text-h2 text-ink font-bold">
-              Nos{" "}
-              <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
-                réalisations
-              </span>
+            <h2 className="font-display text-h2 text-ink-soft font-bold">
+              Nos <span className="text-ink">réalisations</span>
             </h2>
             <p className="text-body text-ink-soft mt-4 max-w-2xl">
               Chaque projet est une histoire de rigueur et de confiance, livrée quelque part au

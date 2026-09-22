@@ -1,5 +1,83 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-22 — Refonte frontend : Phases 1 et 2 (compositions + signature)
+
+Périmètre : `Progression/plan_refonte.md` respecté — tokens, styles et composition
+visuelle uniquement ; **données, routes, API, tunnel, sanitize et sécurité intacts**
+(les jalons s'enrichissent en démo, sans schéma ni route touchés).
+
+- **Mouvement** : `scaleReveal` / `drawLine` / `blurSettle` dans `animations.ts`
+  (tokens `cinematic` + `outExpo`, zéro courbe locale), 5 tests.
+- **Compositions C2–C8** créées + testées (TDD) : `BandeauAlterne` (sens alterné,
+  surface contextuelle par métier), `MosaiqueAsymetrique` (21/9 + 2×4/3 + 4/5 via
+  `ProjectCard` étendu — `ratio`, `imageSizes`, `imageAlt`), `StatistiquesSourcees`
+  (sources en Inter, jamais en mono), `TimelineHorizontale` (scroll-snap, statuts
+  écrits, promesse de suivi), `PleinLargeurEditorial` (photo 21/9 ou média fourni),
+  `PanneauDonnees` (maille fine, valeurs mono, enfants libres), `CtaChaud`
+  (secondaire WhatsApp masquée sur mobile).
+- **Marqueurs de composition** : `data-composition` + `data-surface` sur chaque
+  section — le test d'alternance (§6.3) lit la vraie page d'accueil.
+- **Accueil en 7 actes** : C1→C4→C2→C3→C5→C6→C8, chiffres sourcés, quatre métiers
+  sur leurs surfaces, mosaïque, journal vitrine (4 premiers jalons), méthode
+  Mokolo mise en scène, clôture chaude ; WhatsApp assaini depuis l'environnement
+  (jamais de lien forgé).
+- **4 pages métier** : `/ingenierie` (méthode 4 étapes + étude de cas + livrables),
+  `/ebenisterie` (`atelier-essences.tsx` local : 5 cartes 1/1, badge cuivre, fond
+  warm + geste 3 temps + lit bubinga), `/plans` (catalogue C7 sans `h1` dupliqué
+  + CTA adaptation), `/immobilier` (mosaïque + 6 vérifications). Fil d'Ariane
+  conservé via l'emplacement `ariane` de `HeroEnTete`.
+- **Mise en scène de `BeforeAfter`** : auto-démo 30→65→45 en 1,2 s, interrompue à
+  la première interaction, immobile en mouvement réduit (9 tests).
+- **Signature `JalonTimeline`** (§8.1) : rail tracé au scroll (`motion.line` +
+  `useScroll`, figé < 768 px / réduit), 6 états à symbole + libellé (contrat
+  couleur centralisé dans `lib/statuts-jalon.ts`, partagé avec la vitrine),
+  dates prévue/réelle, photos `blurSettle`, responsable/durée étiquetés, écart
+  prévu-réel, documents validés, dépenses `PriceTag`, actions ; cartes actives
+  en `st-raised`. Données de suivi enrichies (6 jalons, 6 états). Preuve en dev
+  réel : fiches portfolio en 200 avec la timeline complète.
+- **Verrous** : test de références d'assets en dur (aucune image absente),
+  anti-anglicismes maintenu, `app-tests` réalignés. Directive `"use client"`
+  restaurée sur le composant signature (500 corrigé sur les fiches portfolio).
+- Résultat : **225/225 tests**, `tsc` propre, **ESLint 0 problème**. Reste :
+  crossfade plan→photo (§8.2), skeletons blueprint (§7.3), Phase 3 (polish,
+  `next build`, revue comparative) — voir `plan_refonte.md`.
+
+## 2026-09-22 — Refonte frontend : Phase 0 « Révélation » (audit apply)
+
+Périmètre figé au préalable dans `Progression/plan_refonte.md` : la refonte ne
+touche que tokens, styles et composition visuelle ; **données, routes, API,
+comportements du tunnel, sanitize et sécurité restent intacts**.
+
+- **Assets convertis** : nouveau `scripts/convert-assets.mjs` (sharp, idempotent,
+  `--dry-run`) — 68 AVIF (qualité 60, textures) + 68 WebP (75 photos / 75
+  textures) ; 21,88 Mo de PNG → 5,45 Mo de convertis (**−75 %**). Rapport
+  commité : `Progression/rapport_conversion_assets.md`. PNG sources conservés.
+- **Tokens v2** (`globals.css` + `tokens.ts`) : surfaces `fond → surface-deep →
+  surface → surface-raised → elevated`, contextes `surface-warm` (bois) et
+  `surface-blueprint` (données), `line-light`, `h2b`, `whatsapp-contraste`,
+  palette matière `cuivre/terre/sable`. `cn.ts` reste exact après extension des
+  listes (`text-h2b`, nouvelles couleurs) — 19 tests lib verts.
+- **Recettes de profondeur** : `.st-card`, `.st-raised`, `.st-warm`,
+  `.st-photo-fusion` — une recette par rôle, jamais cumulées (§5.2).
+- **Contrat couleur** : dégradés de titre `from-steel to-blueprint` supprimés
+  (hero → accent cyan plein ; stats/services/portfolio → `ink-soft` + mot en
+  `ink`) ; barre de progression du tunnel en cyan plein ; FAB WhatsApp en
+  `whatsapp-contraste` (AA 6,06:1, test verrouillé) avec halo profond + filet.
+- **Fonds branchés** : `HeroEnTete` (composition C1, 3 tests TDD) porte
+  l'AVIF prioritaire du kit sur `/ingenierie`, `/ebenisterie`, `/plans`,
+  `/immobilier` ; fond photo voilé ajouté sous la maille du hero accueil.
+  `FONDS_HEROS` (nouveau `data/fonds.ts`) est verrouillé par test (existence +
+  extension AVIF).
+- **Hygiène** : « selecting » ×2 corrigées + verrou anti-anglicismes dans
+  `coherence.test.ts` (rouge → vert) ; test des fonds AVIF ajouté (185 tests).
+- **Audit live des profondeurs** : nouveau `scripts/audit-surfaces.mjs`
+  (Playwright) vérifiant sur la page rendue les ratios inter-surfaces (seuils
+  1,02/1,08/1,12) et le contraste WhatsApp ; valeurs des surfaces resserrées
+  en conséquence (tous contrôles OK).
+- Résultat : **185/185 tests**, `tsc` propre, toutes les pages publiques en 200
+  en dev réel. Phases 1–3 (compositions, accueil en 7 actes, timeline chantier,
+  polish + `next build`) restent à livrer — voir `plan_refonte.md`.
+
 ## 2026-09-21 — Images et audit Manus (optimisation)
 
 - **`sharp` réparé** : binaire natif absent (postinstall bloqué) + paquet

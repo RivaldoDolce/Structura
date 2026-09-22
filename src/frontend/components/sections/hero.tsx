@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { motion } from "motion/react";
@@ -8,10 +9,11 @@ import { ButtonTech } from "../signature/button-tech";
 import { Kicker } from "../signature/kicker";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
 import { fadeItem, fadeUpItem, staggerContainer, titleReveal } from "@/frontend/lib/animations";
+import { FONDS_HEROS } from "@/frontend/data/fonds";
 import { HeroScenario } from "./hero-scenario";
 import { PlanDessin } from "./plan-dessin";
 
-/** Premier écran de l'accueil : titre et CTA côté serveur, plan rejoué au scroll sur desktop. */
+/** Premier écran de l'accueil : fond photo du kit sous la maille blueprint, plan rejoué au scroll sur desktop. */
 export function Hero() {
   const racine = useRef<HTMLElement>(null);
   const animationsReduites = useReducedMotion();
@@ -21,8 +23,26 @@ export function Hero() {
       ref={racine}
       role="region"
       aria-label="Section d'accueil"
+      data-composition="C1"
+      data-surface="photo"
       className="relative min-h-[calc(100vh-4rem)] overflow-hidden md:min-h-[calc(100vh-5rem)]"
     >
+      {/* Fond photo du kit (élément LCP, servi en AVIF), voilé pour garantir
+          le contraste du titre : la matière entre sur l'accueil sans jamais
+          concurrencer la maille technique posée au-dessus. */}
+      <div className="absolute inset-0" aria-hidden="true">
+        <Image
+          src={FONDS_HEROS.accueil}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="bg-fond/70 absolute inset-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-fond/40 via-transparent to-fond" />
+      </div>
+
       <div data-blueprint-grid data-parallax="" data-parallax-vitesse="0.94" aria-hidden="true">
         <BlueprintGrid fade="both" className="absolute inset-0" />
       </div>
@@ -49,10 +69,7 @@ export function Hero() {
                 </motion.span>
               </span>
               <span className="block overflow-hidden">
-                <motion.span
-                  variants={titleReveal}
-                  className="from-steel to-blueprint block bg-gradient-to-r bg-clip-text text-transparent"
-                >
+                <motion.span variants={titleReveal} className="text-blueprint block">
                   construit en confiance
                 </motion.span>
               </span>

@@ -1,0 +1,49 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { PanneauDonnees } from "../panneau-donnees";
+
+describe("PanneauDonnees", () => {
+  it("présente chaque donnée en couple terme/valeur", () => {
+    render(
+      <PanneauDonnees
+        kicker={{ number: "03", label: "FICHE TECHNIQUE" }}
+        titre="Villa F4 — 180 m²"
+        lignes={[
+          { label: "Superficie", valeur: "180 m²" },
+          { label: "Niveaux", valeur: "2" },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(/Villa F4/);
+    expect(screen.getByText("Superficie")).toBeInTheDocument();
+    expect(screen.getByText("180 m²")).toBeInTheDocument();
+  });
+
+  it("pose le panneau sur la surface blueprint, maille fine derrière", () => {
+    const { container } = render(
+      <PanneauDonnees
+        kicker={{ number: "03", label: "FICHE TECHNIQUE" }}
+        titre="Villa F4"
+        lignes={[{ label: "Superficie", valeur: "180 m²" }]}
+      />,
+    );
+
+    expect(container.firstElementChild).toHaveClass("bg-surface-blueprint");
+    expect(container.querySelector("[data-maille]")).toBeInTheDocument();
+  });
+
+  it("accepte un contenu additionnel sous le tableau", () => {
+    render(
+      <PanneauDonnees
+        kicker={{ number: "03", label: "FICHE" }}
+        titre="Villa F4"
+        lignes={[{ label: "Superficie", valeur: "180 m²" }]}
+      >
+        <p>Dossier de permis inclus.</p>
+      </PanneauDonnees>,
+    );
+
+    expect(screen.getByText("Dossier de permis inclus.")).toBeInTheDocument();
+  });
+});

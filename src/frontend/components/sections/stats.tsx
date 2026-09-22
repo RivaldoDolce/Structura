@@ -33,11 +33,8 @@ export function Stats() {
             <Kicker number="02" label="CHIFFRES" className="mb-4 justify-center" />
           </motion.div>
 
-          <motion.h2 variants={fadeUpItem} className="font-display text-h2 text-ink font-bold">
-            Une expertise qui se{" "}
-            <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
-              mesure
-            </span>
+          <motion.h2 variants={fadeUpItem} className="font-display text-h2 text-ink-soft font-bold">
+            Une expertise qui se <span className="text-ink">mesure</span>
           </motion.h2>
         </motion.div>
 

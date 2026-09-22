@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { KeyboardEvent as ClavierEvenement, PointerEvent as PointeurEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
@@ -16,6 +16,20 @@ export interface BeforeAfterProps {
 // Écart appliqué à chaque pression de flèche, assez fin pour un réglage précis.
 const PAS_CLAVIER = 5;
 
+/*
+ * Démonstration automatique du geste (audit §7.3) : le curseur part à 30 %,
+ * pousse à 65 % pour montrer la révélation, puis se repose à 45 % — un
+ * équilibre où les deux états restent lisibles. Elle s'exécute une seule fois
+ * à l'affichage, dure environ 1,2 s et cède la main dès la première
+ * interaction. En mouvement réduit, le comparateur reste simplement à 50 %.
+ */
+const POSITION_REPOS = 50;
+const DEMO_AMORCE = 30;
+const DEMO_POUSSEE = 65;
+const DEMO_EQUILIBRE = 45;
+const DEMO_DELAI_POUSSEE = 400;
+const DEMO_DELAI_EQUILIBRE = 780;
+
 // Slider de comparaison avant/après : l'image après se révèle sous un voile
 // rogné (clip-path), propriété animable côté GPU sans recalcul de mise en page.
 export function BeforeAfter({
@@ -25,11 +39,28 @@ export function BeforeAfter({
   afterLabel = "APRÈS",
   className,
 }: BeforeAfterProps) {
-  const [position, setPosition] = useState(50);
+  const [position, setPosition] = useState(POSITION_REPOS);
   const [glisse, setGlisse] = useState(false);
+  const [demonstration, setDemonstration] = useState(true);
   const cadreRef = useRef<HTMLDivElement>(null);
   const aideId = useId();
   const mouvementReduit = useReducedMotion();
+
+  // Chorégraphie d'ouverture : chaque étape est une minuterie, toutes
+  // annulées dès que l'utilisateur agit ou que le composant est démonté.
+  useEffect(() => {
+    if (mouvementReduit || !demonstration) return;
+
+    setPosition(DEMO_AMORCE);
+    const minuteries = [
+      window.setTimeout(() => setPosition(DEMO_POUSSEE), DEMO_DELAI_POUSSEE),
+      window.setTimeout(() => setPosition(DEMO_EQUILIBRE), DEMO_DELAI_EQUILIBRE),
+    ];
+    return () => minuteries.forEach((minuterie) => window.clearTimeout(minuterie));
+  }, [demonstration, mouvementReduit]);
+
+  /** L'utilisateur a repris la main : la démonstration s'arrête pour de bon. */
+  const reprendLaMain = useCallback(() => setDemonstration(false), []);
 
   const placeCurseur = useCallback((abscisseClient: number) => {
     const cadre = cadreRef.current;
@@ -42,10 +73,11 @@ export function BeforeAfter({
 
   const debutGlisse = useCallback(
     (evenement: PointeurEvenement<HTMLDivElement>) => {
+      reprendLaMain();
       setGlisse(true);
       placeCurseur(evenement.clientX);
     },
-    [placeCurseur]
+    [placeCurseur, reprendLaMain]
   );
 
   const pendantGlisse = useCallback(
@@ -79,10 +111,19 @@ export function BeforeAfter({
           return;
       }
       evenement.preventDefault();
+      reprendLaMain();
       setPosition(cible);
     },
-    [position]
+    [position, reprendLaMain]
   );
+
+  // La démonstration se lit à 0,36 s par étape ; dès que l'utilisateur pilote,
+  // le voile redevient quasi instantané pour un retour direct sous le doigt.
+  const transitionClip = mouvementReduit
+    ? "none"
+    : demonstration
+      ? "clip-path 0.36s ease-out"
+      : "clip-path 0.1s ease-out";
 
   return (
     <div className={cn("relative select-none", className)}>
@@ -110,7 +151,7 @@ export function BeforeAfter({
           className="absolute inset-0"
           style={{
             clipPath: `inset(0 ${100 - position}% 0 0)`,
-            transition: mouvementReduit ? "none" : "clip-path 0.1s ease-out",
+            transition: transitionClip,
           }}
         >
           <Image

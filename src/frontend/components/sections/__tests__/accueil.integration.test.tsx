@@ -1,12 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Hero } from "../hero";
-import { Portfolio } from "../portfolio";
-import type { PortfolioProject } from "../portfolio";
-import { Services } from "../services";
-import type { ServiceItem } from "../services";
-import { Stats } from "../stats";
+import PageAccueil from "@/app/(public)/page";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -26,63 +21,48 @@ vi.mock("next/image", () => ({
   default: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} src={src} />,
 }));
 
-const projets: PortfolioProject[] = [
-  {
-    id: "1",
-    title: "Villa Moderne Douala",
-    description: "Villa contemporaine de standing",
-    imageUrl: "/photos/chantiers/04-04_chantier-r2-yaounde.png",
-    location: "Douala",
-    year: "2024",
-    surface: "320 m²",
-    slug: "villa-moderne-douala",
-  },
-];
+// GSAP n'entre jamais dans un test : le scénario du hero est un effet de
+// scroll, hors du périmètre de composition. Le composant reste rendu.
+vi.mock("@/frontend/components/sections/hero-scenario", () => ({
+  HeroScenario: () => null,
+}));
 
-const expertises: ServiceItem[] = [
-  {
-    id: "1",
-    number: "01",
-    title: "Ingénierie structure",
-    description: "Calculs et plans de structure",
-    icon: "building",
-    deliverables: ["Note de calcul"],
-    href: "/ingenierie",
-  },
-];
+const ACTES_ATTENDUS = ["C1", "C4", "C2", "C3", "C5", "C6", "C8"] as const;
 
-// Assemblage type page d'accueil : les sections cohabitent sans conflit
-// de région nommée et les CTA mènent aux tunnels de conversion.
-describe("Assemblage page d'accueil", () => {
-  it("compose Hero, Stats, Portfolio et Services avec des régions uniques", () => {
-    render(
-      <>
-        <Hero />
-        <Stats />
-        <Portfolio projects={projets} />
-        <Services services={expertises} />
-      </>
+/**
+ * Règle d'alternance de l'audit §6.3 : deux sections consécutives ne partagent
+ * ni morphologie, ni surface, ni ratio dominant. Le test lit les marqueurs
+ * posés par chaque composition sur les sections réellement rendues.
+ */
+describe("Composition de la page d'accueil", () => {
+  it("déroule les sept actes dans l'ordre prévu", () => {
+    const { container } = render(<PageAccueil />);
+
+    const compositions = [...container.querySelectorAll("[data-composition]")].map((section) =>
+      section.getAttribute("data-composition")
     );
 
-    expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /chiffres clés/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /portfolio/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /services/i })).toBeInTheDocument();
+    expect(compositions).toEqual([...ACTES_ATTENDUS]);
   });
 
-  it("relie chaque carte portfolio à sa page et le hero au tunnel devis", () => {
-    render(
-      <>
-        <Hero />
-        <Portfolio projects={projets} />
-      </>
+  it("n'aligne jamais deux actes voisins sur la même surface", () => {
+    const { container } = render(<PageAccueil />);
+
+    const surfaces = [...container.querySelectorAll("[data-composition]")].map((section) =>
+      section.getAttribute("data-surface")
     );
 
-    expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
-      "href",
-      "/devis"
-    );
-    const carte = screen.getByText("Villa Moderne Douala").closest("a");
-    expect(carte).toHaveAttribute("href", "/portfolio/villa-moderne-douala");
+    expect(surfaces).toHaveLength(ACTES_ATTENDUS.length);
+    for (let index = 1; index < surfaces.length; index += 1) {
+      expect(surfaces[index]).not.toBe(surfaces[index - 1]);
+    }
+  });
+
+  it("présente les quatre métiers et les quatre jalons du suivi", () => {
+    const { container } = render(<PageAccueil />);
+
+    expect(container.querySelectorAll("[data-sens]")).toHaveLength(4);
+    expect(container.querySelectorAll("[data-jalon]")).toHaveLength(4);
   });
 });
+

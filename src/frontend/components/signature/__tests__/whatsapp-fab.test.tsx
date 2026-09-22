@@ -47,4 +47,18 @@ describe("WhatsAppFab", () => {
     const { container } = render(<WhatsAppFab phoneNumber="abc" />);
     expect(container).toBeEmptyDOMElement();
   });
+
+  it("porte un fond à contraste suffisant pour l'icône blanche (audit §5.3)", () => {
+    // Le vert WhatsApp pur (#25d366) laisse l'icône blanche sous 3:1. Le FAB
+    // utilise donc la variante de contraste dédiée, jamais le vert de marque.
+    render(<WhatsAppFab phoneNumber="237690000000" />);
+
+    Object.defineProperty(window, "scrollY", { value: 500, writable: true, configurable: true });
+    fireEvent.scroll(window);
+
+    expect(screen.getByRole("link", { name: /whatsapp/i })).toHaveClass(
+      "bg-whatsapp-contraste",
+    );
+    expect(screen.getByRole("link", { name: /whatsapp/i })).not.toHaveClass("bg-whatsapp");
+  });
 });

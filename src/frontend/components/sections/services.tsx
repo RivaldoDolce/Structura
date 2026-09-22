@@ -42,11 +42,8 @@ export function Services({ services, className }: ServicesProps) {
       <div className="max-w-content mx-auto px-4 md:px-6">
         <div className="mb-16 text-center">
           <Kicker number="04" label="SERVICES" className="mb-4 justify-center" />
-          <h2 className="font-display text-h2 text-ink font-bold">
-            Nos{" "}
-            <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
-              expertises
-            </span>
+          <h2 className="font-display text-h2 text-ink-soft font-bold">
+            Nos <span className="text-ink">expertises</span>
           </h2>
           <p className="text-body text-ink-soft mx-auto mt-4 max-w-2xl">
             Trois pôles d&apos;expertise pour accompagner votre projet de A à Z, de l&apos;étude à

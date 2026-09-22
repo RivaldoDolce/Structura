@@ -10,10 +10,16 @@ export interface ProjectCardProps {
   title: string;
   description: string;
   imageUrl: string;
+  /** Description de la photo ; à défaut, le titre sert d'alternative. */
+  imageAlt?: string;
   location?: string;
   year?: string;
   surface?: string;
   href?: string;
+  /** Classe de ratio Tailwind (`aspect-[4/3]` par défaut). */
+  ratio?: string;
+  /** Attribut `sizes` de l'image : dépend de la largeur réelle de la carte. */
+  imageSizes?: string;
   className?: string;
 }
 
@@ -23,10 +29,13 @@ export function ProjectCard({
   title,
   description,
   imageUrl,
+  imageAlt,
   location,
   year,
   surface,
   href,
+  ratio = "aspect-[4/3]",
+  imageSizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   className,
 }: ProjectCardProps) {
   const donnees = [
@@ -41,12 +50,12 @@ export function ProjectCard({
       transition={{ duration: 0.4, ease: easings.outExpo }}
       className={cn("group rounded-card bg-surface relative overflow-hidden", className)}
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className={cn("relative overflow-hidden", ratio)}>
         <Image
           src={imageUrl}
-          alt={title}
+          alt={imageAlt ?? title}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes={imageSizes}
           className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
         />
         <div

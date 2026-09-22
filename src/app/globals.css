@@ -4,16 +4,35 @@
    Aucun composant ne porte de valeur brute, ce qui rend un thème clair ou une
    déclinaison de marque possible sans toucher au code. */
 @theme {
-  /* Fonds : du plus profond au plus proche */
-  --color-fond: #070b14;
-  --color-surface: #0c1220;
-  --color-elevated: #121a2c;
+  /* Fonds : hiérarchie à cinq niveaux (audit §5.1). Du plus profond au plus
+     proche : l'écart de luminosité entre chaque cran est perceptible à l'œil
+     nu sur un écran non calibré — c'est lui qui crée la profondeur. Les
+     ratios entre crans sont verrouillés par scripts/audit-surfaces.mjs. */
+  --color-fond: #060a12;
+  --color-surface-deep: #0a101d;
+  --color-surface: #121a2a;
+  --color-surface-raised: #1a2540;
+  --color-elevated: #243254;
 
-  /* Bordures : rgba pour se superposer proprement sur tous les fonds */
+  /* Contextes particuliers : données (maille blueprint) et chaleur (bois).
+     Ce sont des ambiances, pas des niveaux d'élévation. */
+  --color-surface-warm: #1f1712;
+  --color-surface-blueprint: #0b1524;
+
+  /* Bordures : rgba pour se superposer proprement sur tous les fonds.
+     `line-light` est le filet de lumière posé en inset haut des cartes. */
   --color-line: rgba(148, 163, 184, 0.14);
   --color-line-strong: rgba(148, 163, 184, 0.28);
+  --color-line-light: rgba(255, 255, 255, 0.07);
 
-  /* Marque : le bleu structure, le cyan qualifie, l'orange vend */
+  /* Chaleur matière : badges d'essence et contextes ébénisterie uniquement
+     (jamais boutons ni liens — contrat d'usage §5.3). */
+  --color-cuivre: #b0703c;
+  --color-terre: #8a5a3b;
+  --color-sable: #c8a97e;
+
+  /* Marque : le bleu structure, le cyan qualifie, l'orange vend.
+     `whatsapp-contraste` garantit un ratio > 4,5:1 sur texte sombre. */
   --color-steel: #3b82f6;
   --color-steel-deep: #1d4ed8;
   --color-blueprint: #22d3ee;
@@ -21,6 +40,7 @@
   --color-safety-deep: #d97706;
   --color-whatsapp: #25d366;
   --color-whatsapp-deep: #128c7e;
+  --color-whatsapp-contraste: #1da851;
 
   /* Textes */
   --color-ink: #f1f5f9;
@@ -41,12 +61,14 @@
   --font-mono: var(--font-jetbrains-mono);
 
   /* Échelle typographique fluide, sans media query */
-  --text-display: clamp(2.75rem, 5vw + 1rem, 4.75rem);
+  --text-display: clamp(3rem, 7vw + 1rem, 6rem);
   --text-display--line-height: 1.02;
   --text-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
   --text-h1--line-height: 1.08;
   --text-h2: clamp(1.6rem, 2vw + 0.9rem, 2.25rem);
   --text-h2--line-height: 1.15;
+  --text-h2b: clamp(1.35rem, 1.2vw + 1.05rem, 1.6rem);
+  --text-h2b--line-height: 1.25;
   --text-h3: 1.25rem;
   --text-h3--line-height: 1.3;
   --text-body: 1rem;
@@ -138,6 +160,47 @@
       transform: translateY(0);
     }
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Recettes de profondeur (audit §5.2) : une recette par rôle, jamais  */
+/* cumulées. L'élévation se lit par l'écart de surface et le filet de  */
+/* lumière, pas par une bordure décorative.                            */
+/* ------------------------------------------------------------------ */
+
+/* Carte ordinaire : filet de lumière supérieur sur surface standard. */
+.st-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-line);
+  box-shadow: inset 0 1px 0 var(--color-line-light);
+}
+
+/* Panneau élevé : réservé aux éléments flottants (menus, panneau d'étape
+   active du tunnel, FAB encapsulé). Ombre douce réelle. */
+.st-raised {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-line-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 24px 48px -24px rgba(2, 6, 23, 0.8);
+}
+
+/* Contexte chaud : la matière bois entre par la lumière, pas par la
+   saturation. Réservé aux sections et cartes ébénisterie. */
+.st-warm {
+  background: linear-gradient(180deg, #2a1e16 0%, var(--color-surface-warm) 100%);
+  box-shadow: inset 0 1px 0 rgba(217, 119, 6, 0.12);
+}
+
+/* Fusion photo : toute photo posée sur une section fond dans la surface
+   hôte par un dégradé bas — plus jamais de « poster collé sur mur noir ». */
+.st-photo-fusion::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 120px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--color-fond) 100%);
 }
 
 /* ------------------------------------------------------------------ */

@@ -71,9 +71,9 @@ const EXPERTISES_DEMO: ServiceItem[] = [
 ];
 
 const JALONS_DEMO: Jalon[] = [
-  { id: "etude", label: "Étude", date: "2025-01-15", status: "completed", notes: "Plans validés" },
-  { id: "fondations", label: "Fondations", date: "2025-03-02", status: "current" },
-  { id: "elevation", label: "Élévation", date: "2025-06-20", status: "upcoming" },
+  { id: "etude", label: "Étude", date: "2025-01-15", statut: "termine", notes: "Plans validés" },
+  { id: "fondations", label: "Fondations", date: "2025-03-02", statut: "en-cours" },
+  { id: "elevation", label: "Élévation", date: "2025-06-20", statut: "a-venir" },
 ];
 
 // Page d'atelier : assemblage réel des sections et primitifs avec des

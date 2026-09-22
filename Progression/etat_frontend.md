@@ -45,10 +45,20 @@ marque, `sections/` compose les pages.
   `/admin`, `/api`), JSON-LD `Organization` + `WebSite` dans le layout racine, `metadataBase`
   - canoniques (accueil, fiche plan) + OG fiche plan. Constantes dans
     `src/shared/constants/site.ts`.
-- **Vérifications vertes** : 179/179 tests Vitest, `tsc --noEmit` propre, **ESLint 0 problème**
+- **Vérifications vertes** : 185/185 tests Vitest, `tsc --noEmit` propre, **ESLint 0 problème**
   (plus aucun `<img>` hors mocks de test). Dev réel OK : optimiseur d'images vérifié
   (449 Ko → 21 Ko AVIF), toutes les pages en 200. Correctifs détaillés dans
   `evolution_frontend.md`. `next build` reste à valider en CI.
+- **Refonte frontend (Phases 0–2 livrées, voir `plan_refonte.md` + `evolution_frontend.md`)** :
+  périmètre strict respecté (données, routes et API intacts). Après la Phase 0
+  (tokens v2, recettes de profondeur, fonds AVIF branchés, FAB AA), la Phase 1 a
+  livré les compositions C2–C8 testées en TDD, l'accueil en 7 actes avec règle
+  d'alternance verrouillée, les 4 pages métier recomposées, l'auto-démo de
+  `BeforeAfter` et le verrou de références d'assets ; la Phase 2 a livré la
+  signature `JalonTimeline` (rail tracé au scroll, 6 états à symbole, dates,
+  photos, documents, dépenses, actions), visible sur les fiches portfolio.
+  **225/225 tests**, `tsc` propre, **ESLint 0 problème**. Reste Phase 3 :
+  crossfade plan→photo, skeletons blueprint, `next build`, revue comparative.
 
 ## Références design
 

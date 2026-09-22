@@ -1,11 +1,27 @@
 // Exports centralisés des sections composables.
+export { BandeauAlterne } from "./bandeau-alterne";
+export type { BandeauAlterneItem, BandeauAlterneProps, SurfaceBandeau } from "./bandeau-alterne";
+export { CtaChaud } from "./cta-chaud";
+export type { ActionCta, CtaChaudProps } from "./cta-chaud";
 export { Hero } from "./hero";
+export { HeroEnTete } from "./hero-en-tete";
+export type { HeroEnTeteProps } from "./hero-en-tete";
 export { HeroScenario } from "./hero-scenario";
 export type { HeroScenarioProps } from "./hero-scenario";
+export { MosaiqueAsymetrique } from "./mosaique-asymetrique";
+export type { MosaiqueAsymetriqueProps, MosaiqueItem } from "./mosaique-asymetrique";
+export { PanneauDonnees } from "./panneau-donnees";
+export type { LigneDonnee, PanneauDonneesProps } from "./panneau-donnees";
 export { PlanDessin } from "./plan-dessin";
 export type { PlanDessinProps } from "./plan-dessin";
+export { PleinLargeurEditorial } from "./plein-largeur-editorial";
+export type { LigneFiche, PleinLargeurEditorialProps } from "./plein-largeur-editorial";
 export { Portfolio } from "./portfolio";
 export type { PortfolioProject, PortfolioProps } from "./portfolio";
 export { Services } from "./services";
 export type { ServiceItem, ServicesProps } from "./services";
+export { StatistiquesSourcees } from "./statistiques-sourcees";
+export type { StatistiqueSourcee, StatistiquesSourceesProps } from "./statistiques-sourcees";
 export { Stats } from "./stats";
+export { TimelineHorizontale } from "./timeline-horizontale";
+export type { JalonVitrine, TimelineHorizontaleProps } from "./timeline-horizontale";

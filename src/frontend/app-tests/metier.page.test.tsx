@@ -26,14 +26,17 @@ vi.mock("next/image", () => ({
 }));
 
 describe("Pages métier", () => {
-  it("présente l'ingénierie avec preuve avant/après et CTA devis", () => {
+  it("présente l'ingénierie : méthode en quatre étapes et CTA devis", () => {
     render(<PageIngenierie />);
 
     expect(screen.getByRole("heading", { name: /ingénierie structure/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /demander un devis/i })).toHaveAttribute(
-      "href",
-      "/devis"
-    );
+    expect(screen.getByRole("heading", { name: /la méthode, étape par étape/i })).toBeInTheDocument();
+
+    const devis = screen.getAllByRole("link", { name: /demander un devis/i });
+    expect(devis.length).toBeGreaterThanOrEqual(1);
+    for (const lien of devis) {
+      expect(lien).toHaveAttribute("href", "/devis");
+    }
   });
 
   it("présente l'ébénisterie avec les essences du catalogue", () => {
@@ -50,14 +53,17 @@ describe("Pages métier", () => {
     }
   });
 
-  it("présente l'immobilier avec CTA contact", () => {
+  it("présente l'immobilier avec ses vérifications et le CTA contact", () => {
     render(<PageImmobilier />);
 
     expect(screen.getByRole("heading", { name: /immobilier/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /prendre contact/i })).toHaveAttribute(
-      "href",
-      "/contact"
-    );
+    expect(screen.getByText(/six contrôles avant toute proposition/i)).toBeInTheDocument();
+
+    const contacts = screen.getAllByRole("link", { name: /prendre contact/i });
+    expect(contacts.length).toBeGreaterThanOrEqual(1);
+    for (const lien of contacts) {
+      expect(lien).toHaveAttribute("href", "/contact");
+    }
   });
 });
 

@@ -215,7 +215,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
           <div
             aria-hidden="true"
             style={{ width: `${((etape + 1) / 3) * 100}%` }}
-            className="from-steel to-blueprint h-full bg-gradient-to-r transition-all duration-300"
+            className="bg-blueprint h-full transition-all duration-300"
           />
         </div>
       </div>
