@@ -1,5 +1,49 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-22 — Refonte frontend : Phase 3 (dossier projet, AA, build, revue)
+
+Périmètre `plan_refonte.md` respecté : visuel et composition uniquement.
+
+- **Fiche plan « dossier projet »** (TDD, 3 nouveaux tests) : colonne achat
+  enrichie (prix EUR, CTA, réassurance CinetPay/facture OHADA/SAV, WhatsApp
+  pré-rempli avec la référence — même garde que le FAB), tableau technique
+  migré dans `PanneauDonnees` C7, section « Contenu du dossier » (6 pièces
+  contractuelles), clôture `CtaChaud` adaptation terrain dès 75 000 FCFA.
+- **Contrastes AA mesurés** (luminance relative sur les tokens réels) : ink
+  15–17:1 sur les 3 nouvelles surfaces, ink-soft 7,29:1, WhatsApp 6,06:1.
+  `ink-mute` (3,93:1) replié sur `ink-soft` pour les usages informatifs
+  (sources chiffrées, aides devis, fil d'Ariane) ; token inchangé, usages
+  décoratifs conservés.
+- **`next build` vert — première fois du projet** : 28 pages statiques,
+  First Load JS 144–188 Ko < budget 200 Ko. Cause des échecs précédents :
+  `.next` partagé avec le dev — rebuild à froid, serveur coupé.
+- **LCP lab** (Playwright, build prod) : 176 ms accueil, 228 ms fiche —
+  marge énorme sous 2,5 s (localhost, à confirmer sur 4G réelle).
+- **Revue visuelle** (captures Playwright 390/1440, build prod) : hero et
+  fiche premium, rythme mobile varié. Un défaut trouvé et corrigé :
+  l'annotation « 8.40 m » mordait le bouton conversion en desktop
+  (repositionnée en zone basse).
+- Résultat : **239/239 tests**, `tsc` propre, lint 0 erreur (3 warnings
+  pré-existants sur `scripts/audit-surfaces.mjs`). Phase 3 soldée : refonte
+  terminée, hors mesure terrain (360 px réel, clavier physique, 4G).
+
+## 2026-09-22 — Refonte frontend : fin Phase 2 (crossfade + skeletons)
+
+Périmètre `plan_refonte.md` respecté : visuel et mouvement uniquement,
+données, routes, API et comportements intacts.
+
+- **Garde partagée** `hooks/use-scenario-actif.ts` (TDD, 3 tests) + `HeroScenario`
+  factorisé dessus (garde `matchMedia` partiel ajoutée, révélée par son test).
+- **Crossfade plan→photo** (§8.2) : `FonduPlanPhoto` (TDD, 4 tests), scrub
+  ScrollTrigger desktop, photo seule en repli. Emplacement `fondu` optionnel
+  sur `TimelineHorizontale` (2 tests), branché en acte 5 de l'accueil.
+- **Skeletons blueprint** (§7.3) : `ui/skeleton` retracé + `loading.tsx` des
+  deux routes dynamiques (2 tests, `role="status"`).
+- Preuve dev réel : `/`, fiche plan et fiche portfolio en 200, `data-fondu`
+  présent, zéro erreur serveur.
+- Résultat : **236/236 tests**, `tsc` propre, lint 0 erreur (3 warnings
+  pré-existants sur `scripts/audit-surfaces.mjs`). Reste Phase 3.
+
 ## 2026-09-22 — Refonte frontend : Phases 1 et 2 (compositions + signature)
 
 Périmètre : `Progression/plan_refonte.md` respecté — tokens, styles et composition
@@ -24,8 +68,8 @@ visuelle uniquement ; **données, routes, API, tunnel, sanitize et sécurité in
 - **4 pages métier** : `/ingenierie` (méthode 4 étapes + étude de cas + livrables),
   `/ebenisterie` (`atelier-essences.tsx` local : 5 cartes 1/1, badge cuivre, fond
   warm + geste 3 temps + lit bubinga), `/plans` (catalogue C7 sans `h1` dupliqué
-  + CTA adaptation), `/immobilier` (mosaïque + 6 vérifications). Fil d'Ariane
-  conservé via l'emplacement `ariane` de `HeroEnTete`.
+  - CTA adaptation), `/immobilier` (mosaïque + 6 vérifications). Fil d'Ariane
+    conservé via l'emplacement `ariane` de `HeroEnTete`.
 - **Mise en scène de `BeforeAfter`** : auto-démo 30→65→45 en 1,2 s, interrompue à
   la première interaction, immobile en mouvement réduit (9 tests).
 - **Signature `JalonTimeline`** (§8.1) : rail tracé au scroll (`motion.line` +
@@ -53,7 +97,7 @@ comportements du tunnel, sanitize et sécurité restent intacts**.
   textures) ; 21,88 Mo de PNG → 5,45 Mo de convertis (**−75 %**). Rapport
   commité : `Progression/rapport_conversion_assets.md`. PNG sources conservés.
 - **Tokens v2** (`globals.css` + `tokens.ts`) : surfaces `fond → surface-deep →
-  surface → surface-raised → elevated`, contextes `surface-warm` (bois) et
+surface → surface-raised → elevated`, contextes `surface-warm` (bois) et
   `surface-blueprint` (données), `line-light`, `h2b`, `whatsapp-contraste`,
   palette matière `cuivre/terre/sable`. `cn.ts` reste exact après extension des
   listes (`text-h2b`, nouvelles couleurs) — 19 tests lib verts.

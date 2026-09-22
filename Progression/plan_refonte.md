@@ -48,7 +48,7 @@ sans jamais casser tests, routes, données ni API.
 ### 1.2 Ce qui ne change pas — la frontière de non-régression
 
 - **Données** : `src/frontend/data/*` et leurs tests de cohérence restent la source
-  unique (seuls contenus *éditoriaux* des pages métier complétés, hors schémas).
+  unique (seuls contenus _éditoriaux_ des pages métier complétés, hors schémas).
 - **Routes** : aucune route créée, supprimée ou renommée ; `sitemap.ts` et `robots.ts`
   intacts.
 - **API et backend** : aucun import `backend/`, aucune route `app/api`, aucun schéma
@@ -65,14 +65,14 @@ sans jamais casser tests, routes, données ni API.
 
 ### 1.3 Frontière technique explicite
 
-| Domaine | Statut |
-|---|---|
-| `globals.css` | étendu (tokens v2, recettes de profondeur) — jamais remplacé |
-| `tokens.ts` | étendu (exposition des nouveaux `var(--*)`) |
-| `animations.ts` | étendu (3 variants dérivés, zéro courbe locale) |
-| `cn.ts` | inchangé (échelles déjà déclarées ; extension testée si besoin) |
-| Données, routes, API | intacts |
-| Assets | PNG sources conservés, conversions AVIF/WebP commitées |
+| Domaine              | Statut                                                          |
+| -------------------- | --------------------------------------------------------------- |
+| `globals.css`        | étendu (tokens v2, recettes de profondeur) — jamais remplacé    |
+| `tokens.ts`          | étendu (exposition des nouveaux `var(--*)`)                     |
+| `animations.ts`      | étendu (3 variants dérivés, zéro courbe locale)                 |
+| `cn.ts`              | inchangé (échelles déjà déclarées ; extension testée si besoin) |
+| Données, routes, API | intacts                                                         |
+| Assets               | PNG sources conservés, conversions AVIF/WebP commitées          |
 
 ## 2. Phases — chacune livrable, testée, réversible
 
@@ -132,7 +132,7 @@ tous les tests sont verts et croissants ; la revue visuelle dépasse 7,5/10.
 - **Coquilles** : « selecting » ×2 corrigées (page ébénisterie, portfolio) ;
   verrou anti-anglicismes ajouté à `coherence.test.ts` (rouge → vert, TDD).
 - **Tokens v2** : 5 surfaces + 2 contextes + `line-light` + `h2b` + `whatsapp-contraste`
-  + palette matière (cuivre/terre/sable) dans `globals.css` et `tokens.ts`.
+  - palette matière (cuivre/terre/sable) dans `globals.css` et `tokens.ts`.
 - **Recettes de profondeur** : `.st-card`, `.st-raised`, `.st-warm`, `.st-photo-fusion`
   ; appliquées aux cartes d'essences. Dégradés de titre supprimés dans les 5 fichiers
   concernés (hero accent cyan plein, titres secondaires en `ink-soft`/`ink`).
@@ -190,4 +190,23 @@ Reste à faire : Phase 3 (polish, `next build`, revue comparative).
 - **Preuve en production** : fiches `/portfolio/[slug]` affichent la timeline
   complète (6 `data-statut` vérifiés en dev réel, 200) ; vitrine d'accueil sur
   les 4 premiers jalons.
-- Reste Phase 2 : crossfade plan→photo (§8.2), skeletons blueprint (§7.3).
+
+### Phase 2 — fin : crossfade + skeletons (tests 236 verts)
+
+- **Garde partagée** `hooks/use-scenario-actif.ts` (3 tests) : desktop ≥ 768 px
+  ET mouvement non réduit, avec garde pour implémentations `matchMedia`
+  partielles. `HeroScenario` factorisé dessus (zéro duplication, ses 4 tests
+  restent verts).
+- **Crossfade plan→photo** (§8.2) : `sections/fondu-plan-photo.tsx` (4 tests
+  TDD) — plan `PlanDessin` sur fond `surface-deep` dissous vers la photo de
+  chantier en scrub ScrollTrigger desktop ; sans JS, sur mobile ou en mouvement
+  réduit, la photo reste affichée seule. Branché en acte 5 via l'emplacement
+  `fondu` optionnel de `TimelineHorizontale` (2 tests, composition C5 intacte,
+  test d'alternance vert).
+- **Skeletons blueprint** (§7.3) : `ui/skeleton` retracé (traits cyan 30 % sur
+  `surface-blueprint`, sweep `transform` conservé) + `loading.tsx` sur les deux
+  routes dynamiques (relevé aux dimensions réelles, `role="status"`, 2 tests).
+  Pas de faux chargements ailleurs : catalogue et journal n'ont aucun travail
+  asynchrone, aucun `Suspense` décoratif ajouté.
+- Reste : Phase 3 (fiche plan « dossier projet », AA, clavier, reduced-motion,
+  `next build`, budgets, revue comparative).
