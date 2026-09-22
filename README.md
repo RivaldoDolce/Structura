@@ -42,7 +42,7 @@ qui remplit quatre missions simultanées :
 2. **Convertir sans friction** — Chaque page mène vers un acte mesurable : devis,
    achat, WhatsApp, RDV.
 3. **Rassurer à distance** — La diaspora a les moyens mais pas la confiance.
-   L'espace client répond à la peur n°1 : *« où va mon argent ? »*.
+   L'espace client répond à la peur n°1 : _« où va mon argent ? »_.
 4. **Faire gagner du temps** — Le back-office chantier digitalise le quotidien
    terrain depuis un téléphone.
 
@@ -52,11 +52,11 @@ qui remplit quatre missions simultanées :
 
 ## Les trois pôles d'activité
 
-| Pôle | Page racine | Monétisation |
-|------|-------------|-------------|
-| **Ingénierie & structure** | `/ingenierie` | Prestations par phase (étude → fondations → élévation → finitions) |
-| **Ébénisterie d'art** | `/ebenisterie` | Vente directe + sur-mesure (acompte 50%) |
-| **Plans & Immobilier** | `/plans`, `/immobilier` | Vente de plans (revenu passif) + commissions |
+| Pôle                       | Page racine             | Monétisation                                                       |
+| -------------------------- | ----------------------- | ------------------------------------------------------------------ |
+| **Ingénierie & structure** | `/ingenierie`           | Prestations par phase (étude → fondations → élévation → finitions) |
+| **Ébénisterie d'art**      | `/ebenisterie`          | Vente directe + sur-mesure (acompte 50%)                           |
+| **Plans & Immobilier**     | `/plans`, `/immobilier` | Vente de plans (revenu passif) + commissions                       |
 
 Ces trois pôles convergent vers un **espace client unique** et un **back-office
 unique**.
@@ -65,24 +65,24 @@ unique**.
 
 ## Stack technique
 
-| Couche | Choix | Justification |
-|--------|-------|---------------|
-| Framework | Next.js 15 (App Router) | Rendu hybride, API intégrée, un seul déploiement |
-| Langage | TypeScript strict | Bugs à la compilation, `strict: true` |
-| UI | Tailwind CSS 4 + shadcn/ui | Vitesse, composants accessibles (Radix) |
-| Animations | Motion + GSAP + Lenis | Reveals, scroll cinématique, défilement fluide |
-| Formulaires | React Hook Form + Zod | Performance, validation partagée client/serveur |
-| Base de données | PostgreSQL (Neon) | Relationnel solide, `JSONB` pour champs variables |
-| ORM | Prisma 6.x | Migrations versionnées, types auto-générés |
-| Auth | Auth.js v5 (NextAuth) | Email/mot de passe + Google prêt, sessions httpOnly |
-| Stockage fichiers | Cloudflare R2 | Compatible S3, zéro frais de sortie |
-| Paiement | CinetPay SDK JS | MTN MoMo + Orange Money + carte, agrément en place |
-| Emails | Resend + React Email | Templates JSX, 100/jour gratuit |
-| Cache | Upstash Redis | Serverless, rate limiting + cache |
-| Monitoring | Sentry + Vercel Analytics | Erreurs en prod visibles immédiatement |
-| Hébergement | Vercel | Déploiement auto, CDN mondial, previews par branche |
-| Tests | Vitest + Playwright | Unitaires + E2E sur chemins critiques |
-| Qualité | ESLint + Prettier + Husky | Style uniforme, commits bloqués si défectueux |
+| Couche            | Choix                      | Justification                                       |
+| ----------------- | -------------------------- | --------------------------------------------------- |
+| Framework         | Next.js 15 (App Router)    | Rendu hybride, API intégrée, un seul déploiement    |
+| Langage           | TypeScript strict          | Bugs à la compilation, `strict: true`               |
+| UI                | Tailwind CSS 4 + shadcn/ui | Vitesse, composants accessibles (Radix)             |
+| Animations        | Motion + GSAP + Lenis      | Reveals, scroll cinématique, défilement fluide      |
+| Formulaires       | React Hook Form + Zod      | Performance, validation partagée client/serveur     |
+| Base de données   | PostgreSQL (Neon)          | Relationnel solide, `JSONB` pour champs variables   |
+| ORM               | Prisma 6.x                 | Migrations versionnées, types auto-générés          |
+| Auth              | Auth.js v5 (NextAuth)      | Email/mot de passe + Google prêt, sessions httpOnly |
+| Stockage fichiers | Cloudflare R2              | Compatible S3, zéro frais de sortie                 |
+| Paiement          | CinetPay SDK JS            | MTN MoMo + Orange Money + carte, agrément en place  |
+| Emails            | Resend + React Email       | Templates JSX, 100/jour gratuit                     |
+| Cache             | Upstash Redis              | Serverless, rate limiting + cache                   |
+| Monitoring        | Sentry + Vercel Analytics  | Erreurs en prod visibles immédiatement              |
+| Hébergement       | Vercel                     | Déploiement auto, CDN mondial, previews par branche |
+| Tests             | Vitest + Playwright        | Unitaires + E2E sur chemins critiques               |
+| Qualité           | ESLint + Prettier + Husky  | Style uniforme, commits bloqués si défectueux       |
 
 ---
 
@@ -106,12 +106,12 @@ Un seul projet Next.js avec séparation **physique stricte** frontend/backend
 └──────────────────────────────────────────────────────────────┘
 ```
 
-| Dossier | Rôle | Contenu | Interdit |
-|---------|------|---------|----------|
-| `src/app/` | Chef d'orchestre | Routes, layouts, pages, API | Logique métier inline |
-| `src/frontend/` | Ce que le client voit | Composants, hooks, styles, animations | Accès DB, logique métier |
-| `src/backend/` | Ce qui tourne | Features, services, intégrations, jobs | Composants UI |
-| `src/shared/` | Le contrat | Types, schémas Zod, constantes | Importer front ou back |
+| Dossier         | Rôle                  | Contenu                                | Interdit                 |
+| --------------- | --------------------- | -------------------------------------- | ------------------------ |
+| `src/app/`      | Chef d'orchestre      | Routes, layouts, pages, API            | Logique métier inline    |
+| `src/frontend/` | Ce que le client voit | Composants, hooks, styles, animations  | Accès DB, logique métier |
+| `src/backend/`  | Ce qui tourne         | Features, services, intégrations, jobs | Composants UI            |
+| `src/shared/`   | Le contrat            | Types, schémas Zod, constantes         | Importer front ou back   |
 
 ---
 
@@ -341,25 +341,25 @@ vercel --prod
 
 ### Services externes
 
-| Service | Rôle | URL |
-|---------|------|-----|
-| Vercel | Hébergement app | vercel.com |
-| Neon | PostgreSQL managé | neon.tech |
-| Cloudflare R2 | Stockage fichiers | cloudflare.com |
-| CinetPay | Paiement Mobile Money | cinetpay.com |
-| Resend | Emails transactionnels | resend.com |
-| Sentry | Monitoring erreurs | sentry.io |
+| Service       | Rôle                   | URL            |
+| ------------- | ---------------------- | -------------- |
+| Vercel        | Hébergement app        | vercel.com     |
+| Neon          | PostgreSQL managé      | neon.tech      |
+| Cloudflare R2 | Stockage fichiers      | cloudflare.com |
+| CinetPay      | Paiement Mobile Money  | cinetpay.com   |
+| Resend        | Emails transactionnels | resend.com     |
+| Sentry        | Monitoring erreurs     | sentry.io      |
 
 ### Cron Jobs (Vercel)
 
-| Job | Fréquence | Rôle |
-|-----|-----------|------|
-| `reconcile-paiements` | Toutes les 15 min | Réconciliation CinetPay |
-| `verrouiller-rapports` | 06:00 UTC | Verrouiller rapports du jour |
-| `digest-chantier` | 07:00 UTC | Digest email des chantiers |
-| `relances-crm` | 08:00 UTC | Relances leads J+2 / J+7 |
-| `purge-temp` | 02:00 UTC | Nettoyage fichiers temporaires |
-| `rapport-patron` | 20:00 UTC | Résumé journalier patron |
+| Job                    | Fréquence         | Rôle                           |
+| ---------------------- | ----------------- | ------------------------------ |
+| `reconcile-paiements`  | Toutes les 15 min | Réconciliation CinetPay        |
+| `verrouiller-rapports` | 06:00 UTC         | Verrouiller rapports du jour   |
+| `digest-chantier`      | 07:00 UTC         | Digest email des chantiers     |
+| `relances-crm`         | 08:00 UTC         | Relances leads J+2 / J+7       |
+| `purge-temp`           | 02:00 UTC         | Nettoyage fichiers temporaires |
+| `rapport-patron`       | 20:00 UTC         | Résumé journalier patron       |
 
 ---
 
@@ -378,7 +378,17 @@ vercel --prod
 
 ## Déviations
 
-_Aucune déviation pour l'instant. Toute entorse aux règles sera documentée ici._
+Toute entorse assumée à une règle du guide ou d'un skill est consignée ici, avec sa raison.
+Une règle ignorée en silence serait une dette invisible.
+
+1. **`JalonTimeline` horizontal à toutes les tailles.** Le skill 03 prévoit une timeline
+   verticale sur mobile et horizontale sur desktop ; la maquette
+   `docs/ui-maquettes/mobile/02-15_journal-chantier-diaspora.png` impose une timeline horizontale
+   compacte à 360 px. La maquette prime, le défilement latéral remplace l'empilement.
+2. **`next/image` dans `BeforeAfter` et `WatermarkPreview`.** Le voile du comparateur
+   repose sur un `clip-path` porté par le parent : l'optimiseur ne le casse pas
+   (`fill` + `sizes`, ratio gardé). Vérifié en dev réel : 449 Ko PNG → 21 Ko AVIF.
+   ESLint ne signale plus aucun `<img>` hors mocks de test.
 
 ---
 
@@ -386,4 +396,4 @@ _Aucune déviation pour l'instant. Toute entorse aux règles sera documentée ic
 
 Propriétaire — Tous droits réservés.
 
-*STRUCTURA — « L'ingénierie qui construit en confiance » · Yaoundé, Cameroun.*
+_STRUCTURA — « L'ingénierie qui construit en confiance » · Yaoundé, Cameroun._

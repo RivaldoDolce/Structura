@@ -1,5 +1,5 @@
 "use client";
-// Blocage du clic droit et du glisser-déposer : gestionnaires DOM donc rendu client obligatoire.
+import Image from "next/image";
 import { useCallback } from "react";
 import type { DragEvent as GlisserEvenement, MouseEvent as SourisEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";
@@ -31,17 +31,18 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
       role="group"
       aria-label="Aperçu protégé du plan. Le téléchargement nécessite un achat."
       onContextMenu={bloqueMenu}
-      className={cn("relative [-webkit-touch-callout:none] select-none", className)}
+      className={cn("relative select-none [-webkit-touch-callout:none]", className)}
     >
-      <div className="relative overflow-hidden rounded-[16px] bg-[var(--color-surface)]">
-        <img
+      <div className="rounded-card bg-surface relative overflow-hidden">
+        <Image
           src={imageUrl}
           alt="Aperçu du plan avec filigrane de protection"
-          loading="lazy"
-          decoding="async"
+          width={0}
+          height={0}
+          sizes="(max-width: 1200px) 100vw, 1200px"
           draggable={false}
           onDragStart={bloqueGlisse}
-          className="block h-full w-full object-contain"
+          style={{ width: "100%", height: "auto" }}
         />
 
         <div
@@ -60,7 +61,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             {Array.from({ length: REPETITIONS_FILIGRANE }).map((_, ligne) => (
               <p
                 key={`filigrane-${ligne}`}
-                className="whitespace-nowrap font-mono text-2xl font-bold uppercase tracking-[0.2em] text-[var(--color-blueprint)]/40"
+                className="tracking-annotation text-blueprint/40 font-mono text-2xl font-bold whitespace-nowrap uppercase"
               >
                 {watermarkText}
               </p>
@@ -70,11 +71,11 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 rounded-[16px] border-2 border-[var(--color-line-strong)]"
+          className="rounded-card border-line-strong pointer-events-none absolute inset-0 border-2"
         />
       </div>
 
-      <div className="mt-3 flex items-center gap-2 text-[var(--color-ink-soft)]">
+      <div className="text-ink-soft mt-3 flex items-center gap-2">
         <svg
           aria-hidden="true"
           fill="none"
@@ -89,7 +90,7 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
-        <p className="font-mono text-xs uppercase tracking-[0.08em]">
+        <p className="text-mono-xs font-mono uppercase">
           Aperçu protégé — Achat requis pour télécharger
         </p>
       </div>

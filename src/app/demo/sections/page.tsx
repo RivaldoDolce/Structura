@@ -86,7 +86,10 @@ export default function DemoSectionsPage() {
       <Portfolio projects={PROJETS_DEMO} />
       <Services services={EXPERTISES_DEMO} />
 
-      <section aria-label="Démonstration des primitifs" className="mx-auto max-w-[1200px] space-y-16 px-4 py-24 md:px-6">
+      <section
+        aria-label="Démonstration des primitifs"
+        className="max-w-content mx-auto space-y-16 px-4 py-24 md:px-6"
+      >
         <JalonTimeline jalons={JALONS_DEMO} />
         <BeforeAfter
           beforeImage="/photos/avant-apres/04-19_avant-batiment-fissure-mokolo.png"

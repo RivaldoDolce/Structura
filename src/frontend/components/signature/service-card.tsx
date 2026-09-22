@@ -24,34 +24,24 @@ export function ServiceCard({
   return (
     <article
       className={cn(
-        "group relative overflow-hidden rounded-[16px] border border-[var(--color-line)] bg-[var(--color-surface)] p-8 transition-colors hover:border-[var(--color-steel)]",
-        className,
+        "group rounded-card border-line bg-surface hover:border-steel relative overflow-hidden border p-8 transition-colors",
+        className
       )}
     >
       <div className="flex items-start justify-between">
-        <span aria-hidden="true" className="text-[var(--color-blueprint)]">
+        <span aria-hidden="true" className="text-blueprint">
           {icon}
         </span>
-        <span className="font-mono text-sm text-[var(--color-ink-muted)]">{number}</span>
+        <span className="text-ink-mute font-mono text-sm">{number}</span>
       </div>
 
-      <h3 className="mt-6 font-heading text-2xl font-semibold text-[var(--color-ink)]">
-        {title}
-      </h3>
-      <p className="mt-3 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-        {description}
-      </p>
+      <h3 className="font-display text-ink mt-6 text-2xl font-semibold">{title}</h3>
+      <p className="text-ink-soft mt-3 text-sm leading-relaxed">{description}</p>
 
-      <ul className="mt-6 space-y-3 border-t border-[var(--color-line)] pt-6">
+      <ul className="border-line mt-6 space-y-3 border-t pt-6">
         {deliverables.map((livrable) => (
-          <li
-            key={livrable}
-            className="flex items-center gap-3 text-sm text-[var(--color-ink-soft)]"
-          >
-            <Check
-              aria-hidden="true"
-              className="h-4 w-4 shrink-0 text-[var(--color-ok)]"
-            />
+          <li key={livrable} className="text-ink-soft flex items-center gap-3 text-sm">
+            <Check aria-hidden="true" className="text-ok h-4 w-4 shrink-0" />
             {livrable}
           </li>
         ))}

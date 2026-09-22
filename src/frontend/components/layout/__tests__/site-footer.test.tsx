@@ -19,12 +19,14 @@ describe("SiteFooter", () => {
   it("expose la marque, sa baseline et les contacts", () => {
     render(<SiteFooter />);
 
-    expect(screen.getByRole("contentinfo", { name: /pied de page structura/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("contentinfo", { name: /pied de page structura/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(/l'ingénierie qui construit en confiance/i)).toBeInTheDocument();
     expect(screen.getByText(/cameroun/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /690 000 000/ })).toHaveAttribute(
       "href",
-      expect.stringContaining("tel:"),
+      expect.stringContaining("tel:")
     );
   });
 
@@ -52,11 +54,11 @@ describe("SiteFooter", () => {
 
     expect(screen.getByRole("link", { name: /699 999 999/ })).toHaveAttribute(
       "href",
-      "tel:+237699999999",
+      "tel:+237699999999"
     );
     expect(screen.getByRole("link", { name: /bonjour@exemple.cm/ })).toHaveAttribute(
       "href",
-      "mailto:bonjour@exemple.cm",
+      "mailto:bonjour@exemple.cm"
     );
   });
 });

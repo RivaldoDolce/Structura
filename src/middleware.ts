@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// Protected routes configuration
+// Zones réservées : le tunnel de devis reste public, c'est la porte
+// d'entrée commerciale — le bloquer derrière un compte tuerait la conversion.
 const protectedRoutes = {
   client: ["/compte"],
   gestion: ["/gestion"],
   admin: ["/admin"],
-  conversion: ["/devis", "/rendez-vous"],
 };
 
 const authRoutes = ["/compte/connexion", "/compte/inscription"];
@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
 
   // Skip auth check for API routes, static files, and auth pages
   if (
@@ -53,7 +54,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|og).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|og).*)"],
 };

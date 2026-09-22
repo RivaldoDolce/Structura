@@ -1,7 +1,25 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { BeforeAfter } from "../before-after";
+
+vi.mock("next/image", () => ({
+  default: ({
+    alt,
+    src,
+    draggable,
+    className,
+  }: {
+    alt: string;
+    src: string;
+    draggable?: boolean;
+    className?: string;
+  }) => (
+    // Simulacre volontaire : on vérifie le cadrage, pas l'optimiseur.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img alt={alt} src={src} draggable={draggable} className={className} />
+  ),
+}));
 
 const props = { beforeImage: "/test/avant.jpg", afterImage: "/test/apres.jpg" };
 

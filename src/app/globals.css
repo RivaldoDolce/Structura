@@ -1,91 +1,180 @@
 @import "tailwindcss";
 
+/* Design tokens « Blueprint Futuriste » : source unique de vérité.
+   Aucun composant ne porte de valeur brute, ce qui rend un thème clair ou une
+   déclinaison de marque possible sans toucher au code. */
 @theme {
-  --color-base: #070B14;
-  --color-surface: #0C1220;
-  --color-elevated: #121A2C;
-  --color-steel: #3B82F6;
-  --color-steel-deep: #1D4ED8;
-  --color-blueprint: #22D3EE;
-  --color-safety: #F59E0B;
-  --color-ink: #F1F5F9;
-  --color-ink-soft: #94A3B8;
-  --color-ink-muted: #64748B;
-  --color-ok: #10B981;
-  --color-danger: #EF4444;
-  --color-whatsapp: #25D366;
-  --color-whatsapp-deep: #128C7E;
-  --color-line: #1E293B;
-  --color-line-strong: #334155;
-  --color-safety-deep: #D97706;
+  /* Fonds : du plus profond au plus proche */
+  --color-fond: #070b14;
+  --color-surface: #0c1220;
+  --color-elevated: #121a2c;
 
-  --font-heading: "Space Grotesk", sans-serif;
-  --font-body: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* Bordures : rgba pour se superposer proprement sur tous les fonds */
+  --color-line: rgba(148, 163, 184, 0.14);
+  --color-line-strong: rgba(148, 163, 184, 0.28);
+
+  /* Marque : le bleu structure, le cyan qualifie, l'orange vend */
+  --color-steel: #3b82f6;
+  --color-steel-deep: #1d4ed8;
+  --color-blueprint: #22d3ee;
+  --color-safety: #f59e0b;
+  --color-safety-deep: #d97706;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-deep: #128c7e;
+
+  /* Textes */
+  --color-ink: #f1f5f9;
+  --color-ink-soft: #94a3b8;
+  --color-ink-mute: #64748b;
+
+  /* Voile des modales : assombrit sans aveugler */
+  --color-overlay: rgba(2, 6, 23, 0.72);
+
+  /* Sémantiques */
+  --color-ok: #10b981;
+  --color-warn: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Typographie : les variables sont posées par next/font dans le layout */
+  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+
+  /* Échelle typographique fluide, sans media query */
+  --text-display: clamp(2.75rem, 5vw + 1rem, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
+  --text-h1--line-height: 1.08;
+  --text-h2: clamp(1.6rem, 2vw + 0.9rem, 2.25rem);
+  --text-h2--line-height: 1.15;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.3;
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.6;
+  --text-mono-xs: 0.75rem;
+  --text-mono-xs--line-height: 1.4;
+  --text-mono-xs--letter-spacing: 0.08em;
+
+  /* Interlettrage des cartouches techniques (kickers, traits de cote) */
+  --tracking-annotation: 0.2em;
+
+  /* Conteneur : 1200 px, padding latéral porté par les sections */
+  --container-content: 75rem;
+
+  /* Rayons */
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --radius-modal: 20px;
+  --radius-pill: 999px;
+
+  /* Ombres */
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 24px 48px -24px rgba(2, 6, 23, 0.8);
+  --shadow-glow: 0 0 0 1px rgba(59, 130, 246, 0.3), 0 0 40px -8px rgba(59, 130, 246, 0.35);
+
+  /* Courbes d'animation — consommées aussi par lib/tokens.ts et Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Durées : échelle unique, aucune valeur ad hoc dans un composant */
+  --dur-micro: 150ms;
+  --dur-standard: 300ms;
+  --dur-reveal: 400ms;
+  --dur-cinematic: 700ms;
+  --dur-stagger: 60ms;
+
+  /* Animations des primitives, limitées à transform et opacity : aucun paint
+   pendant l'animation. */
+  --animate-sweep: st-sweep 1.4s ease-in-out infinite;
+  --animate-overlay-in: st-overlay-in 150ms ease-out;
+  --animate-content-in: st-content-in 200ms var(--ease-out-expo);
+  --animate-sheet-in-right: st-sheet-in-right 300ms var(--ease-out-expo);
+  --animate-sheet-in-bottom: st-sheet-in-bottom 300ms var(--ease-out-expo);
+
+  @keyframes st-sweep {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes st-overlay-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes st-content-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes st-sheet-in-right {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes st-sheet-in-bottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
 }
 
-/* Base styles */
+/* ------------------------------------------------------------------ */
+/* Base                                                               */
+/* ------------------------------------------------------------------ */
 html {
   scroll-behavior: smooth;
 }
 
+/* Lenis prend la main sur le défilement : la règle `smooth` du navigateur
+   doit lui céder, sinon les deux inerties se combattent. */
+html.lenis {
+  scroll-behavior: auto;
+}
+
 body {
-  background-color: var(--color-base);
+  background-color: var(--color-fond);
   color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Selection */
-::selection {
-  background-color: rgba(59, 130, 246, 0.3);
-  color: var(--color-ink);
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--color-surface);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--color-elevated);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ink-muted);
-}
-
-/* Focus ring */
-*:focus-visible {
-  outline: 2px solid var(--color-steel);
-  outline-offset: 2px;
-}
-
-/* Blueprint grid overlay */
-.st-bg-blueprint {
-  background-image: url("/textures/textures-overlays/05-02_texture-grille-32.png");
-  background-repeat: repeat;
-}
-
-/* Grain overlay */
-.st-grain {
-  position: relative;
-}
-
-.st-grain::after {
+/* Grain de bruit à 3 % : la matière d'un tirage papier sans gêner la lecture.
+   Fixe et non interactif, il ne capte ni défilement ni clic. */
+body::after {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
+  z-index: 1;
   background-image: url("/textures/textures-overlays/05-07_texture-grain.png");
   background-repeat: repeat;
   opacity: 0.03;
   pointer-events: none;
 }
 
-/* Reduced motion */
+/* Respect strict de la préférence utilisateur : tout mouvement résiduel est
+   réduit à une transition quasi instantanée. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -95,4 +184,36 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Focus visible unifié : anneau cyan décalé, lisible sur tous les fonds */
+:focus-visible {
+  outline: 2px solid var(--color-blueprint);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Sélection de texte cohérente avec la marque */
+::selection {
+  background-color: rgba(34, 211, 238, 0.25);
+  color: var(--color-ink);
+}
+
+/* Scrollbar discrète, alignée sur les tokens */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-fond);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-elevated);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-line-strong);
 }

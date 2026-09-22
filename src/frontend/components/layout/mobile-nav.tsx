@@ -1,5 +1,4 @@
 "use client";
-// Overlay animé, focus trap et Escape : interaction donc rendu client.
 import { X } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
@@ -7,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
 import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { durations, easings } from "@/frontend/lib/tokens";
 import { ButtonTech } from "../signature/button-tech";
 
 export interface NavLink {
@@ -42,7 +42,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
       const menu = document.getElementById("mobile-nav");
       if (!menu) return;
       const focusables = menu.querySelectorAll<HTMLElement>(
-        'a, button, [tabindex]:not([tabindex="-1"])',
+        'a, button, [tabindex]:not([tabindex="-1"])'
       );
       if (focusables.length === 0) return;
       const premier = focusables[0] as HTMLElement;
@@ -70,7 +70,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
           exit={{ opacity: 0 }}
           transition={{ duration: animationsReduites ? 0 : 0.3 }}
           onClick={onClose}
-          className="fixed inset-0 z-50 bg-[var(--color-base)]/95 backdrop-blur-md"
+          className="bg-fond/95 fixed inset-0 z-50 backdrop-blur-md"
         >
           <div
             id="mobile-nav"
@@ -84,7 +84,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
               <Link
                 href="/"
                 onClick={onClose}
-                className="font-heading text-xl font-bold tracking-tight text-[var(--color-ink)]"
+                className="font-display text-ink text-xl font-bold tracking-tight"
               >
                 STRUCTURA
               </Link>
@@ -94,9 +94,9 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                 onClick={onClose}
                 aria-label="Fermer le menu"
                 className={cn(
-                  "flex h-11 w-11 items-center justify-center rounded-[10px]",
-                  "text-[var(--color-ink)] transition-colors hover:bg-[var(--color-elevated)]",
-                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)]",
+                  "rounded-control flex h-11 w-11 items-center justify-center",
+                  "text-ink hover:bg-elevated transition-colors",
+                  "focus-visible:ring-steel focus-visible:ring-2 focus-visible:outline-none"
                 )}
               >
                 <X aria-hidden="true" className="h-6 w-6" />
@@ -124,8 +124,8 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                         opacity: 1,
                         x: 0,
                         transition: {
-                          duration: animationsReduites ? 0 : 0.4,
-                          ease: [0.16, 1, 0.3, 1],
+                          duration: animationsReduites ? 0 : durations.reveal,
+                          ease: easings.outExpo,
                         },
                       },
                     }}
@@ -133,7 +133,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                     <Link
                       href={lien.href}
                       onClick={onClose}
-                      className="block font-heading text-3xl font-semibold text-[var(--color-ink)] transition-colors hover:text-[var(--color-blueprint)]"
+                      className="font-display text-ink hover:text-blueprint block text-3xl font-semibold transition-colors"
                     >
                       {lien.label}
                     </Link>

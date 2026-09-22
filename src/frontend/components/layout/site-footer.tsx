@@ -35,53 +35,49 @@ const COLONNES: ColonnePied[] = [
   {
     titre: "Ressources",
     liens: [
-      { href: "/blog", label: "Blog" },
       { href: "/plans", label: "Catalogue de plans" },
-      { href: "/contact", label: "Questions fréquentes" },
+      { href: "/contact", label: "Poser une question" },
     ],
   },
   {
     titre: "Légal",
     liens: [
-      { href: "/legal/mentions", label: "Mentions légales" },
+      { href: "/legal/mentions-legales", label: "Mentions légales" },
       { href: "/legal/cgv", label: "CGV" },
       { href: "/legal/confidentialite", label: "Confidentialité" },
     ],
   },
 ];
 
-// Pied de page vitrine : marque + contact, 4 colonnes, signature datée.
-// Les coordonnées passent en props pour ne jamais disperser de hardcode.
 export function SiteFooter({
   telephone = "+237690000000",
   email = "contact@structura-cm.com",
   className,
 }: SiteFooterProps) {
   const annee = new Date().getFullYear();
+  // Composition d'affichage : indicatif puis groupes de trois ; un numéro
+  // hors gabarit est affiché brut, jamais bloqué.
   const telephoneAffiche = telephone.replace(/(\+\d{3})(\d{3})(\d{3})(\d{3})/, "$1 $2 $3 $4");
 
   return (
     <footer
       role="contentinfo"
       aria-label="Pied de page STRUCTURA"
-      className={cn("border-t border-[var(--color-line)] bg-[var(--color-surface)]", className)}
+      className={cn("border-line bg-surface border-t", className)}
     >
-      <div className="mx-auto max-w-[1200px] px-4 py-16 md:px-6 md:py-24">
+      <div className="max-w-content mx-auto px-4 py-16 md:px-6 md:py-24">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-5">
           <div className="md:col-span-1">
-            <Link
-              href="/"
-              className="font-heading text-2xl font-bold tracking-tight text-[var(--color-ink)]"
-            >
+            <Link href="/" className="font-display text-ink text-2xl font-bold tracking-tight">
               STRUCTURA
             </Link>
-            <p className="mt-4 text-sm text-[var(--color-ink-soft)]">
+            <p className="text-ink-soft mt-4 text-sm">
               L&apos;ingénierie qui construit en confiance.
             </p>
 
-            <div className="mt-6 space-y-3 text-sm text-[var(--color-ink-soft)]">
+            <div className="text-ink-soft mt-6 space-y-3 text-sm">
               <p className="flex items-start gap-2">
-                <MapPin aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-blueprint)]" />
+                <MapPin aria-hidden="true" className="text-blueprint mt-0.5 h-4 w-4 shrink-0" />
                 <span>
                   Yaoundé
                   <br />
@@ -90,16 +86,16 @@ export function SiteFooter({
               </p>
               <a
                 href={`tel:${telephone}`}
-                className="flex items-center gap-2 transition-colors hover:text-[var(--color-ink)]"
+                className="hover:text-ink flex items-center gap-2 transition-colors"
               >
-                <Phone aria-hidden="true" className="h-4 w-4 text-[var(--color-blueprint)]" />
+                <Phone aria-hidden="true" className="text-blueprint h-4 w-4" />
                 <span>{telephoneAffiche}</span>
               </a>
               <a
                 href={`mailto:${email}`}
-                className="flex items-center gap-2 transition-colors hover:text-[var(--color-ink)]"
+                className="hover:text-ink flex items-center gap-2 transition-colors"
               >
-                <Mail aria-hidden="true" className="h-4 w-4 text-[var(--color-blueprint)]" />
+                <Mail aria-hidden="true" className="text-blueprint h-4 w-4" />
                 <span>{email}</span>
               </a>
             </div>
@@ -107,15 +103,13 @@ export function SiteFooter({
 
           {COLONNES.map((colonne) => (
             <nav key={colonne.titre} aria-label={`Pied de page — ${colonne.titre}`}>
-              <h3 className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
-                {colonne.titre}
-              </h3>
+              <h3 className="text-mono-xs text-ink-mute font-mono uppercase">{colonne.titre}</h3>
               <ul className="mt-4 space-y-3">
                 {colonne.liens.map((lien) => (
                   <li key={`${lien.href}-${lien.label}`}>
                     <Link
                       href={lien.href}
-                      className="text-sm text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
+                      className="text-ink-soft hover:text-ink text-sm transition-colors"
                     >
                       {lien.label}
                     </Link>
@@ -126,12 +120,10 @@ export function SiteFooter({
           ))}
         </div>
 
-        <div className="mt-16 border-t border-[var(--color-line)] pt-8">
+        <div className="border-line mt-16 border-t pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-[var(--color-ink-muted)]">
-              © {annee} STRUCTURA. Tous droits réservés.
-            </p>
-            <p className="font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]">
+            <p className="text-ink-mute text-sm">© {annee} STRUCTURA. Tous droits réservés.</p>
+            <p className="text-mono-xs text-ink-mute font-mono uppercase">
               Fait avec rigueur à Yaoundé
             </p>
           </div>

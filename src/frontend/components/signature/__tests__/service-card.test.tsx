@@ -11,7 +11,7 @@ describe("ServiceCard", () => {
         description="Calculs et plans de structure"
         icon={<span data-testid="icone" />}
         deliverables={["Note de calcul", "Plans de ferraillage"]}
-      />,
+      />
     );
 
     expect(screen.getByText("01")).toBeInTheDocument();
@@ -28,7 +28,7 @@ describe("ServiceCard", () => {
         description="Mobilier sur-mesure"
         icon={<span />}
         deliverables={["Conception 3D", "Fabrication"]}
-      />,
+      />
     );
 
     const liste = screen.getByRole("list");

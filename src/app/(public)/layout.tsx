@@ -7,7 +7,9 @@ import { WhatsAppFab } from "@/frontend/components/signature/whatsapp-fab";
 // fluide global (coupé sur les tunnels et en animations réduites) et
 // bouton WhatsApp. Le numéro vient de l'environnement, jamais en dur.
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
-  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "+237690000000";
+  // Le numéro tombe sur une chaîne vide plutôt qu'une valeur fabriquée :
+  // WhatsAppFab refuse alors de rendre un lien wa.me incomplet.
+  const whatsapp = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
   return (
     <LenisProvider>

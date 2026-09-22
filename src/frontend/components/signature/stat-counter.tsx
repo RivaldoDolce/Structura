@@ -1,9 +1,10 @@
 "use client";
-// Compteur déclenché au scroll via Motion : interaction donc rendu client.
+
 import * as React from "react";
 import { motion } from "motion/react";
 import { useCounter } from "@/frontend/hooks/use-counter";
 import { cn } from "@/frontend/lib/cn";
+import { fadeUpItem } from "@/frontend/lib/animations";
 
 export interface StatCounterProps {
   value: number;
@@ -14,8 +15,10 @@ export interface StatCounterProps {
   className?: string;
 }
 
-// Compteur animé une seule fois à l'entrée dans le viewport.
-// Le hook ne démarre que lorsque hasBeenVisible bascule, jamais avant.
+/**
+ * Compteur animé, déclenché une seule fois à l'entrée dans le viewport.
+ * Seuil porté à 40 % pour démarrer seulement quand le bloc est réellement lu.
+ */
 export function StatCounter({
   value,
   label,
@@ -34,21 +37,19 @@ export function StatCounter({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      variants={fadeUpItem}
+      initial="hidden"
+      whileInView="show"
       viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       onViewportEnter={() => setVisible(true)}
       className={cn("flex flex-col items-center text-center", className)}
     >
-      <span className="font-heading text-5xl font-bold tracking-tight text-[var(--color-ink)] md:text-6xl">
+      <span className="font-display text-ink text-5xl font-bold tracking-tight md:text-6xl">
         {prefix}
         {formate}
         {suffix}
       </span>
-      <span className="mt-2 font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-soft)]">
-        {label}
-      </span>
+      <span className="text-mono-xs text-ink-soft mt-2 font-mono uppercase">{label}</span>
     </motion.div>
   );
 }

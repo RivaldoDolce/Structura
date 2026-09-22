@@ -1,5 +1,7 @@
 "use client";
-// Animations Motion au survol et Slot Radix : interaction donc rendu client.
+
+// Motion porte le survol ; Slot en mode asChild pour ne pas fuiter des props
+// Motion vers le DOM de l'enfant (Link, etc.).
 import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { motion } from "motion/react";
@@ -19,11 +21,9 @@ export interface ButtonTechProps {
 }
 
 const CLASSES_VARIANTES = {
-  primary: "bg-[var(--color-steel)] text-white hover:bg-[var(--color-steel-deep)]",
-  conversion:
-    "bg-[var(--color-safety)] text-[var(--color-base)] font-semibold hover:bg-[var(--color-safety-deep)]",
-  ghost:
-    "border border-[var(--color-line-strong)] text-[var(--color-ink)] hover:bg-[var(--color-elevated)]",
+  primary: "bg-steel text-white hover:bg-steel-deep",
+  conversion: "bg-safety text-fond font-semibold hover:bg-safety-deep",
+  ghost: "border border-line-strong text-ink hover:bg-elevated",
 } as const;
 
 const CLASSES_TAILLES = {
@@ -33,8 +33,6 @@ const CLASSES_TAILLES = {
 } as const;
 
 // Bouton de marque aux coins en L qui s'écartent au survol.
-// Le cas asChild passe par Slot pur : les props Motion ne fuient jamais
-// vers le DOM de l'enfant (Link, etc.), seul le style est appliqué.
 export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
   (
     {
@@ -49,15 +47,15 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
       type = "button",
       onClick,
     },
-    ref,
+    ref
   ) => {
     const classes = cn(
-      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-[10px] font-medium transition-all",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-steel)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--color-base)]",
+      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-control font-medium transition-all",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-steel focus-visible:ring-offset-2 focus-visible:ring-offset-fond",
       "disabled:pointer-events-none disabled:opacity-50",
       CLASSES_VARIANTES[variant],
       CLASSES_TAILLES[size],
-      className,
+      className
     );
 
     if (asChild) {
@@ -82,12 +80,12 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 overflow-hidden rounded-[10px]"
+          className="rounded-control pointer-events-none absolute inset-0 overflow-hidden"
         >
-          <span className="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-          <span className="absolute right-0 top-0 h-3 w-3 border-r-2 border-t-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
+          <span className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
+          <span className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
           <span className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
-          <span className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
+          <span className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
         </span>
 
         {isLoading ? (
@@ -130,6 +128,6 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
         )}
       </motion.button>
     );
-  },
+  }
 );
 ButtonTech.displayName = "ButtonTech";

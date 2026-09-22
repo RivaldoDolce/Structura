@@ -1,4 +1,6 @@
 export const NAVIGATION = {
+  // Vitrine : le blog (P1) rejoindra cette liste quand sa page existera —
+  // aucun lien mort n'est exposé en attendant.
   public: [
     { label: "Accueil", href: "/" },
     { label: "Ingénierie", href: "/ingenierie" },
@@ -7,7 +9,6 @@ export const NAVIGATION = {
     { label: "Immobilier", href: "/immobilier" },
     { label: "Portfolio", href: "/portfolio" },
     { label: "À propos", href: "/a-propos" },
-    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
   client: [

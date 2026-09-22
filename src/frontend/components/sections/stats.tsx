@@ -1,11 +1,10 @@
 "use client";
-// Compteurs déclenchés au scroll : animation donc rendu client.
 import { motion } from "motion/react";
 import { BlueprintGrid } from "../signature/blueprint-grid";
 import { Kicker } from "../signature/kicker";
 import { StatCounter } from "../signature/stat-counter";
 import { TechDivider } from "../signature/tech-divider";
-import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { fadeUpItem, inViewOnce, staggerContainer } from "@/frontend/lib/animations";
 
 const CHIFFRES = [
   { value: 150, label: "Projets livrés", suffix: "+" },
@@ -14,11 +13,10 @@ const CHIFFRES = [
   { value: 24, label: "Chantiers en cours", suffix: "" },
 ] as const;
 
-// Bandeau de preuve : 4 compteurs animés une fois visibles, sur fond
-// blueprint discret. Deux colonnes sur mobile, quatre sur desktop.
+// Bandeau de preuve : quatre compteurs animés une seule fois à l'entrée dans
+// le viewport, sur une maille majeure (160 px) volontairement calme pour que
+// les chiffres portent seuls. Deux colonnes sur mobile, quatre sur desktop.
 export function Stats() {
-  const animationsReduites = useReducedMotion();
-
   return (
     <section
       role="region"
@@ -26,46 +24,18 @@ export function Stats() {
       className="relative overflow-hidden py-24 md:py-32"
     >
       <div data-blueprint-grid aria-hidden="true">
-        <BlueprintGrid density="low" fade="both" className="absolute inset-0" />
+        <BlueprintGrid density="major" fade="both" className="absolute inset-0" />
       </div>
 
-      <div className="relative mx-auto max-w-[1200px] px-4 md:px-6">
-        <motion.div
-          initial="masquee"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          variants={{
-            masquee: {},
-            visible: { transition: { staggerChildren: animationsReduites ? 0 : 0.06 } },
-          }}
-          className="mb-16 text-center"
-        >
-          <motion.div
-            variants={{
-              masquee: { opacity: 0, y: 16 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
-              },
-            }}
-          >
+      <div className="max-w-content relative mx-auto px-4 md:px-6">
+        <motion.div variants={staggerContainer} {...inViewOnce} className="mb-16 text-center">
+          <motion.div variants={fadeUpItem}>
             <Kicker number="02" label="CHIFFRES" className="mb-4 justify-center" />
           </motion.div>
 
-          <motion.h2
-            variants={{
-              masquee: { opacity: 0, y: 16 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-              },
-            }}
-            className="font-heading text-3xl font-bold text-[var(--color-ink)] md:text-5xl"
-          >
+          <motion.h2 variants={fadeUpItem} className="font-display text-h2 text-ink font-bold">
             Une expertise qui se{" "}
-            <span className="bg-gradient-to-r from-[var(--color-steel)] to-[var(--color-blueprint)] bg-clip-text text-transparent">
+            <span className="from-steel to-blueprint bg-gradient-to-r bg-clip-text text-transparent">
               mesure
             </span>
           </motion.h2>

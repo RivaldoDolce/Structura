@@ -23,8 +23,8 @@ const libelleStatut = {
   upcoming: "à venir",
 } as const;
 
-// Mise en page horizontale imposée par la maquette du journal (02-15),
-// identique à 360 px et au bureau, avec défilement sur petit écran.
+// Disposition horizontale identique à toutes les tailles d'écran, avec
+// défilement sur petit écran.
 export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
   return (
     <ol
@@ -41,10 +41,8 @@ export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
             <div
               aria-hidden="true"
               className={cn(
-                "absolute left-full top-6 z-0 h-px w-4",
-                jalon.status === "completed"
-                  ? "bg-[var(--color-blueprint)]"
-                  : "bg-[var(--color-line)]",
+                "absolute top-6 left-full z-0 h-px w-4",
+                jalon.status === "completed" ? "bg-blueprint" : "bg-line"
               )}
             />
           ) : null}
@@ -52,27 +50,25 @@ export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
           <div
             className={cn(
               "z-10 flex h-12 w-12 items-center justify-center rounded-full border-2",
-              jalon.status === "completed" &&
-                "border-[var(--color-blueprint)] bg-[var(--color-blueprint)] text-white",
+              jalon.status === "completed" && "border-blueprint bg-blueprint text-white",
               jalon.status === "current" &&
-                "animate-pulse border-[var(--color-steel)] bg-[var(--color-surface)] [animation-duration:2s]",
-              jalon.status === "upcoming" &&
-                "border-dashed border-[var(--color-line-strong)] bg-[var(--color-surface)]",
+                "border-steel bg-surface animate-pulse [animation-duration:2s]",
+              jalon.status === "upcoming" && "border-line-strong bg-surface border-dashed"
             )}
           >
             {jalon.status === "completed" ? <Check aria-hidden="true" className="h-5 w-5" /> : null}
             {jalon.status === "current" ? (
-              <span aria-hidden="true" className="h-3 w-3 rounded-full bg-[var(--color-steel)]" />
+              <span aria-hidden="true" className="bg-steel h-3 w-3 rounded-full" />
             ) : null}
           </div>
 
           <div className="mt-3">
             <p
               className={cn(
-                "font-heading text-sm font-semibold",
-                jalon.status === "completed" && "text-[var(--color-blueprint)]",
-                jalon.status === "current" && "text-[var(--color-ink)]",
-                jalon.status === "upcoming" && "text-[var(--color-ink-soft)]",
+                "font-display text-sm font-semibold",
+                jalon.status === "completed" && "text-blueprint",
+                jalon.status === "current" && "text-ink",
+                jalon.status === "upcoming" && "text-ink-soft"
               )}
             >
               {jalon.label} <span className="sr-only">{libelleStatut[jalon.status]}</span>
@@ -81,15 +77,13 @@ export function JalonTimeline({ jalons, className }: JalonTimelineProps) {
             {jalon.date ? (
               <time
                 dateTime={jalon.date}
-                className="mt-1 block font-mono text-xs uppercase tracking-[0.08em] text-[var(--color-ink-muted)]"
+                className="text-mono-xs text-ink-mute mt-1 block font-mono uppercase"
               >
                 {format(new Date(`${jalon.date}T00:00:00`), "d MMM yyyy", { locale: fr })}
               </time>
             ) : null}
 
-            {jalon.notes ? (
-              <p className="mt-1 text-sm text-[var(--color-ink-soft)]">{jalon.notes}</p>
-            ) : null}
+            {jalon.notes ? <p className="text-ink-soft mt-1 text-sm">{jalon.notes}</p> : null}
           </div>
         </li>
       ))}

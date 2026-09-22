@@ -8,10 +8,14 @@ interface UseCounterOptions {
   decimals?: number;
 }
 
-// Anime un compteur de zéro vers la cible avec un easing expo-out.
-// Démarre seulement quand end > 0 : l'appelant garde 0 tant que le
-// compteur est hors viewport, puis bascule sur la vraie valeur.
-export function useCounter({ end, duration = 1200, delay = 0, decimals = 0 }: UseCounterOptions): number {
+// Démarre seulement quand `end > 0` : l'appelant garde 0 tant que le compteur
+// est hors viewport, puis bascule sur la valeur cible.
+export function useCounter({
+  end,
+  duration = 1200,
+  delay = 0,
+  decimals = 0,
+}: UseCounterOptions): number {
   const [compte, setCompte] = useState(0);
   const animationsReduites = useReducedMotion();
 
@@ -36,8 +40,7 @@ export function useCounter({ end, duration = 1200, delay = 0, decimals = 0 }: Us
         ? requestAnimationFrame
         : (rappel: FrameRequestCallback): number =>
             setTimeout(() => rappel(performance.now()), 16) as unknown as number;
-    const annule =
-      typeof cancelAnimationFrame === "function" ? cancelAnimationFrame : clearTimeout;
+    const annule = typeof cancelAnimationFrame === "function" ? cancelAnimationFrame : clearTimeout;
 
     const anime = (instant: number): void => {
       if (origine === null) origine = instant;

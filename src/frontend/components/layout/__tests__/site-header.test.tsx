@@ -35,12 +35,11 @@ describe("SiteHeader", () => {
   it("réserve le CTA devis au desktop et le hamburger au mobile", () => {
     render(<SiteHeader />);
 
-    expect(
-      screen.getByRole("link", { name: /demander un devis/i }).parentElement,
-    ).toHaveClass("hidden", "md:block");
-    expect(screen.getByRole("button", { name: /ouvrir le menu/i })).toHaveClass(
-      "md:hidden",
+    expect(screen.getByRole("link", { name: /demander un devis/i }).parentElement).toHaveClass(
+      "hidden",
+      "md:block"
     );
+    expect(screen.getByRole("button", { name: /ouvrir le menu/i })).toHaveClass("md:hidden");
   });
 
   it("reste transparent en haut puis floute après 24px de scroll", () => {
@@ -52,7 +51,7 @@ describe("SiteHeader", () => {
     Object.defineProperty(window, "scrollY", { value: 30, writable: true, configurable: true });
     fireEvent.scroll(window);
 
-    expect(header).toHaveClass("backdrop-blur-md", "border-[var(--color-line)]");
+    expect(header).toHaveClass("backdrop-blur-md", "border-line");
   });
 
   it("ouvre le menu mobile, bloque le scroll du body et referme via Escape", async () => {
@@ -64,9 +63,7 @@ describe("SiteHeader", () => {
 
     await utilisateur.click(hamburger);
     expect(hamburger).toHaveAttribute("aria-expanded", "true");
-    expect(
-      screen.getByRole("dialog", { name: /menu de navigation/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: /menu de navigation/i })).toBeInTheDocument();
     expect(document.body.style.overflow).toBe("hidden");
 
     await utilisateur.keyboard("{Escape}");
@@ -77,9 +74,6 @@ describe("SiteHeader", () => {
   it("porte un libellé d'en-tête pour les technologies d'assistance", () => {
     render(<SiteHeader />);
 
-    expect(screen.getByRole("banner")).toHaveAttribute(
-      "aria-label",
-      "En-tête du site STRUCTURA",
-    );
+    expect(screen.getByRole("banner")).toHaveAttribute("aria-label", "En-tête du site STRUCTURA");
   });
 });

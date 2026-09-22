@@ -61,7 +61,7 @@ describe("Portfolio", () => {
 
     expect(screen.getByRole("link", { name: /voir tout le portfolio/i })).toHaveAttribute(
       "href",
-      "/portfolio",
+      "/portfolio"
     );
     expect(container.querySelector(".grid")).toHaveClass("grid-cols-1", "md:grid-cols-3");
   });

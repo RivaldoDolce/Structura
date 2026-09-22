@@ -27,9 +27,13 @@ const nextConfig: NextConfig = {
         },
         {
           key: "Content-Security-Policy",
+          // Les sources de paiement sont déjà prévues mais aucun script n'est
+          // chargé aujourd'hui : elles restent référencées pour le tunnel prévu.
           value: [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.cinetpay.com",
+            `script-src 'self' 'unsafe-inline'${
+              process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"
+            } https://js.cinetpay.com`,
             "style-src 'self' 'unsafe-inline'",
             "img-src 'self' blob: data: https://*.r2.cloudflarestorage.com https://pub-*.r2.dev",
             "font-src 'self'",

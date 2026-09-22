@@ -3,11 +3,11 @@ export const STATUTS_COMMANDE = {
   PAYE: { label: "Payé", color: "text-ok" },
   LIVRE: { label: "Livré", color: "text-steel" },
   ANNULE: { label: "Annulé", color: "text-danger" },
-  REMBOURSE: { label: "Remboursé", color: "text-ink-muted" },
+  REMBOURSE: { label: "Remboursé", color: "text-ink-mute" },
 } as const;
 
 export const STATUTS_TACHE = {
-  A_FAIRE: { label: "À faire", color: "text-ink-muted" },
+  A_FAIRE: { label: "À faire", color: "text-ink-mute" },
   EN_COURS: { label: "En cours", color: "text-steel" },
   EN_ATTENTE: { label: "En attente", color: "text-safety" },
   TERMINEE: { label: "Terminée", color: "text-ok" },
@@ -29,7 +29,7 @@ export const STATUTS_PAIEMENT = {
   EN_ATTENTE: { label: "En attente", color: "text-safety" },
   SUCCES: { label: "Succès", color: "text-ok" },
   ECHEC: { label: "Échec", color: "text-danger" },
-  REMBOURSE: { label: "Remboursé", color: "text-ink-muted" },
+  REMBOURSE: { label: "Remboursé", color: "text-ink-mute" },
 } as const;
 
 export const MOYENS_PAIEMENT = {

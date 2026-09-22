@@ -15,21 +15,19 @@ describe("ButtonTech", () => {
   it("applique la variante conversion demandée", () => {
     render(<ButtonTech variant="conversion">Devis</ButtonTech>);
 
-    expect(screen.getByRole("button", { name: "Devis" })).toHaveClass(
-      "bg-[var(--color-safety)]",
-    );
+    expect(screen.getByRole("button", { name: "Devis" })).toHaveClass("bg-safety");
   });
 
   it("rend l'enfant tel quel en mode asChild sans fuir de props Motion vers le DOM", () => {
     const { container } = render(
       <ButtonTech asChild variant="primary">
         <a href="/devis">Devis</a>
-      </ButtonTech>,
+      </ButtonTech>
     );
 
     const lien = screen.getByRole("link", { name: "Devis" });
     expect(lien).toHaveAttribute("href", "/devis");
-    expect(lien).toHaveClass("bg-[var(--color-steel)]");
+    expect(lien).toHaveClass("bg-steel");
     expect(container.querySelector("button")).not.toBeInTheDocument();
   });
 
@@ -39,7 +37,7 @@ describe("ButtonTech", () => {
     render(
       <ButtonTech isLoading onClick={clic}>
         Envoyer
-      </ButtonTech>,
+      </ButtonTech>
     );
 
     const bouton = screen.getByRole("button", { name: /chargement/i });

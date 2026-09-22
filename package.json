@@ -36,6 +36,7 @@
     "clsx": "^2.1.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "gsap": "^3.15.0",
     "jose": "^6.0.0",
     "lenis": "^1.3.8",
     "lucide-react": "^0.468.0",
@@ -46,7 +47,7 @@
     "react-hook-form": "^7.54.0",
     "sharp": "^0.33.0",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.6.0",
+    "tailwind-merge": "^3.7.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {
@@ -83,5 +84,12 @@
     "*.{json,md,css}": [
       "prettier --write"
     ]
+  },
+  "allowScripts": {
+    "sharp@0.33.5": true,
+    "esbuild": true,
+    "@prisma/client@6.12.0": true,
+    "@prisma/engines@6.12.0": true,
+    "prisma@6.12.0": true
   }
 }

@@ -8,9 +8,23 @@ vi.mock("next/link", () => ({
   default: ({
     children,
     href,
+    onClick,
     ...reste
-  }: AnchorHTMLAttributes<HTMLAnchorElement> & { children: ReactNode; href: string }) => (
-    <a href={href} {...reste}>
+  }: AnchorHTMLAttributes<HTMLAnchorElement> & {
+    children: ReactNode;
+    href: string;
+    onClick?: (evenement: React.MouseEvent<HTMLAnchorElement>) => void;
+  }) => (
+    // jsdom suit les href et pollue la sortie : on neutralise la navigation
+    // réelle, le composant reçoit toujours son onClick (fermeture du menu).
+    <a
+      href={href}
+      {...reste}
+      onClick={(evenement) => {
+        evenement.preventDefault();
+        onClick?.(evenement);
+      }}
+    >
       {children}
     </a>
   ),
@@ -36,7 +50,7 @@ describe("Navigation header et menu mobile", () => {
     expect(document.body.style.overflow).toBe("");
     expect(screen.getByRole("button", { name: /ouvrir le menu/i })).toHaveAttribute(
       "aria-expanded",
-      "false",
+      "false"
     );
   });
 

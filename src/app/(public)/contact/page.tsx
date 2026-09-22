@@ -1,0 +1,58 @@
+import type { Metadata } from "next";
+import { FilAriane } from "@/frontend/components/signature/fil-ariane";
+import { Kicker } from "@/frontend/components/signature/kicker";
+import { FormulaireContact } from "./formulaire-contact";
+
+export const metadata: Metadata = {
+  title: "Contact — STRUCTURA",
+  description:
+    "Parlez-nous de votre projet : réponse sous 24 h ouvrées, par téléphone, WhatsApp ou formulaire.",
+};
+
+const COORDONNEES = [
+  { libelle: "Téléphone", valeur: "+237 6 90 00 00 00", href: "tel:+237690000000" },
+  { libelle: "WhatsApp", valeur: "+237 6 90 00 00 00", href: "https://wa.me/237690000000" },
+  { libelle: "Email", valeur: "contact@structura.cm", href: "mailto:contact@structura.cm" },
+  { libelle: "Atelier", valeur: "Yaoundé, Cameroun", href: undefined },
+] as const;
+
+export default function PageContact() {
+  return (
+    <div className="max-w-content mx-auto px-4 py-24 md:px-6">
+      <FilAriane items={[{ label: "Contact" }]} className="mb-6" />
+      <Kicker number="09" label="CONTACT" className="mb-4" />
+      <h1 className="font-display text-h1 text-ink max-w-3xl font-bold">Parlons de votre projet</h1>
+      <p className="text-body text-ink-soft mt-4 max-w-2xl">
+        Réponse garantie sous 24 h ouvrées. Décrivez le besoin, nous préparons le reste.
+      </p>
+
+      <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-2">
+        <FormulaireContact />
+        <aside
+          aria-label="Coordonnées"
+          className="rounded-card border-line bg-surface h-fit border p-6"
+        >
+          <ul className="space-y-5">
+            {COORDONNEES.map((coordonnee) => (
+              <li key={coordonnee.libelle}>
+                <p className="text-mono-xs text-ink-mute font-mono uppercase">
+                  {coordonnee.libelle}
+                </p>
+                {coordonnee.href ? (
+                  <a
+                    href={coordonnee.href}
+                    className="text-ink hover:text-blueprint mt-1 block font-medium"
+                  >
+                    {coordonnee.valeur}
+                  </a>
+                ) : (
+                  <p className="text-ink mt-1 font-medium">{coordonnee.valeur}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  );
+}
