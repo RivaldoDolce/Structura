@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { BandeauAlterne } from "@/frontend/components/sections/bandeau-alterne";
 import { CtaChaud } from "@/frontend/components/sections/cta-chaud";
 import { FonduPlanPhoto } from "@/frontend/components/sections/fondu-plan-photo";
 import { Hero } from "@/frontend/components/sections/hero";
 import { MosaiqueAsymetrique } from "@/frontend/components/sections/mosaique-asymetrique";
 import { PleinLargeurEditorial } from "@/frontend/components/sections/plein-largeur-editorial";
+import { SceneEbenisterie } from "@/frontend/components/sections/scene-ebenisterie";
+import { SceneImmobilier } from "@/frontend/components/sections/scene-immobilier";
+import { SceneIngenierie } from "@/frontend/components/sections/scene-ingenierie";
+import { ScenePlans } from "@/frontend/components/sections/scene-plans";
 import { StatistiquesSourcees } from "@/frontend/components/sections/statistiques-sourcees";
 import { TimelineHorizontale } from "@/frontend/components/sections/timeline-horizontale";
 import { BeforeAfter } from "@/frontend/components/signature/before-after";
 import { JALONS_CHANTIER } from "@/frontend/data/jalons";
+import { PLANS } from "@/frontend/data/plans";
 import { PROJETS_PORTFOLIO } from "@/frontend/data/portfolio";
 import { numeroInternational } from "@/frontend/lib/sanitize";
 
@@ -49,60 +53,21 @@ const CHIFFRES = [
 ];
 
 /*
- * Acte 3 — quatre métiers, quatre matières : chaque bandeau porte la surface
- * qui raconte son matériau (bleu structure, chaleur bois, relevé technique,
- * photo livrée).
+ * Acte 3 — quatre métiers, quatre scènes : chacun sa lumière et sa géométrie
+ * (plan V2 §5). Les contenus restent ceux des données et des pages métier,
+ * seule la mise en scène change.
  */
-const METIERS = [
-  {
-    id: "ingenierie",
-    number: "01",
-    title: "Ingénierie structure",
-    description:
-      "Descente de charges, notes de calcul et plans de ferraillage vérifiés avant le premier sac de ciment.",
-    imageUrl: "/photos/chantiers/04-04_chantier-r2-yaounde.png",
-    imageAlt: "Chantier R+2 en cours d'élévation à Yaoundé",
-    deliverables: ["Note de calcul signée", "Plans de ferraillage", "Réception technique"],
-    href: "/ingenierie",
-    surface: "fond",
-  },
-  {
-    id: "ebenisterie",
-    number: "02",
-    title: "Ébénisterie d'art",
-    description:
-      "Mobilier sur-mesure en essences locales sélectionnées, assemblé et fini à l'atelier.",
-    imageUrl: "/photos/essences/04-05_macro-bois-padouk.png",
-    imageAlt: "Veinage serré d'un plateau de padouk",
-    deliverables: ["Conception 3D", "Fabrication atelier", "Pose et finition"],
-    href: "/ebenisterie",
-    surface: "warm",
-  },
-  {
-    id: "plans",
-    number: "03",
-    title: "Plans de construction",
-    description:
-      "Modèles prêts à construire, adaptés à votre terrain et déposés pour le permis de bâtir.",
-    imageUrl: "/photos/chantiers/04-02_plan-3d-holographique.png",
-    imageAlt: "Maquette numérique d'un plan de villa",
-    deliverables: ["Dossier complet", "Adaptation au terrain", "Dépôt du permis"],
-    href: "/plans",
-    surface: "blueprint",
-  },
-  {
-    id: "immobilier",
-    number: "04",
-    title: "Immobilier clé en main",
-    description:
-      "Villas, immeubles et terrains vérifiés — foncier, structure, finitions — jusqu'à la remise des clés.",
-    imageUrl: "/photos/immobilier/04-15_villa-bastos-nuit.png",
-    imageAlt: "Villa Bastos éclairée à la tombée du jour",
-    deliverables: ["Sélection vérifiée", "Accompagnement notaire", "Remise des clés"],
-    href: "/immobilier",
-    surface: "deep",
-  },
-] satisfies Parameters<typeof BandeauAlterne>[0]["items"];
+const POINTS_INGENIERIE = [
+  { valeur: "Calcul", label: "Note vérifiée" },
+  { valeur: "Ferraillage", label: "Plans cotés" },
+  { valeur: "Suivi", label: "Réception documentée" },
+];
+
+const VERIFICATIONS_IMMOBILIER = [
+  "Titre foncier vérifié",
+  "Structure calculée",
+  "Permis de bâtir OK",
+];
 
 /*
  * Acte 5 — le chantier en direct : les quatre premiers jalons réels, dans
@@ -156,20 +121,61 @@ export default function PageAccueil() {
       {/* 1 — Le plan s'éveille : fond blueprint AVIF et tracé au scroll */}
       <Hero />
 
-      {/* 2 — La preuve chiffrée */}
+      {/* 2 — La preuve chiffrée : première respiration claire du récit */}
       <StatistiquesSourcees
         chiffres={CHIFFRES}
         titre="Une expertise qui se mesure"
         accroche="Nos chiffres viennent du terrain, pas d'une plaquette."
+        lumiere="pale"
       />
 
-      {/* 3 — Quatre métiers, quatre matières */}
-      <BandeauAlterne items={METIERS} />
+      {/* 3 — Quatre métiers, quatre scènes : ivoire, warm, pâle, sombre */}
+      <SceneIngenierie
+        kicker={{ number: "03", label: "INGÉNIERIE" }}
+        titre="Des ouvrages calculés, pas devinés"
+        accroche="Descente de charges, notes de calcul et plans de ferraillage vérifiés avant le premier sac de ciment."
+        imageUrl="/photos/chantiers/04-04_chantier-r2-yaounde.png"
+        imageAlt="Chantier R+2 en cours d'élévation à Yaoundé"
+        points={POINTS_INGENIERIE}
+        href="/ingenierie"
+        hrefLabel="Découvrir l'ingénierie"
+      />
+      <SceneEbenisterie
+        kicker={{ number: "04", label: "ÉBÉNISTERIE" }}
+        essence="Padouk"
+        description="Mobilier sur-mesure en essences locales sélectionnées, assemblé et fini à l'atelier de Yaoundé."
+        imageUrl="/photos/essences/04-05_macro-bois-padouk.png"
+        imageAlt="Veinage serré d'un plateau de padouk"
+        badge="Atelier Yaoundé"
+        href="/ebenisterie"
+        hrefLabel="Voir l'atelier"
+      />
+      <ScenePlans
+        kicker={{ number: "05", label: "PLANS" }}
+        titre="Des modèles prêts à construire"
+        accroche="Adaptés à votre terrain, déposés pour le permis de bâtir."
+        plans={PLANS.slice(0, 3).map((plan) => ({
+          reference: plan.reference,
+          titre: plan.titre,
+          prixFcfa: plan.prixFcfa,
+          imageUrl: plan.imageUrl,
+        }))}
+        href="/plans"
+        hrefLabel="Explorer le catalogue"
+      />
+      <SceneImmobilier
+        kicker={{ number: "06", label: "IMMOBILIER" }}
+        titre="Des biens vérifiés, pas des promesses"
+        accroche="Villas, immeubles et terrains contrôlés — foncier, structure, finitions — jusqu'à la remise des clés."
+        imageUrl="/photos/immobilier/04-15_villa-bastos-nuit.png"
+        verifications={VERIFICATIONS_IMMOBILIER}
+        actionPrincipale={{ label: "Voir les biens", href: "/immobilier" }}
+      />
 
       {/* 4 — Trois histoires construites */}
       <MosaiqueAsymetrique
         items={REALISATIONS}
-        kicker={{ number: "04", label: "PORTFOLIO" }}
+        kicker={{ number: "07", label: "PORTFOLIO" }}
         titre="Trois histoires construites"
         accroche="Chaque projet est une contrainte résolue, livrée quelque part au Cameroun."
       />
@@ -177,7 +183,7 @@ export default function PageAccueil() {
       {/* 5 — Le chantier en direct : vitrine du suivi client */}
       <TimelineHorizontale
         jalons={JALONS_VITRINE}
-        kicker={{ number: "05", label: "JOURNAL" }}
+        kicker={{ number: "08", label: "JOURNAL" }}
         titre="Le chantier en direct"
         accroche="Fouilles, ferraillage, coulage, charpente : chaque étape est datée et photographiée."
         promesse="Votre suivi, jour après jour — du premier coup de pioche à la remise des clés."
@@ -189,12 +195,13 @@ export default function PageAccueil() {
         }
       />
 
-      {/* 6 — La méthode, démontrée sur un cas réel */}
+      {/* 6 — La méthode, démontrée sur un cas réel : le papier revient avant la clôture */}
       <PleinLargeurEditorial
-        kicker={{ number: "06", label: "MÉTHODE" }}
+        kicker={{ number: "09", label: "MÉTHODE" }}
         titre="Réparation structurelle à Mokolo"
         accroche="Reprise en sous-œuvre d'un bâtiment fissuré, sans interrompre l'activité du rez-de-chaussée."
         legende="COTE PRÉVUE / RÉALISATION — MOKOLO, YAOUNDÉ"
+        lumiere="pale"
         media={
           <BeforeAfter
             beforeImage="/photos/avant-apres/04-19_avant-batiment-fissure-mokolo.png"
@@ -206,7 +213,7 @@ export default function PageAccueil() {
 
       {/* 7 — Le devis en deux minutes */}
       <CtaChaud
-        kicker={{ number: "07", label: "DÉMARRER" }}
+        kicker={{ number: "10", label: "DÉMARRER" }}
         titre="Votre projet mérite un calcul juste et une finition noble."
         accroche="Décrivez votre besoin en deux minutes : nous revenons vers vous sous 24 heures ouvrées."
         actionPrincipale={{ label: "Demander un devis gratuit", href: "/devis" }}

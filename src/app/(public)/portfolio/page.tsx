@@ -15,7 +15,7 @@ export default function PagePortfolio() {
         <FilAriane items={[{ label: "Portfolio" }]} />
       </div>
       <div className="pb-24">
-        <Portfolio projects={PROJETS_PORTFOLIO} className="pt-10 md:pt-14" />
+        <Portfolio projects={PROJETS_PORTFOLIO} lumiere="ivoire" className="pt-10 md:pt-14" />
       </div>
     </>
   );

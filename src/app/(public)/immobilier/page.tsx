@@ -72,6 +72,7 @@ export default function PageImmobilier() {
         titre="Six contrôles avant toute proposition"
         accroche="Un bien qui ne passe pas ces six contrôles ne vous est jamais présenté."
         lignes={VERIFICATIONS}
+        lumiere="pale"
       >
         <ButtonTech asChild variant="conversion" size="lg">
           <Link href="/contact">Faire vérifier un bien</Link>

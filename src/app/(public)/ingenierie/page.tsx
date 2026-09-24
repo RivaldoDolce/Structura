@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 /*
  * La méthode en quatre étapes : chacune annonce son livrable et sa durée
- * indicative. Les surfaces alternent bleu structure et relevé technique pour
- * que quatre bandeaux successifs ne se confondent pas.
+ * indicative. Les bandeaux alternent ivoire et ivoire second — deux papiers
+ * distincts, jamais le même deux fois de suite (règle d'alternance V2).
  */
 const ETAPES = [
   {
@@ -31,7 +31,7 @@ const ETAPES = [
     imageAlt: "Fouilles en rigole et contrôle des cotes",
     deliverables: ["Visite technique", "Esquisse dimensionnée", "Devis ferme — 5 jours"],
     href: "/devis",
-    surface: "fond",
+    surface: "ivoire",
   },
   {
     id: "note-calcul",
@@ -43,7 +43,7 @@ const ETAPES = [
     imageAlt: "Maquette structurelle calculée",
     deliverables: ["Descente de charges", "Note signée par l'ingénieur", "10 à 15 jours"],
     href: "/devis",
-    surface: "blueprint",
+    surface: "pale",
   },
   {
     id: "ferraillage",
@@ -55,7 +55,7 @@ const ETAPES = [
     imageAlt: "Ferraillage des semelles posé selon les plans",
     deliverables: ["Plans d'exécution", "Nomenclature acier", "5 jours après la note"],
     href: "/devis",
-    surface: "fond",
+    surface: "ivoire",
   },
   {
     id: "suivi",
@@ -67,7 +67,7 @@ const ETAPES = [
     imageAlt: "Chantier R+2 sous suivi technique",
     deliverables: ["Visites de contrôle", "PV de réception", "Tout au long du chantier"],
     href: "/devis",
-    surface: "blueprint",
+    surface: "pale",
   },
 ] satisfies Parameters<typeof BandeauAlterne>[0]["items"];
 
@@ -109,6 +109,7 @@ export default function PageIngenierie() {
         titre="La méthode, étape par étape"
         accroche="Quatre étapes, quatre livrables : vous savez toujours ce que vous recevez et quand."
         kicker={{ number: "02", label: "MÉTHODE" }}
+        lumiere="ivoire"
       />
 
       <PleinLargeurEditorial
@@ -119,6 +120,7 @@ export default function PageIngenierie() {
         alt="Immeuble R+2 en construction sur terrain en pente"
         legende="CHANTIER R+2 — YAOUNDÉ, 2025"
         fiche={CAS}
+        lumiere="warm"
       />
 
       <PanneauDonnees
@@ -126,6 +128,7 @@ export default function PageIngenierie() {
         titre="Les documents que vous recevez"
         accroche="Rien ne reste dans un tiroir : chaque livrable est remis au maître d'ouvrage."
         lignes={DOCUMENTS}
+        lumiere="pale"
       >
         <ButtonTech asChild variant="conversion" size="lg">
           <Link href="/devis">Lancer mon étude</Link>

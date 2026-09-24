@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/frontend/lib/cn";
+import { tonDe } from "@/frontend/lib/lumieres";
+import { BlueprintGrid } from "@/frontend/components/signature/blueprint-grid";
 import { Kicker } from "@/frontend/components/signature/kicker";
 import { PriceTag } from "@/frontend/components/signature/price-tag";
 import { WatermarkPreview } from "@/frontend/components/signature/watermark-preview";
@@ -23,25 +25,32 @@ const ETIQUETTES_TYPE: Record<string, string> = {
  * Catalogue filtrable des plans (composition C7 — panneau de données).
  *
  * Le titre de page appartient à l'en-tête immersif : ce composant ne porte que
- * les filtres et la grille des fiches. Surface blueprint : ici la donnée
- * technique est chez elle, la maille fine est légitime.
+ * les filtres et la grille des fiches. La bande est en papier (ivoire second)
+ * avec maille fine : la donnée se lit mieux sur un relevé clair, et les fiches
+ * gardent leur cadre sombre — un plan blanc s'y détache comme sous verre.
  */
 export function CataloguePlans({ plans }: CataloguePlansProps) {
   const [filtre, setFiltre] = useState<string | null>(null);
   const visibles = filtre ? plans.filter((plan) => plan.typeBatiment === filtre) : plans;
+  const ton = tonDe("pale");
 
   return (
     <section
       role="region"
       aria-label="Catalogue de plans"
       data-composition="C7"
-      data-surface="blueprint"
-      className="bg-surface-blueprint relative py-20 md:py-28"
+      data-surface="pale"
+      data-lumiere="pale"
+      className="st-pale st-lisiere relative overflow-hidden py-20 md:py-28"
     >
-      <div className="max-w-content mx-auto px-4 md:px-6">
-        <Kicker number="02" label="CATALOGUE" className="mb-4" />
-        <h2 className="font-display text-h2 text-ink font-bold">Plans prêts à construire</h2>
-        <p className="text-body text-ink-soft mt-4 max-w-2xl">
+      <div data-maille aria-hidden="true">
+        <BlueprintGrid density="fine" fade="both" teinte="pale" className="absolute inset-0 opacity-60" />
+      </div>
+
+      <div className="max-w-content relative mx-auto px-4 md:px-6">
+        <Kicker number="02" label="CATALOGUE" tone={ton.cartouche} className="mb-4" />
+        <h2 className={cn("font-display text-h2 font-bold", ton.titre)}>Plans prêts à construire</h2>
+        <p className={cn("text-body mt-4 max-w-2xl", ton.texte)}>
           Dossier complet, adaptable à votre terrain. Aperçu filigrané avant achat.
         </p>
 
@@ -57,8 +66,8 @@ export function CataloguePlans({ plans }: CataloguePlansProps) {
             className={cn(
               "rounded-control text-small h-11 border px-5 font-medium transition-colors",
               filtre === null
-                ? "border-blueprint text-blueprint"
-                : "border-line-strong text-ink-soft hover:text-ink"
+                ? "border-steel-encre text-steel-encre"
+                : "border-line-encre-strong text-encre-soft hover:text-encre"
             )}
           >
             Tous
@@ -72,8 +81,8 @@ export function CataloguePlans({ plans }: CataloguePlansProps) {
               className={cn(
                 "rounded-control text-small h-11 border px-5 font-medium transition-colors",
                 filtre === type
-                  ? "border-blueprint text-blueprint"
-                  : "border-line-strong text-ink-soft hover:text-ink"
+                  ? "border-steel-encre text-steel-encre"
+                  : "border-line-encre-strong text-encre-soft hover:text-encre"
               )}
             >
               {ETIQUETTES_TYPE[type] ?? type}

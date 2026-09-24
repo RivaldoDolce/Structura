@@ -26,6 +26,7 @@ export function AtelierEssences({ essences }: AtelierEssencesProps) {
       aria-label="Essences de l'atelier"
       data-composition="C3"
       data-surface="warm"
+      data-lumiere="warm"
       className="st-warm relative overflow-hidden py-24 md:py-32"
     >
       <div className="max-w-content mx-auto px-4 md:px-6">
@@ -39,13 +40,15 @@ export function AtelierEssences({ essences }: AtelierEssencesProps) {
         <ul className="mt-16 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5 lg:gap-6">
           {essences.map((essence) => (
             <li key={essence.id} className="group">
-              <div className="st-card rounded-card relative aspect-square overflow-hidden">
+              {/* Carte matière : même grammaire de survol que les cartes
+                  portfolio — zoom contenu + soulèvement + halo. */}
+              <div className="st-card rounded-card relative aspect-square overflow-hidden transition-transform duration-500 ease-out-expo group-hover:-translate-y-2 group-hover:shadow-glow">
                 <Image
                   src={essence.imageUrl}
                   alt={`Veinage du ${essence.nom.toLowerCase()}`}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                  className="object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.04]"
                 />
                 <span
                   className={cn(

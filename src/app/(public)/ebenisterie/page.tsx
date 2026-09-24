@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 
 /*
  * Le geste en trois temps : la conception se valide avant la première coupe,
- * la finition se décide avant la pose. Les surfaces restent sobres — c'est la
- * photo d'atelier qui porte la chaleur, pas la section.
+ * la finition se décide avant la pose. Les bandeaux passent au papier (ivoire
+ * et ivoire second) — c'est la photo d'atelier qui porte la matière.
  */
 const GESTE = [
   {
@@ -33,7 +33,7 @@ const GESTE = [
     imageAlt: "Maquette 3D d'un mobilier sur-mesure",
     deliverables: ["Dessin technique", "Vues 3D cotées", "Validation en 5 jours"],
     href: "/devis",
-    surface: "fond",
+    surface: "ivoire",
   },
   {
     id: "fabrication",
@@ -45,7 +45,7 @@ const GESTE = [
     imageAlt: "Équipe d'atelier en cours d'assemblage",
     deliverables: ["Assemblages traditionnels", "Bois séché à l'air", "4 à 8 semaines"],
     href: "/devis",
-    surface: "deep",
+    surface: "pale",
   },
   {
     id: "finition",
@@ -57,7 +57,7 @@ const GESTE = [
     imageAlt: "Finition à la main d'un plateau de padouk",
     deliverables: ["Finition mate ou huilée", "Pose et réglages", "Garantie deux ans"],
     href: "/devis",
-    surface: "fond",
+    surface: "ivoire",
   },
 ] satisfies Parameters<typeof BandeauAlterne>[0]["items"];
 
@@ -94,6 +94,7 @@ export default function PageEbenisterie() {
         titre="Du croquis à la pièce posée"
         accroche="Trois temps, trois validations : vous suivez votre pièce comme un chantier."
         kicker={{ number: "03", label: "LE GESTE" }}
+        lumiere="ivoire"
       />
 
       <PleinLargeurEditorial
@@ -104,6 +105,7 @@ export default function PageEbenisterie() {
         alt="Lit king size en bubinga dans une chambre"
         legende="ASSEMBLAGE BUBINGA — FINITION HUILE DURE"
         fiche={FICHE_LIT}
+        lumiere="pale"
       />
 
       <CtaChaud
