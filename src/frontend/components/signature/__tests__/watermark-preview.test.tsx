@@ -71,4 +71,12 @@ describe("WatermarkPreview", () => {
 
     expect(screen.getAllByText("CLIENT 123").length).toBeGreaterThan(1);
   });
+
+  it("passe le cadre et l'avertissement en encre sur une bande claire", () => {
+    render(<WatermarkPreview {...props} tone="clair" />);
+
+    // La teinte est posée sur le bloc d'avertissement : le cadenas en hérite
+    // par `currentColor`, la phrase par la couleur de texte.
+    expect(screen.getByText(/aperçu protégé/i).parentElement).toHaveClass("text-encre-soft");
+  });
 });

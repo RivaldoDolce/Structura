@@ -15,6 +15,9 @@ export const colors = {
   line: "var(--color-line)",
   lineStrong: "var(--color-line-strong)",
   lineLight: "var(--color-line-light)",
+  lineEncre: "var(--color-line-encre)",
+  lineEncreStrong: "var(--color-line-encre-strong)",
+  steelEncre: "var(--color-steel-encre)",
   steel: "var(--color-steel)",
   steelDeep: "var(--color-steel-deep)",
   blueprint: "var(--color-blueprint)",
@@ -29,7 +32,12 @@ export const colors = {
   ink: "var(--color-ink)",
   inkSoft: "var(--color-ink-soft)",
   inkMute: "var(--color-ink-mute)",
+  paper: "var(--color-paper)",
+  paperSoft: "var(--color-paper-soft)",
+  encre: "var(--color-encre)",
+  encreSoft: "var(--color-encre-soft)",
   ok: "var(--color-ok)",
+  okDeep: "var(--color-ok-deep)",
   warn: "var(--color-warn)",
   danger: "var(--color-danger)",
 } as const;
@@ -53,7 +61,7 @@ export const textSizes: readonly string[] = [
 export const radiusNames: readonly string[] = ["card", "control", "modal", "pill"];
 export const shadowNames: readonly string[] = ["card", "glow"];
 
-export const fontNames: readonly string[] = ["display", "sans", "mono"];
+export const fontNames: readonly string[] = ["display", "sans", "mono", "editorial"];
 export const trackingNames: readonly string[] = ["annotation"];
 
 /** Courbes d'animation, en tableaux prêts pour l'API Motion. */
@@ -79,4 +87,4 @@ export const durations = {
  * Seul hexadécimal légitime du code : une balise `<meta name="theme-color">`
  * n'accepte pas `var()`. La valeur doit rester celle de `--color-fond`.
  */
-export const THEME_COLOR = "#070B14";
+export const THEME_COLOR = "#060a12";

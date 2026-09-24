@@ -28,4 +28,13 @@ describe("Kicker", () => {
 
     expect(screen.queryByText(/^\d+$/)).not.toBeInTheDocument();
   });
+
+  it("décline le sur-titre en encre sur fond clair", () => {
+    render(<Kicker number="01" label="INGÉNIERIE" tone="clair" />);
+
+    expect(screen.getByText("INGÉNIERIE")).toHaveClass("text-encre-soft");
+    // Accent AA sur papier : le `steel-deep` historique n'y tient pas le
+    // contraste texte, seul `steel-encre` y est lisible.
+    expect(screen.getByText("INGÉNIERIE").parentElement).toHaveClass("text-steel-encre");
+  });
 });

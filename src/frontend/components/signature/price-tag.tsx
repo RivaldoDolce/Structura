@@ -9,21 +9,37 @@ export interface PriceTagProps {
   unit?: string;
   href?: string;
   hrefLabel?: string;
+  /** Ton encre pour les scènes ivoire, ink par défaut sur fond sombre. */
+  tone?: "sombre" | "clair";
   className?: string;
 }
 
 /** Prix lisible au premier coup d'œil, suivi d'un appel à l'action facultatif. */
-export function PriceTag({ amount, unit = "FCFA", href, hrefLabel, className }: PriceTagProps) {
+export function PriceTag({
+  amount,
+  unit = "FCFA",
+  href,
+  hrefLabel,
+  tone = "sombre",
+  className,
+}: PriceTagProps) {
+  const clair = tone === "clair";
+  const texte = clair ? "text-encre" : "text-ink";
+  const secondaire = clair ? "text-encre-soft" : "text-ink-soft";
+
   return (
     <div className={cn("flex flex-col gap-4", className)}>
-      <p className="font-display text-h2 text-ink font-semibold">
+      <p className={cn("font-display text-h2 font-semibold", texte)}>
         <span>{formateurMontant.format(amount)}</span>
-        <span className="text-small text-ink-soft ml-2 font-medium">{unit}</span>
+        <span className={cn("text-small ml-2 font-medium", secondaire)}>{unit}</span>
       </p>
       {href ? (
         <Link
           href={href}
-          className="group rounded-control border-line-strong text-small text-ink hover:border-blueprint hover:text-blueprint focus-visible:ring-blueprint focus-visible:ring-offset-fond inline-flex h-11 w-fit items-center gap-2 border px-5 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className={cn(
+            "group rounded-control border-line-strong text-small hover:border-blueprint hover:text-blueprint focus-visible:ring-blueprint focus-visible:ring-offset-fond inline-flex h-11 w-fit items-center gap-2 border px-5 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+            texte
+          )}
         >
           {hrefLabel ?? "En savoir plus"}
           <ArrowRight

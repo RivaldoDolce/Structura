@@ -18,6 +18,14 @@ describe("ButtonTech", () => {
     expect(screen.getByRole("button", { name: "Devis" })).toHaveClass("bg-safety");
   });
 
+  it("propose une variante encre lisible sur fond ivoire", () => {
+    render(<ButtonTech variant="encre">Explorer</ButtonTech>);
+
+    const bouton = screen.getByRole("button", { name: "Explorer" });
+    expect(bouton).toHaveClass("bg-encre");
+    expect(bouton).toHaveClass("text-paper");
+  });
+
   it("rend l'enfant tel quel en mode asChild sans fuir de props Motion vers le DOM", () => {
     const { container } = render(
       <ButtonTech asChild variant="primary">

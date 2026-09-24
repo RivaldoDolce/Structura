@@ -3,10 +3,14 @@ import Image from "next/image";
 import { useCallback } from "react";
 import type { DragEvent as GlisserEvenement, MouseEvent as SourisEvenement } from "react";
 import { cn } from "@/frontend/lib/cn";
+import type { TonCartouche } from "@/frontend/lib/lumieres";
+import { colors } from "@/frontend/lib/tokens";
 
 export interface WatermarkPreviewProps {
   imageUrl: string;
   watermarkText: string;
+  /** Ton du cartouche : encre sur les bandes claires, ink par défaut. */
+  tone?: TonCartouche;
   className?: string;
 }
 
@@ -16,7 +20,12 @@ const REPETITIONS_FILIGRANE = 5;
 // Aperçu dissuasif affiché avant achat : la vraie protection reste serveur
 // (fichiers privés R2, autorisation, URL signée). Le contrôle fin du zoom
 // relèvera d'une visionneuse dédiée au Sprint 2.
-export function WatermarkPreview({ imageUrl, watermarkText, className }: WatermarkPreviewProps) {
+export function WatermarkPreview({
+  imageUrl,
+  watermarkText,
+  tone = "sombre",
+  className,
+}: WatermarkPreviewProps) {
   const bloqueMenu = useCallback((evenement: SourisEvenement<HTMLDivElement>) => {
     evenement.preventDefault();
   }, []);
@@ -24,6 +33,11 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
   const bloqueGlisse = useCallback((evenement: GlisserEvenement<HTMLImageElement>) => {
     evenement.preventDefault();
   }, []);
+
+  // Sur papier, le filigrane s'encre en bleu de donnée : le cyan disparaîtrait
+  // et le `steel-deep` historique n'y tient pas le contraste.
+  const clair = tone === "clair";
+  const encreFiligrane = clair ? colors.steelEncre : colors.blueprint;
 
   return (
     <div
@@ -51,17 +65,20 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
           className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
         >
           <div
-            className="absolute inset-0 opacity-[0.15]"
+            className="absolute inset-0"
             style={{
-              backgroundImage:
-                "repeating-linear-gradient(-45deg, transparent, transparent 100px, rgba(34, 211, 238, 0.1) 100px, rgba(34, 211, 238, 0.1) 200px)",
+              opacity: clair ? 0.08 : 0.15,
+              backgroundImage: `repeating-linear-gradient(-45deg, transparent, transparent 100px, ${encreFiligrane} 100px, ${encreFiligrane} 200px)`,
             }}
           />
           <div className="-rotate-45 space-y-8 text-center">
             {Array.from({ length: REPETITIONS_FILIGRANE }).map((_, ligne) => (
               <p
                 key={`filigrane-${ligne}`}
-                className="tracking-annotation text-blueprint/40 font-mono text-2xl font-bold whitespace-nowrap uppercase"
+                className={cn(
+                  "tracking-annotation font-mono text-2xl font-bold whitespace-nowrap uppercase",
+                  clair ? "text-steel-encre/30" : "text-blueprint/40"
+                )}
               >
                 {watermarkText}
               </p>
@@ -71,11 +88,14 @@ export function WatermarkPreview({ imageUrl, watermarkText, className }: Waterma
 
         <div
           aria-hidden="true"
-          className="rounded-card border-line-strong pointer-events-none absolute inset-0 border-2"
+          className={cn(
+            "rounded-card pointer-events-none absolute inset-0 border-2",
+            clair ? "border-line-encre-strong" : "border-line-strong"
+          )}
         />
       </div>
 
-      <div className="text-ink-soft mt-3 flex items-center gap-2">
+      <div className={cn("mt-3 flex items-center gap-2", clair ? "text-encre-soft" : "text-ink-soft")}>
         <svg
           aria-hidden="true"
           fill="none"

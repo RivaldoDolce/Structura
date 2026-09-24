@@ -59,4 +59,13 @@ describe("BlueprintGrid", () => {
 
     expect(racine(container)).toHaveClass("absolute", "inset-0", "pointer-events-none");
   });
+
+  it("retrace la maille et les croix en encre technique sur une bande claire", () => {
+    const { container } = render(<BlueprintGrid teinte="ivoire" />);
+
+    expect(calque(container, GRILLE).style.backgroundImage).toContain("var(--color-line-encre)");
+    // Croix AA sur papier : le `steel-deep` historique reste réservé aux
+    // aplats sombres, jamais aux motifs sur ivoire.
+    expect(calque(container, CROIX).style.backgroundColor).toBe("var(--color-steel-encre)");
+  });
 });

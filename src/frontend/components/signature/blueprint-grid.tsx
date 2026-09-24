@@ -1,4 +1,5 @@
 import { cn } from "@/frontend/lib/cn";
+import { estClaire, type Lumiere } from "@/frontend/lib/lumieres";
 import { colors } from "@/frontend/lib/tokens";
 
 /** Densité de la maille : fine (32 px) ou majeure (160 px). */
@@ -10,6 +11,8 @@ export type BlueprintFade = "none" | "bottom" | "both";
 export interface BlueprintGridProps {
   density?: BlueprintDensity;
   fade?: BlueprintFade;
+  /** Lumière de la bande hôte : la maille change d'encre sur papier. */
+  teinte?: Lumiere;
   className?: string;
 }
 
@@ -27,13 +30,18 @@ const MASQUES: Record<BlueprintFade, string | undefined> = {
  * donc par `backgroundColor`.
  */
 const TUILE_CROIX = "url(/textures/textures-overlays/05-03_texture-croix-160.svg)";
-const OPACITE_CROIX = 0.3;
 const MAILLE_CROIX = 160;
 
 /** Fond « papier millimétré », purement décoratif. */
-export function BlueprintGrid({ density = "fine", fade = "none", className }: BlueprintGridProps) {
+export function BlueprintGrid({ density = "fine", fade = "none", teinte = "sombre", className }: BlueprintGridProps) {
   const maille = MAILLES[density];
   const masque = MASQUES[fade];
+  // Sur papier, la maille s'encre en bleu de donnée (`steel-encre`, AA sur
+  // ivoire) : le `steel-deep` historique reste réservé aux aplats sombres.
+  const clair = estClaire(teinte);
+  const trait = clair ? colors.lineEncre : colors.line;
+  const croix = clair ? colors.steelEncre : colors.blueprint;
+  const opaciteCroix = clair ? 0.18 : 0.3;
 
   return (
     <div
@@ -45,7 +53,7 @@ export function BlueprintGrid({ density = "fine", fade = "none", className }: Bl
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `linear-gradient(to right, ${colors.line} 1px, transparent 1px), linear-gradient(to bottom, ${colors.line} 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(to right, ${trait} 1px, transparent 1px), linear-gradient(to bottom, ${trait} 1px, transparent 1px)`,
           backgroundSize: `${maille}px ${maille}px`,
         }}
       />
@@ -54,8 +62,8 @@ export function BlueprintGrid({ density = "fine", fade = "none", className }: Bl
       <div
         className="absolute inset-0"
         style={{
-          backgroundColor: colors.blueprint,
-          opacity: OPACITE_CROIX,
+          backgroundColor: croix,
+          opacity: opaciteCroix,
           maskImage: TUILE_CROIX,
           WebkitMaskImage: TUILE_CROIX,
           maskSize: `${MAILLE_CROIX}px ${MAILLE_CROIX}px`,

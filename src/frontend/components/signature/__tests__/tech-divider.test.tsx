@@ -16,4 +16,11 @@ describe("TechDivider", () => {
 
     expect(screen.getByRole("separator")).toBeInTheDocument();
   });
+
+  it("trace ses filets et son cartouche en encre sur une bande claire", () => {
+    const { container } = render(<TechDivider label="CERTIFIÉ" tone="clair" />);
+
+    expect(screen.getByText("CERTIFIÉ")).toHaveClass("text-encre-soft");
+    expect(container.querySelectorAll(".bg-line-encre-strong")).toHaveLength(2);
+  });
 });

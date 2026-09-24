@@ -1,10 +1,13 @@
 /**
- * Contrôle des recettes de profondeur et des contrastes — audit §5.1/§5.2.
+ * Contrôle des recettes de profondeur et des contrastes — audit §5.1/§5.2 et
+ * plan V2 §3.
  *
  * Vérifie sur la page rendue que :
- *   - les tokens de surfaces sont bien servis (5 crans + 2 contextes) ;
+ *   - les tokens de surfaces sont bien servis (5 crans + 2 contextes + papier) ;
  *   - la hiérarchie fond → fond-immergé → surface → raised → elevated est
  *     perceptible à l'œil nu (ratios de luminance minimaux) ;
+ *   - les couples de la lumière claire (encre sur papier) tiennent l'exigence
+ *     AA comme leurs équivalents sombres ;
  *   - la variante de contraste WhatsApp dépasse 4,5:1 sur texte sombre.
  *
  * Usage : `node scripts/audit-surfaces.mjs` (nécessite `npm run dev` ou un
@@ -63,6 +66,12 @@ const TOKENS = [
   "--color-surface-warm",
   "--color-surface-blueprint",
   "--color-whatsapp-contraste",
+  "--color-paper",
+  "--color-paper-soft",
+  "--color-encre",
+  "--color-encre-soft",
+  "--color-steel-encre",
+  "--color-steel-deep",
 ];
 
 const EXIGENCES = [
@@ -70,6 +79,19 @@ const EXIGENCES = [
   { label: "surface-deep → surface", min: 1.08, tokens: ["--color-surface-deep", "--color-surface"] },
   { label: "surface → surface-raised", min: 1.12, tokens: ["--color-surface", "--color-surface-raised"] },
   { label: "surface-raised → elevated", min: 1.08, tokens: ["--color-surface-raised", "--color-elevated"] },
+];
+
+/* Lumière V2 : les actes clairs doivent tenir le même niveau d'exigence que
+   les actes sombres — un texte encre sur ivoire se lit comme un texte ink sur
+   fond profond, sinon le rééquilibre serait cosmétique. `steel-encre` est
+   l'accent de donnée des actes clairs (le `steel-deep` historique reste le
+   bleu des bordures et des aplats sombres). */
+const EXIGENCES_CLAIR = [
+  { label: "encre → paper (AA large)", min: 12, tokens: ["--color-encre", "--color-paper"] },
+  { label: "encre-soft → paper (AA)", min: 7, tokens: ["--color-encre-soft", "--color-paper"] },
+  { label: "encre → paper-soft", min: 12, tokens: ["--color-encre", "--color-paper-soft"] },
+  { label: "encre-soft → paper-soft", min: 7, tokens: ["--color-encre-soft", "--color-paper-soft"] },
+  { label: "steel-encre → paper (accent)", min: 7, tokens: ["--color-steel-encre", "--color-paper"] },
 ];
 
 const navigateur = await chromium.launch();
@@ -89,7 +111,7 @@ for (const token of TOKENS) {
 }
 
 let echecs = 0;
-for (const exigence of EXIGENCES) {
+for (const exigence of [...EXIGENCES, ...EXIGENCES_CLAIR]) {
   const [a, b] = exigence.tokens.map((t) => versHex(valeurs[t]));
   const ratio = ratioContraste(a, b);
   const verdict = ratio >= exigence.min ? "OK" : "ÉCHEC";

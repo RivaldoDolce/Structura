@@ -35,7 +35,9 @@ const nextConfig: NextConfig = {
               process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'"
             } https://js.cinetpay.com`,
             "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' blob: data: https://*.r2.cloudflarestorage.com https://pub-*.r2.dev",
+            // Joker CSP uniquement en préfixe de domaine : `pub-*.r2.dev` est
+            // une source invalide que le navigateur ignore silencieusement.
+            "img-src 'self' blob: data: https://*.r2.cloudflarestorage.com https://*.r2.dev",
             "font-src 'self'",
             "connect-src 'self' https://api.cinetpay.com https://*.upstash.io",
             "frame-src https://api.cinetpay.com",

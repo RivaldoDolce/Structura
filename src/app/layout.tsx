@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { MotionProvider } from "@/frontend/components/providers";
 import { THEME_COLOR } from "@/frontend/lib/tokens";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NOM, SITE_URL } from "@/shared/constants/site";
@@ -23,6 +23,16 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+  display: "swap",
+});
+
+// Quatrième voix éditoriale (plan V2 §4) : serif italique réservée aux mots
+// signés (hero, essences, citation, final). Poids limités = budget maîtrisé.
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  style: ["normal", "italic"],
+  weight: ["400", "600"],
   display: "swap",
 });
 
@@ -114,7 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="fr"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${fraunces.variable}`}
       suppressHydrationWarning
     >
       <body className="bg-fond text-ink min-h-screen font-sans antialiased">

@@ -25,4 +25,11 @@ describe("PriceTag", () => {
     expect(lien).toHaveAttribute("href", "/contact");
     expect(screen.getByText("FCFA / m²")).toBeInTheDocument();
   });
+
+  it("décline le prix en encre sur fond clair", () => {
+    const { container } = render(<PriceTag amount={2500000} tone="clair" />);
+
+    expect(container.querySelector(".text-encre")).toBeInTheDocument();
+    expect(container.querySelector(".text-ink")).not.toBeInTheDocument();
+  });
 });

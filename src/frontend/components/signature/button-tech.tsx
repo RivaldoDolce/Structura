@@ -6,9 +6,11 @@ import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
+import type { VarianteBouton } from "@/frontend/lib/lumieres";
 
 export interface ButtonTechProps {
-  variant?: "primary" | "conversion" | "ghost";
+  /** Variante native : `encre` est la seule lisible sur une bande claire. */
+  variant?: VarianteBouton;
   size?: "sm" | "default" | "lg";
   asChild?: boolean;
   isLoading?: boolean;
@@ -24,6 +26,9 @@ const CLASSES_VARIANTES = {
   primary: "bg-steel text-white hover:bg-steel-deep",
   conversion: "bg-safety text-fond font-semibold hover:bg-safety-deep",
   ghost: "border border-line-strong text-ink hover:bg-elevated",
+  // Encre sur ivoire : le seul bouton sombre utilisable sur fond clair
+  // (le ghost hérite d'un texte clair invisible sur papier).
+  encre: "bg-encre text-paper hover:bg-encre-soft font-semibold",
 } as const;
 
 const CLASSES_TAILLES = {
