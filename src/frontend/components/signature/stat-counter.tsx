@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { useCounter } from "@/frontend/hooks/use-counter";
 import { cn } from "@/frontend/lib/cn";
 import { fadeUpItem } from "@/frontend/lib/animations";
+import { tonDe, type TonCartouche } from "@/frontend/lib/lumieres";
 
 export interface StatCounterProps {
   value: number;
@@ -12,6 +13,8 @@ export interface StatCounterProps {
   suffix?: string;
   prefix?: string;
   decimals?: number;
+  /** Ton du compteur : encre sur les bandes claires, ink par défaut. */
+  tone?: TonCartouche;
   className?: string;
 }
 
@@ -25,10 +28,12 @@ export function StatCounter({
   suffix = "",
   prefix = "",
   decimals = 0,
+  tone = "sombre",
   className,
 }: StatCounterProps) {
   const [visible, setVisible] = React.useState(false);
   const compte = useCounter({ end: visible ? value : 0, duration: 1200, delay: 100, decimals });
+  const ton = tonDe(tone === "clair" ? "ivoire" : "sombre");
 
   const formate = compte.toLocaleString("fr-FR", {
     minimumFractionDigits: decimals,
@@ -44,12 +49,12 @@ export function StatCounter({
       onViewportEnter={() => setVisible(true)}
       className={cn("flex flex-col items-center text-center", className)}
     >
-      <span className="font-display text-ink text-5xl font-bold tracking-tight md:text-6xl">
+      <span className={cn("font-display text-5xl font-bold tracking-tight md:text-6xl", ton.titre)}>
         {prefix}
         {formate}
         {suffix}
       </span>
-      <span className="text-mono-xs text-ink-soft mt-2 font-mono uppercase">{label}</span>
+      <span className={cn("text-mono-xs mt-2 font-mono uppercase", ton.texte)}>{label}</span>
     </motion.div>
   );
 }

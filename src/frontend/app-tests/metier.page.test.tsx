@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { essences } from "@/frontend/data/equipe";
+import { alternanceRespectee } from "@/frontend/lib/lumieres";
 import PageIngenierie from "@/app/(public)/ingenierie/page";
 import PageEbenisterie from "@/app/(public)/ebenisterie/page";
 import PageImmobilier from "@/app/(public)/immobilier/page";
@@ -81,5 +82,32 @@ describe("Pages institutionnelles", () => {
     expect(screen.getByRole("heading", { name: /parlons de votre projet/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/nom/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/téléphone/i)).toBeInTheDocument();
+  });
+});
+
+/**
+ * Règle de lumière du plan V2 §2 : sur chaque page métier, aucun acte voisin ne
+ * partage sa lumière. Le relevé porte sur les sections (« actes ») réellement
+ * rendues — les bandeaux internes d'une méthode ne comptent pas deux fois.
+ */
+describe("Alternance des lumières", () => {
+  const PAGES_METIER = [
+    { nom: "ingénierie", Page: PageIngenierie },
+    { nom: "ébénisterie", Page: PageEbenisterie },
+    { nom: "immobilier", Page: PageImmobilier },
+  ];
+
+  it("éclaire et assombrit chaque page en alternance", () => {
+    for (const { nom, Page } of PAGES_METIER) {
+      const { container, unmount } = render(<Page />);
+
+      const lumieres = [...container.querySelectorAll("[data-composition][data-lumiere]")].map(
+        (acte) => acte.getAttribute("data-lumiere") ?? ""
+      );
+
+      expect(lumieres.length, `${nom} : actes lumineux`).toBeGreaterThanOrEqual(3);
+      expect(alternanceRespectee(lumieres), `${nom} : ${lumieres.join(" → ")}`).toBe(true);
+      unmount();
+    }
   });
 });

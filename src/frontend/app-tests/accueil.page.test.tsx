@@ -17,13 +17,18 @@ vi.mock("next/link", () => ({
 }));
 
 describe("Page d'accueil", () => {
-  it("assemble les sept actes et le tunnel de devis", () => {
+  it("assemble les dix actes et le tunnel de devis", () => {
     render(<PageAccueil />);
 
     expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /chiffres clés/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /expertises/i })).toBeInTheDocument();
-    expect(screen.getByRole("region", { name: /trois histoires construites/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /ouvrages calculés/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /ébénisterie padouk/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /modèles prêts/i })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: /biens vérifiés/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: /trois histoires construites/i })
+    ).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /journal de chantier/i })).toBeInTheDocument();
     expect(
       screen.getByRole("region", { name: /réparation structurelle à mokolo/i })

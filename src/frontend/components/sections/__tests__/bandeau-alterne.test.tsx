@@ -79,4 +79,33 @@ describe("BandeauAlterne", () => {
     expect(bandeaux[1]).toHaveAttribute("data-surface", "warm");
     expect(bandeaux[1]).toHaveClass("st-warm");
   });
+
+  it("éclaire toute la section quand la page demande ivoire", () => {
+    const { container } = render(
+      <BandeauAlterne
+        items={[
+          { ...metiers[0], surface: "ivoire" },
+          { ...metiers[1], surface: "pale" },
+        ]}
+        titre="La méthode, étape par étape"
+        accroche="Quatre étapes, quatre livrables."
+        kicker={{ number: "02", label: "MÉTHODE" }}
+        lumiere="ivoire"
+      />,
+    );
+
+    const section = container.firstElementChild;
+    const bandeaux = container.querySelectorAll("[data-sens][data-surface]");
+
+    expect(section).toHaveClass("st-ivoire", "st-lisiere");
+    expect(section).toHaveAttribute("data-lumiere", "ivoire");
+    expect(bandeaux[0]).toHaveClass("st-ivoire");
+    expect(bandeaux[0]).toHaveAttribute("data-lumiere", "ivoire");
+    expect(bandeaux[1]).toHaveClass("st-pale");
+    expect(screen.getByText("Ingénierie structure")).toHaveClass("text-encre");
+    // La coche de livrable passe au vert profond : le vert vif du thème ne
+    // tient pas le contraste sur papier.
+    expect(container.querySelector("li svg")).toHaveClass("text-ok-deep");
+    expect(container.querySelector("h2")).toHaveClass("text-encre");
+  });
 });

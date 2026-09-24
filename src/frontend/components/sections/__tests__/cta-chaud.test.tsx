@@ -48,6 +48,7 @@ describe("CtaChaud", () => {
     );
 
     expect(container.firstElementChild).toHaveClass("st-warm");
+    expect(container.firstElementChild).toHaveAttribute("data-lumiere", "warm");
   });
 
   it("se passe sans action secondaire", () => {

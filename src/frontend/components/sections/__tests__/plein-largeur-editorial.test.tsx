@@ -74,4 +74,41 @@ describe("PleinLargeurEditorial", () => {
     expect(cadre).toHaveClass("st-raised");
     expect(container.querySelector("[data-comparateur]")).toBeInTheDocument();
   });
+
+  it("chauffe la bande en warm, la légende passe au sable", () => {
+    const { container } = render(
+      <PleinLargeurEditorial
+        kicker={{ number: "04", label: "PIÈCE SIGNATURE" }}
+        titre="Lit en bubinga"
+        image="/test/lit.jpg"
+        alt="Lit en bubinga"
+        legende="ASSEMBLAGE BUBINGA"
+        lumiere="warm"
+      />,
+    );
+
+    expect(container.firstElementChild).toHaveClass("st-warm");
+    expect(container.firstElementChild).toHaveAttribute("data-lumiere", "warm");
+    expect(screen.getByText("ASSEMBLAGE BUBINGA")).toHaveClass("text-sable");
+  });
+
+  it("pose la bande sur ivoire second, légende et fiche en encre", () => {
+    const { container } = render(
+      <PleinLargeurEditorial
+        kicker={{ number: "08", label: "MÉTHODE" }}
+        titre="Réparation structurelle Mokolo"
+        legende="COTE PRÉVUE / RÉALISATION"
+        fiche={[{ label: "Ouvrage", valeur: "Bâtiment R+1" }]}
+        media={<div data-comparateur>Comparateur avant/après</div>}
+        lumiere="pale"
+      />,
+    );
+
+    const bande = container.firstElementChild;
+    expect(bande).toHaveClass("st-pale", "st-lisiere");
+    expect(container.querySelector("[data-cadre]")).toHaveClass("st-raised");
+    expect(screen.getByText("COTE PRÉVUE / RÉALISATION")).toHaveClass("text-steel-encre");
+    expect(screen.getByText("Bâtiment R+1")).toHaveClass("text-encre");
+    expect(screen.getByText("Ouvrage")).toHaveClass("text-encre-soft");
+  });
 });

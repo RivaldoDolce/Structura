@@ -50,6 +50,15 @@ describe("ProjectCard", () => {
     expect(screen.getByRole("link")).toHaveAttribute("href", "/portfolio/villa");
   });
 
+  it("soulève la carte et zoome l'image au survol, sur la même courbe expo", () => {
+    const { container } = render(<ProjectCard {...projet} />);
+
+    const carte = container.querySelector("article");
+    expect(carte).toHaveClass("group");
+    expect(carte).toHaveClass("transition-transform", "duration-500", "ease-out-expo");
+    expect(carte).toHaveClass("hover:-translate-y-2", "hover:shadow-glow");
+  });
+
   it("omet les données absentes sans casser la grille", () => {
     render(<ProjectCard title="Studio" description="Petit budget" imageUrl="/test/studio.jpg" />);
 

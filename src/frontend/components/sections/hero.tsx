@@ -25,6 +25,7 @@ export function Hero() {
       aria-label="Section d'accueil"
       data-composition="C1"
       data-surface="photo"
+      data-lumiere="sombre"
       className="relative min-h-[calc(100vh-4rem)] overflow-hidden md:min-h-[calc(100vh-5rem)]"
     >
       {/* Fond photo du kit (élément LCP, servi en AVIF), voilé pour garantir
@@ -40,7 +41,7 @@ export function Hero() {
           className="object-cover object-center"
         />
         <div className="bg-fond/70 absolute inset-0" />
-        <div className="absolute inset-0 bg-gradient-to-b from-fond/40 via-transparent to-fond" />
+        <div className="from-fond/40 to-fond absolute inset-0 bg-gradient-to-b via-transparent" />
       </div>
 
       <div data-blueprint-grid data-parallax="" data-parallax-vitesse="0.94" aria-hidden="true">
@@ -69,8 +70,9 @@ export function Hero() {
                 </motion.span>
               </span>
               <span className="block overflow-hidden">
-                <motion.span variants={titleReveal} className="text-blueprint block">
-                  construit en confiance
+                <motion.span variants={titleReveal} className="block">
+                  construit en{" "}
+                  <em className="font-editorial text-ink font-normal italic">confiance</em>
                 </motion.span>
               </span>
             </motion.h1>

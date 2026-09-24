@@ -24,7 +24,9 @@ export interface ProjectCardProps {
 }
 
 // Carte réalisation : données techniques en ligne sur mobile, panneau
-// coulissant au survol sur desktop.
+// coulissant au survol sur desktop. Le survol suit la grammaire premium V2
+// (plan V2 §6) : image `scale(1.04)` + carte soulevée de 8 px + halo, sur la
+// même courbe expo que les révélations — `transform`/`opacity` uniquement.
 export function ProjectCard({
   title,
   description,
@@ -48,7 +50,11 @@ export function ProjectCard({
     <motion.article
       whileHover={{ scale: 1.01 }}
       transition={{ duration: 0.4, ease: easings.outExpo }}
-      className={cn("group rounded-card bg-surface relative overflow-hidden", className)}
+      className={cn(
+        "group rounded-card bg-surface relative overflow-hidden",
+        "transition-transform duration-500 ease-out-expo hover:-translate-y-2 hover:shadow-glow",
+        className
+      )}
     >
       <div className={cn("relative overflow-hidden", ratio)}>
         <Image
@@ -56,7 +62,7 @@ export function ProjectCard({
           alt={imageAlt ?? title}
           fill
           sizes={imageSizes}
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          className="object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.04]"
         />
         <div
           aria-hidden="true"

@@ -49,6 +49,7 @@ describe("Hero", () => {
 
     expect(screen.getByRole("region", { name: /section d'accueil/i })).toBeInTheDocument();
     expect(container.querySelector(".px-4.md\\:px-6")).toBeInTheDocument();
+    expect(container.querySelector('[data-lumiere="sombre"]')).toBeInTheDocument();
   });
 
   it("affiche le plan isométrique déjà dessiné sans JavaScript", () => {

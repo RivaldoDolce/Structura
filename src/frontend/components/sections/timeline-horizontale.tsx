@@ -58,7 +58,8 @@ export function TimelineHorizontale({
       aria-label="Journal de chantier"
       data-composition="C5"
       data-surface="deep"
-      className={cn("bg-surface-deep overflow-hidden py-24 md:py-32", className)}
+      data-lumiere="sombre"
+      className={cn("st-deep overflow-hidden py-24 md:py-32", className)}
     >
       <div className="max-w-content mx-auto px-4 md:px-6">
         <Kicker number={kicker.number} label={kicker.label} className="mb-4" />

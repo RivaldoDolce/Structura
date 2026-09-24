@@ -47,6 +47,7 @@ export function HeroEnTete({
       aria-label={titre}
       data-composition="C1"
       data-surface="photo"
+      data-lumiere="sombre"
       className={cn("relative flex items-end overflow-hidden", className)}
     >
       {/* Fond du kit : prioritaire (LCP), couvrant, voilé pour garantir le

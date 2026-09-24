@@ -83,4 +83,15 @@ describe("MosaiqueAsymetrique", () => {
     expect(container.querySelectorAll('[data-taille="grande"]')).toHaveLength(0);
     expect(container.querySelectorAll('[data-taille="moyenne"]')).toHaveLength(2);
   });
+
+  it("pose la mosaïque sur ivoire quand la page le demande", () => {
+    const { container } = render(<MosaiqueAsymetrique items={quatre} />);
+
+    const section = container.firstElementChild;
+    expect(section).toHaveClass("st-ivoire", "st-lisiere");
+    expect(section).toHaveAttribute("data-lumiere", "ivoire");
+    // Les cartes restent sombres : sur papier, elles font office de
+    // passe-partout — le contraste est voulu, pas un oubli de ton.
+    expect(container.querySelectorAll("article")[0]).toHaveClass("bg-surface");
+  });
 });

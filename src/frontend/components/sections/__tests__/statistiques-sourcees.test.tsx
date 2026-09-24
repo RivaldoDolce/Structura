@@ -36,4 +36,16 @@ describe("StatistiquesSourcees", () => {
 
     expect(container.firstElementChild).toHaveClass("bg-surface-deep");
   });
+
+  it("passe en ivoire second quand la page demande la lumière claire", () => {
+    const { container } = render(
+      <StatistiquesSourcees chiffres={chiffres} titre="La preuve" lumiere="pale" />
+    );
+
+    const bande = container.firstElementChild;
+    expect(bande).toHaveClass("st-pale");
+    expect(bande).toHaveAttribute("data-lumiere", "pale");
+    expect(screen.getByText("Années d'expérience")).toHaveClass("text-encre-soft");
+    expect(screen.getByText("Bureau d'études interne")).toHaveClass("text-encre-soft");
+  });
 });

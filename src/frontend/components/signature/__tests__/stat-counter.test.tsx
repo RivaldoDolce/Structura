@@ -40,4 +40,12 @@ describe("StatCounter", () => {
 
     expect(screen.getByText("Chantiers en cours")).toBeInTheDocument();
   });
+
+  it("adopte l'encre quand la bande est claire", () => {
+    render(<StatCounter value={12} label="Années d'expérience" tone="clair" />);
+
+    const libelle = screen.getByText("Années d'expérience");
+    expect(libelle).toHaveClass("text-encre-soft");
+    expect(libelle.previousElementSibling).toHaveClass("text-encre");
+  });
 });

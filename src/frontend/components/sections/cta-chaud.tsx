@@ -45,6 +45,7 @@ export function CtaChaud({
       aria-label={kicker.label.toLowerCase()}
       data-composition="C8"
       data-surface="warm"
+      data-lumiere="warm"
       className={cn("st-warm relative overflow-hidden py-24 md:py-32", className)}
     >
       <motion.div

@@ -46,4 +46,22 @@ describe("PanneauDonnees", () => {
 
     expect(screen.getByText("Dossier de permis inclus.")).toBeInTheDocument();
   });
+
+  it("retourne le panneau sur papier quand la page demande la lumière claire", () => {
+    const { container } = render(
+      <PanneauDonnees
+        kicker={{ number: "03", label: "VÉRIFICATION" }}
+        titre="Six contrôles"
+        lignes={[{ label: "Titre foncier", valeur: "Vérifié au cadastre" }]}
+        lumiere="pale"
+      />,
+    );
+
+    const panneau = container.firstElementChild;
+    expect(panneau).toHaveClass("st-pale", "st-lisiere");
+    expect(panneau).toHaveAttribute("data-lumiere", "pale");
+    expect(screen.getByText("Titre foncier")).toHaveClass("text-encre-soft");
+    expect(screen.getByText("Vérifié au cadastre")).toHaveClass("text-encre");
+    expect(container.querySelector("[data-maille]")).toBeInTheDocument();
+  });
 });
