@@ -1,5 +1,30 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-24 — Refonte V2 : socle lumière + contrastes + survols premium (V2-1c/V2-1d)
+
+Périmètre `plan_refonte_v2.md` respecté : tokens, recettes et mouvement
+uniquement, données/routes/API intactes.
+
+- **Contrastes tranchés par la mesure** : `steel-deep` sur papier plafonne à
+  5,69:1 — sous le seuil AA. Nouvel accent clair `steel-encre` (`#1a3fa0`,
+  7,88:1) consommé par `Kicker`, `BlueprintGrid`, `WatermarkPreview`, légendes
+  éditoriales et filtres du catalogue ; `steel-deep` reste le bleu des aplats
+  et bordures sombres. `safety` historique restauré (`bg-safety` du bouton
+  conversion ne résolvait plus). Script `scripts/contrastes-v2.mjs` vert
+  (5 couples AA + rappel historique informatif).
+- **Survols unifiés** (grammaire premium V2 §6) : carte `-translate-y-2` +
+  halo `shadow-glow` + image `scale(1.03/1.04)` en `duration-500 ease-out-expo`
+  — `ProjectCard` (test dédié), cartes catalogue `ScenePlans`, cartes essences
+  `AtelierEssences`. `THEME_COLOR` réaligné sur `--color-fond` (`#060a12`).
+- **Revue visuelle 390/1440** (build prod) : hero premium, lisières
+  sombre→clair lisibles au scroll, rythme mobile varié. Deux défauts relevés
+  et assumés : fond photo du hero invisible dans ce build (régression visuelle
+  à trancher — asset `FONDS_HEROS.accueil` non résolu ou voile opaque) et
+  barre CTA mobile qui masque l'accroche (hors périmètre V2, à traiter avec le
+  tunnel de conversion).
+- Résultat : **268/268 tests**, `tsc` propre, `eslint` propre sur les fichiers
+  touchés, `next build` vert (28 pages, First Load ≤ 169 Ko).
+
 ## 2026-09-22 — Refonte frontend : Phase 3 (dossier projet, AA, build, revue)
 
 Périmètre `plan_refonte.md` respecté : visuel et composition uniquement.
