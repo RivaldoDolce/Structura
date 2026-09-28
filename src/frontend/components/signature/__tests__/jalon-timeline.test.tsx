@@ -52,7 +52,7 @@ const jalonFouille: Jalon = {
   dateReelle: "2025-02-15",
   statut: "termine",
   notes: "Cotes vérifiées avant coulage",
-  images: ["/photos/journal/04-21_journal-fouille-rigole.png"],
+  images: ["/photos/journal/04-38_journal-fouille-rigole-matin.png"],
   responsable: "Équipe de 4",
   duree: "2 jours",
   ecartJours: 3,
@@ -66,7 +66,7 @@ const jalonFerraillage: Jalon = {
   date: "2025-02-28",
   statut: "en-retard",
   notes: "Béton attendu, deux jours de retard",
-  images: ["/photos/journal/04-22_journal-ferraillage-semelles.png"],
+  images: ["/photos/journal/04-39_journal-ferraillage-gabarit.png"],
   responsable: "Chef de chantier",
   duree: "4 jours",
   ecartJours: 2,
@@ -80,7 +80,7 @@ const jalonPlancher: Jalon = {
   label: "Coulage du plancher",
   date: "2025-03-21",
   statut: "en-cours",
-  images: ["/photos/journal/04-23_journal-coulage-plancher.png"],
+  images: ["/photos/journal/04-40_journal-coulage-vibration.png"],
 };
 
 const jalonCharpente: Jalon = {

@@ -30,7 +30,7 @@ vi.mock("next/image", () => ({
   default: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} src={src} />,
 }));
 
-const PHOTO = "/photos/chantiers/04-04_chantier-r2-yaounde.png";
+const PHOTO = "/photos/chantiers/04-44_fondu-vue-aerienne-r2.png";
 
 async function viderFiletEffets() {
   await act(async () => {

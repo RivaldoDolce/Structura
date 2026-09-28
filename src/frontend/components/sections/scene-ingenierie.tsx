@@ -33,9 +33,12 @@ export interface SceneIngenierieProps {
 }
 
 /**
- * Scène ingénierie (plan V2 §5) : éditorial vertical sur ivoire, photo de
- * chantier débordante, mini-plan qui s'étire et données une à une. Le seul
- * endroit clair où le bleu structure reste légitime en grand : la donnée.
+ * Scène ingénierie (plan V2 §5, LOT 3A : asymétrie éditoriale 40/60).
+ *
+ * L'acte 03 de l'accueil porte l'expertise par le texte : colonne éditoriale
+ * resserrée (40), média en retrait (60), mini-plan en chevauchement comme
+ * annotation. `data-ratio` et `data-motion` rendent la grammaire lisible par
+ * le test d'asymétrie — sans eux, un retour au 50/50 serait invisible.
  */
 export function SceneIngenierie({
   kicker,
@@ -57,12 +60,14 @@ export function SceneIngenierie({
       data-composition="scene-ingenierie"
       data-scene="ingenierie"
       data-lumiere="ivoire"
+      data-ratio="40-60"
+      data-motion="editorial"
       className={cn("st-ivoire st-lisiere relative overflow-hidden py-24 md:py-32", className)}
     >
       <motion.div
         variants={staggerContainer}
         {...inViewOnce}
-        className="max-w-content relative mx-auto grid items-center gap-12 px-4 md:px-6 lg:grid-cols-[1fr_1.1fr]"
+        className="max-w-content relative mx-auto grid items-center gap-12 px-4 md:px-6 lg:grid-cols-[2fr_3fr]"
       >
         <div>
           <motion.div variants={fadeUpItem}>

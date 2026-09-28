@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { Kicker } from "@/frontend/components/signature/kicker";
 import { FormulaireContact } from "./formulaire-contact";
@@ -32,6 +33,17 @@ export default function PageContact() {
           aria-label="Coordonnées"
           className="rounded-card border-line bg-surface h-fit border p-6"
         >
+          {/* Vignette du bureau : le visiteur qui écrit sait déjà où il sera
+              reçu — une maquette sur la table vaut mieux qu'une adresse seule. */}
+          <div className="rounded-control relative mb-6 aspect-video overflow-hidden">
+            <Image
+              src="/photos/chantiers/04-71_maquette-presentation-client.png"
+              alt="Maquette de villa et dossier de plans présentés au client dans le bureau de Yaoundé"
+              fill
+              sizes="(max-width: 1024px) 100vw, 45vw"
+              className="object-cover"
+            />
+          </div>
           <ul className="space-y-5">
             {COORDONNEES.map((coordonnee) => (
               <li key={coordonnee.libelle}>

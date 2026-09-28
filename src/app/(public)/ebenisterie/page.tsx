@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BandeauAlterne } from "@/frontend/components/sections/bandeau-alterne";
 import { CtaChaud } from "@/frontend/components/sections/cta-chaud";
 import { HeroEnTete } from "@/frontend/components/sections/hero-en-tete";
 import { PleinLargeurEditorial } from "@/frontend/components/sections/plein-largeur-editorial";
+import { SceneGeste, type EtapeGeste } from "@/frontend/components/sections/scene-geste";
 import { ButtonTech } from "@/frontend/components/signature/button-tech";
 import { FilAriane } from "@/frontend/components/signature/fil-ariane";
 import { StickyMobileCta } from "@/frontend/components/signature/sticky-mobile-cta";
@@ -18,48 +18,50 @@ export const metadata: Metadata = {
 };
 
 /*
- * Le geste en trois temps : la conception se valide avant la première coupe,
- * la finition se décide avant la pose. Les bandeaux passent au papier (ivoire
- * et ivoire second) — c'est la photo d'atelier qui porte la matière.
+ * Le geste en trois temps (LOT 3B, V3 §8) : la conception se lit, la
+ * fabrication se montre, la finition se touche. Trois grammaires au lieu de
+ * trois `BandeauAlterne` 50/50 — le contenu (texte, livrables, photos)
+ * reste identique, seule la mise en scène change, en attendant les images
+ * premium du guide (`Progression/guide_images_premium_refonte_v3.md`).
  */
-const GESTE = [
+const GESTE: [EtapeGeste, EtapeGeste, EtapeGeste] = [
   {
     id: "conception",
-    number: "01",
-    title: "Conception 3D",
+    numero: "01",
+    titre: "Conception 3D",
     description:
       "Plans, élévations et vues 3D : vous validez la pièce avant la première coupe, cotes et essences comprises.",
-    imageUrl: "/photos/chantiers/04-02_plan-3d-holographique.png",
-    imageAlt: "Maquette 3D d'un mobilier sur-mesure",
-    deliverables: ["Dessin technique", "Vues 3D cotées", "Validation en 5 jours"],
+    imageUrl: "/photos/mobilier/04-72_selection-materiaux-design-interieur.png",
+    imageAlt: "Échantillons d'essences et planche de matières présentés avant validation de la pièce",
+    livrables: ["Dessin technique", "Vues 3D cotées", "Validation en 5 jours"],
     href: "/devis",
-    surface: "ivoire",
+    hrefLabel: "Valider mon plan",
   },
   {
     id: "fabrication",
-    number: "02",
-    title: "Fabrication à l'atelier",
+    numero: "02",
+    titre: "Fabrication à l'atelier",
     description:
       "Débit, assemblages à tenons et mortaises, collage sous presse : la structure de la pièce est faite pour durer.",
-    imageUrl: "/photos/portraits/04-26_equipe-atelier-ebenisterie.png",
-    imageAlt: "Équipe d'atelier en cours d'assemblage",
-    deliverables: ["Assemblages traditionnels", "Bois séché à l'air", "4 à 8 semaines"],
+    imageUrl: "/photos/mobilier/04-78_atelier-ebenisterie-faconnage.png",
+    imageAlt: "Ébéniste d'atelier rabotant une pièce de padouk",
+    livrables: ["Assemblages traditionnels", "Bois séché à l'air", "4 à 8 semaines"],
     href: "/devis",
-    surface: "pale",
+    hrefLabel: "Suivre la fabrication",
   },
   {
     id: "finition",
-    number: "03",
-    title: "Finition et pose",
+    numero: "03",
+    titre: "Finition et pose",
     description:
       "Ponçage progressif, huile dure ou mat profond, puis pose sur site : la matière reste touchable, jamais plastifiée.",
     imageUrl: "/photos/mobilier/04-03_finition-padouk-atelier.png",
     imageAlt: "Finition à la main d'un plateau de padouk",
-    deliverables: ["Finition mate ou huilée", "Pose et réglages", "Garantie deux ans"],
+    livrables: ["Finition mate ou huilée", "Pose et réglages", "Garantie deux ans"],
     href: "/devis",
-    surface: "ivoire",
+    hrefLabel: "Commander la pièce",
   },
-] satisfies Parameters<typeof BandeauAlterne>[0]["items"];
+];
 
 const FICHE_LIT = [
   { label: "Essence", valeur: "Bubinga massif" },
@@ -89,20 +91,19 @@ export default function PageEbenisterie() {
 
       <AtelierEssences essences={essences} />
 
-      <BandeauAlterne
-        items={GESTE}
+      <SceneGeste
+        etapes={GESTE}
+        kicker={{ number: "03", label: "LE GESTE" }}
         titre="Du croquis à la pièce posée"
         accroche="Trois temps, trois validations : vous suivez votre pièce comme un chantier."
-        kicker={{ number: "03", label: "LE GESTE" }}
-        lumiere="ivoire"
       />
 
       <PleinLargeurEditorial
         kicker={{ number: "04", label: "PIÈCE SIGNATURE" }}
         titre="Lit king size en bubinga"
         accroche="Un plateau de deux mètres, un veinage continu et des assemblages visibles : la pièce assume sa matière."
-        image="/photos/mobilier/04-12_lit-king-bubinga.png"
-        alt="Lit king size en bubinga dans une chambre"
+        image="/photos/mobilier/04-59_lit-bubinga-chambre.png"
+        alt="Lit king size en bubinga, veinage continu et linge de lin dans une chambre éclairée"
         legende="ASSEMBLAGE BUBINGA — FINITION HUILE DURE"
         fiche={FICHE_LIT}
         lumiere="pale"

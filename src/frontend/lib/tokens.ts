@@ -49,6 +49,7 @@ export const colorNames: readonly string[] = Object.keys(colors).map(versKebab);
 
 export const textSizes: readonly string[] = [
   "display",
+  "hero",
   "h1",
   "h2",
   "h2b",
@@ -72,7 +73,8 @@ export const easings = {
 
 export const easingNames: readonly string[] = ["out-expo", "spring"];
 
-/** Durées en secondes, synchronisées avec les tokens `--dur-*` de `globals.css`. */
+/** Durées en secondes, synchronisées avec les tokens `--transition-duration-*`
+ *  de `globals.css` (namespace du thème Tailwind, donc utilitaires `duration-*`). */
 export const durations = {
   micro: 0.15,
   standard: 0.3,
@@ -80,6 +82,18 @@ export const durations = {
   cinematic: 0.7,
   stagger: 0.06,
 } as const;
+
+/**
+ * Noms de l'échelle de durées, dans l'ordre croissant.
+ *
+ * Exposé pour qu'un test puisse composer un nom d'utilitaire Tailwind
+ * (`duration-cinematic`) à partir de l'échelle, plutôt que de recopier une
+ * durée littérale qui divergerait dès le prochain réglage.
+ */
+export const durationNames: readonly string[] = Object.keys(durations).map(versKebab);
+
+/** Durée d’un geste ample et décoratif : survol de carte, révélation d’image. */
+export const DUREE_REVELATION = "reveal" as const;
 
 /**
  * Couleur de la barre du navigateur mobile.

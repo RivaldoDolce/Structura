@@ -8,13 +8,13 @@ export interface HeroScenarioProps {
   racine: RefObject<HTMLElement | null>;
 }
 
-const AMPLITUDE_PARALLAX = 120;
 const DUREE_TRACE = 0.6;
 
 /**
  * Scénario cinématique du hero : GSAP + ScrollTrigger rejouent le tracé de
- * l'isométrique au scroll (scrub), remplissent les volumes, révèlent les
- * cotes et animent le parallax en trois couches.
+ * l'isométrique au scroll (scrub) — remplissage des volumes, révélation des
+ * cotes — et c'est le **seul** mouvement piloté par le défilement du hero
+ * (V3 §6.5 : ni parallax, ni translation concurrente sur le même élément).
  *
  * GSAP n'entre dans le bundle que par `import()` au montage : rien dans le
  * chemin critique de l'hydratation. Désactivé sous 768 px et en mouvement
@@ -42,7 +42,6 @@ export function HeroScenario({ racine }: HeroScenarioProps) {
       const traces = Array.from(section.querySelectorAll<SVGGeometryElement>("[data-trace]"));
       const remplissages = Array.from(section.querySelectorAll<SVGElement>("[data-fill]"));
       const annotations = Array.from(section.querySelectorAll<SVGElement>("[data-annotation]"));
-      const couches = Array.from(section.querySelectorAll<HTMLElement>("[data-parallax]"));
 
       const longueurs = traces.map((trace) =>
         typeof trace.getTotalLength === "function" ? trace.getTotalLength() : 0
@@ -80,16 +79,6 @@ export function HeroScenario({ racine }: HeroScenarioProps) {
         { opacity: 1, duration: duree * 0.15 },
         duree * 0.85
       );
-
-      for (const couche of couches) {
-        const vitesse = Number(couche.dataset.parallaxVitesse ?? "1");
-        chronologie.fromTo(
-          couche,
-          { y: 0 },
-          { y: (vitesse - 1) * AMPLITUDE_PARALLAX, duration: duree },
-          0
-        );
-      }
 
       nettoyage = () => {
         chronologie.kill();

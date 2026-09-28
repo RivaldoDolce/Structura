@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { PROJETS_PORTFOLIO } from "@/frontend/data/portfolio";
@@ -31,7 +31,19 @@ describe("Page d'accueil", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /journal de chantier/i })).toBeInTheDocument();
     expect(
-      screen.getByRole("region", { name: /réparation structurelle à mokolo/i })
+      screen.getByRole("region", { name: /le chantier, étape par étape/i })
+    ).toBeInTheDocument();
+    /*
+     * Acte 09 : un seul comparateur interactif, le geste du feuilleton.
+     * Les duos statiques (`MosaiqueAvantApres`) ont été retirés — trois paires
+     * d'images fixes répètent la preuve déjà portée par le journal (acte 08) et
+     * concurrencent le seul geste que la page doit enseigner. La régression
+     * serait invisible à l'œil : ce décompte la verrouille.
+     */
+    const methode = screen.getByRole("region", { name: /le chantier, étape par étape/i });
+    expect(methode.querySelectorAll('[role="img"]')).toHaveLength(0);
+    expect(
+      within(methode).getByRole("slider", { name: /comparaison avant\/après/i }),
     ).toBeInTheDocument();
     expect(screen.getByRole("region", { name: /démarrer/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /demander un devis gratuit/i })).toHaveAttribute(

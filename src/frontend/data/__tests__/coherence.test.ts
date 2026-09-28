@@ -5,7 +5,7 @@ import { JALONS_CHANTIER } from "../jalons";
 import { PLANS } from "../plans";
 import { PROJETS_PORTFOLIO } from "../portfolio";
 import { equipe, journal, essences } from "../equipe";
-import { FONDS_HEROS } from "../fonds";
+import { FONDS_HEROS, PHOTO_HERO_ACCUEIL } from "../fonds";
 
 const racinePublic = join(process.cwd(), "public");
 
@@ -92,6 +92,16 @@ describe("Données de démonstration", () => {
       expect(chemin.endsWith(".avif"), `Fond non converti : ${chemin}`).toBe(true);
       expect(existsSync(join(racinePublic, chemin)), `Fond manquant : ${chemin}`).toBe(true);
     }
+  });
+
+  // Garde-fou V3 §6.2 : le hero d'accueil porte une photo réelle. Le rebrancher
+  // sur une planche blueprint (dossier `fonds-heros`) réintroduirait le doublon
+  // « plan dans le fond + plan dessiné » que la refonte supprime.
+  it("porte au hero d'accueil une photo réelle de chantier, décrite pour l'accessibilité", () => {
+    expect(PHOTO_HERO_ACCUEIL.src).toMatch(/^\/photos\/(chantiers|immobilier|portraits)\//);
+    expect(existsSync(join(racinePublic, PHOTO_HERO_ACCUEIL.src))).toBe(true);
+    expect(PHOTO_HERO_ACCUEIL.alt.length).toBeGreaterThan(24);
+    expect(PHOTO_HERO_ACCUEIL.position).toMatch(/^\d{1,3}% \d{1,3}%$/);
   });
 
   it("ne référence, dans le rendu, que des assets réellement présents", () => {

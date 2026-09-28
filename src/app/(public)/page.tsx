@@ -70,17 +70,32 @@ const VERIFICATIONS_IMMOBILIER = [
 ];
 
 /*
- * Acte 5 — le chantier en direct : les quatre premiers jalons réels, dans
- * l'ordre du terrain. Le reste du suivi vit sur la fiche du projet.
+ * Acte 5 — le chantier en direct : les jalons photographiés, dans l'ordre du
+ * terrain. Le critère est la présence d'un cliché, pas le rang : un jalon sans
+ * photo n'a rien à montrer, et lui attribuer celle d'un autre jalon afficherait
+ * deux fois la même image sous deux dates.
+ *
+ * Le prédicat est nommé parce qu'un simple `filter((j) => j.images?.[0])` ne
+ * raffine pas le type : `images` resterait optionnel dans la projection
+ * suivante. Le type est ici la garantie que le composant ne reçoit jamais
+ * d'image indéfinie.
  */
-const JALONS_VITRINE = JALONS_CHANTIER.slice(0, 4).map((jalon) => ({
-  id: jalon.id,
-  label: jalon.label,
-  date: jalon.date,
-  statut: jalon.statut,
-  imageUrl: jalon.images?.[0] ?? "/photos/journal/04-21_journal-fouille-rigole.png",
-  alt: `${jalon.label} — photo de chantier`,
-}));
+function jalonPhotographie<T extends { images?: string[] }>(
+  jalon: T
+): jalon is T & { images: [string, ...string[]] } {
+  return Boolean(jalon.images?.[0]);
+}
+
+const JALONS_VITRINE = JALONS_CHANTIER.filter(jalonPhotographie)
+  .slice(0, 4)
+  .map((jalon) => ({
+    id: jalon.id,
+    label: jalon.label,
+    date: jalon.date,
+    statut: jalon.statut,
+    imageUrl: jalon.images[0],
+    alt: `${jalon.label} — photo de chantier`,
+  }));
 
 /** Acte 4 — quatre projets, quatre morphologies de carte. */
 const REALISATIONS = PROJETS_PORTFOLIO.slice(0, 4).map((projet) => ({
@@ -94,6 +109,27 @@ const REALISATIONS = PROJETS_PORTFOLIO.slice(0, 4).map((projet) => ({
   surface: projet.surface,
   href: `/portfolio/${projet.slug}`,
 }));
+
+/**
+ * Acte 9 — la preuve par le geste : un seul comparateur avant/après, celui de
+ * la rénovation Mokolo. Les duos statiques qui l'accompagnaient ont été
+ * retirés : ils répètent la matière du journal (acte 08) et concurrencent le
+ * seul geste que cette bande doit enseigner. Une section qui montre trois
+ * comparaisons fixes et une quatrième interactive apprend au visiteur qu'il
+ * n'a rien à faire — c'est l'inverse du but.
+ */
+const COMPARATEUR_MOKOLO = {
+  avant: {
+    src: "/photos/avant-apres/04-63_mokolo-avant-fissure.png",
+    alt: "Façade fissurée du bâtiment avant reprise, Mokolo 2023",
+  },
+  apres: {
+    src: "/photos/avant-apres/04-64_mokolo-apres-reprise.png",
+    alt: "Façade reprise et renforcée du même bâtiment, Mokolo 2024",
+  },
+  avantLabel: "Mokolo — 2023",
+  apresLabel: "Rénové — 2024",
+} as const;
 
 /**
  * Lien de discussion de la double entrée : construit depuis le numéro
@@ -134,8 +170,8 @@ export default function PageAccueil() {
         kicker={{ number: "03", label: "INGÉNIERIE" }}
         titre="Des ouvrages calculés, pas devinés"
         accroche="Descente de charges, notes de calcul et plans de ferraillage vérifiés avant le premier sac de ciment."
-        imageUrl="/photos/chantiers/04-04_chantier-r2-yaounde.png"
-        imageAlt="Chantier R+2 en cours d'élévation à Yaoundé"
+        imageUrl="/photos/portraits/04-60_portrait-ingenieur-casque-plan.png"
+        imageAlt="Ingénieur STRUCTURA en casque, plans de ferraillage roulés à la main devant une ossature en béton"
         points={POINTS_INGENIERIE}
         href="/ingenierie"
         hrefLabel="Découvrir l'ingénierie"
@@ -144,8 +180,8 @@ export default function PageAccueil() {
         kicker={{ number: "04", label: "ÉBÉNISTERIE" }}
         essence="Padouk"
         description="Mobilier sur-mesure en essences locales sélectionnées, assemblé et fini à l'atelier de Yaoundé."
-        imageUrl="/photos/essences/04-05_macro-bois-padouk.png"
-        imageAlt="Veinage serré d'un plateau de padouk"
+        imageUrl="/photos/mobilier/04-78_atelier-ebenisterie-faconnage.png"
+        imageAlt="Ébéniste d'atelier rabotant une pièce de padouk"
         badge="Atelier Yaoundé"
         href="/ebenisterie"
         hrefLabel="Voir l'atelier"
@@ -158,7 +194,10 @@ export default function PageAccueil() {
           reference: plan.reference,
           titre: plan.titre,
           prixFcfa: plan.prixFcfa,
+          typeBatiment: plan.typeBatiment,
           imageUrl: plan.imageUrl,
+          imageAlt: plan.altPhoto,
+          vuesLivrees: plan.galerie?.length,
         }))}
         href="/plans"
         hrefLabel="Explorer le catalogue"
@@ -167,7 +206,7 @@ export default function PageAccueil() {
         kicker={{ number: "06", label: "IMMOBILIER" }}
         titre="Des biens vérifiés, pas des promesses"
         accroche="Villas, immeubles et terrains contrôlés — foncier, structure, finitions — jusqu'à la remise des clés."
-        imageUrl="/photos/immobilier/04-15_villa-bastos-nuit.png"
+        imageUrl="/photos/immobilier/04-49_terrain-nsimalen-bornes.png"
         verifications={VERIFICATIONS_IMMOBILIER}
         actionPrincipale={{ label: "Voir les biens", href: "/immobilier" }}
       />
@@ -189,24 +228,27 @@ export default function PageAccueil() {
         promesse="Votre suivi, jour après jour — du premier coup de pioche à la remise des clés."
         fondu={
           <FonduPlanPhoto
-            photoSrc="/photos/chantiers/04-04_chantier-r2-yaounde.png"
-            photoAlt="Chantier R+2 en cours d'élévation à Yaoundé"
+            photoSrc="/photos/chantiers/04-44_fondu-vue-aerienne-r2.png"
+            photoAlt="Vue aérienne d'un chantier R+2 : ossature béton, tas de matériaux et terre latéritique"
           />
         }
       />
 
-      {/* 6 — La méthode, démontrée sur un cas réel : le papier revient avant la clôture */}
+      {/* 6 — La méthode, démontrée sur un cas réel : le comparateur Mokolo.
+          La photo `04-30` du hero ne revient jamais ici : c'est le plan dessiné
+          qui reste le seul porteur du plan sur cet écran. */}
       <PleinLargeurEditorial
         kicker={{ number: "09", label: "MÉTHODE" }}
-        titre="Réparation structurelle à Mokolo"
-        accroche="Reprise en sous-œuvre d'un bâtiment fissuré, sans interrompre l'activité du rez-de-chaussée."
-        legende="COTE PRÉVUE / RÉALISATION — MOKOLO, YAOUNDÉ"
+        titre="Le chantier, étape par étape"
+        accroche="Fouilles, ferraillage, coulage, charpente, finitions : chaque phase est datée, photographiée et signée."
+        legende="SUIVI CLIENT — YAOUNDÉ, 2025"
         lumiere="pale"
         media={
           <BeforeAfter
-            beforeImage="/photos/avant-apres/04-19_avant-batiment-fissure-mokolo.png"
-            afterImage="/photos/avant-apres/04-20_apres-batiment-repare-mokolo.png"
-            className="p-4 md:p-6"
+            beforeImage={COMPARATEUR_MOKOLO.avant.src}
+            afterImage={COMPARATEUR_MOKOLO.apres.src}
+            beforeLabel={COMPARATEUR_MOKOLO.avantLabel}
+            afterLabel={COMPARATEUR_MOKOLO.apresLabel}
           />
         }
       />

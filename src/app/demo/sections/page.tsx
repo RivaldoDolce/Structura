@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/frontend/components/sections/hero";
 import { Portfolio } from "@/frontend/components/sections/portfolio";
-import type { PortfolioProject } from "@/frontend/components/sections/portfolio";
 import { Services } from "@/frontend/components/sections/services";
 import type { ServiceItem } from "@/frontend/components/sections/services";
 import { Stats } from "@/frontend/components/sections/stats";
@@ -9,6 +8,7 @@ import { BeforeAfter } from "@/frontend/components/signature/before-after";
 import { JalonTimeline } from "@/frontend/components/signature/jalon-timeline";
 import type { Jalon } from "@/frontend/components/signature/jalon-timeline";
 import { WatermarkPreview } from "@/frontend/components/signature/watermark-preview";
+import { PROJETS_PORTFOLIO } from "@/frontend/data/portfolio";
 
 // Galerie interne de validation visuelle : jamais indexée.
 export const metadata: Metadata = {
@@ -16,37 +16,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const PROJETS_DEMO: PortfolioProject[] = [
-  {
-    id: "demo-villa",
-    title: "Villa Moderne Douala",
-    description: "Villa contemporaine de standing, gros œuvre et finitions.",
-    imageUrl: "/photos/chantiers/04-04_chantier-r2-yaounde.png",
-    location: "Douala",
-    year: "2024",
-    surface: "320 m²",
-    slug: "villa-moderne-douala",
-  },
-  {
-    id: "demo-dalle",
-    title: "Coulage de dalle",
-    description: "Plancher béton armé contrôlé à chaque phase.",
-    imageUrl: "/photos/chantiers/04-01_coulage-dalle-beton.png",
-    location: "Yaoundé",
-    year: "2024",
-    surface: "180 m²",
-    slug: "coulage-dalle",
-  },
-  {
-    id: "demo-hologramme",
-    title: "Maquette 3D",
-    description: "Projection holographique du projet avant travaux.",
-    imageUrl: "/photos/chantiers/04-02_plan-3d-holographique.png",
-    location: "Yaoundé",
-    year: "2025",
-    surface: "—",
-    slug: "maquette-3d",
-  },
+// Les démos se branchent sur les données réelles : aucun projet fictif ne
+// doit construire une fausse preuve, même hors indexation.
+const PROJETS_DEMO = [
+  { ...PROJETS_PORTFOLIO[0], surface: "320 m²" },
+  { ...PROJETS_PORTFOLIO[3], surface: "180 m²" },
+  { ...PROJETS_PORTFOLIO[5], surface: "—" },
 ];
 
 const EXPERTISES_DEMO: ServiceItem[] = [
@@ -92,11 +67,11 @@ export default function DemoSectionsPage() {
       >
         <JalonTimeline jalons={JALONS_DEMO} />
         <BeforeAfter
-          beforeImage="/photos/avant-apres/04-19_avant-batiment-fissure-mokolo.png"
-          afterImage="/photos/avant-apres/04-20_apres-batiment-repare-mokolo.png"
+          beforeImage="/photos/avant-apres/04-63_mokolo-avant-fissure.png"
+          afterImage="/photos/avant-apres/04-64_mokolo-apres-reprise.png"
         />
         <WatermarkPreview
-          imageUrl="/photos/chantiers/04-04_chantier-r2-yaounde.png"
+          imageUrl="/photos/immobilier/04-46_villa-bastos-jour.png"
           watermarkText="STRUCTURA DÉMO"
         />
       </section>

@@ -93,7 +93,11 @@ export function CataloguePlans({ plans }: CataloguePlansProps) {
         <ul className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
           {visibles.map((plan) => (
             <li key={plan.reference} className="st-card rounded-card overflow-hidden">
-              <WatermarkPreview imageUrl={plan.imageUrl} watermarkText="STRUCTURA" />
+              <WatermarkPreview
+                imageUrl={plan.imageUrl}
+                imageAlt={plan.altPhoto}
+                watermarkText="STRUCTURA"
+              />
               <div className="p-6">
                 <p className="text-mono-xs text-ink-mute font-mono uppercase">
                   Réf. {plan.reference}

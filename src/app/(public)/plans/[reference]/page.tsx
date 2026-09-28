@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check, FileText, Lock, MessageCircle } from "lucide-react";
@@ -32,7 +33,7 @@ export async function generateMetadata({
       ? {
           title: `${plan.titre} — STRUCTURA`,
           description: plan.description,
-          images: [{ url: plan.imageUrl }],
+          images: [{ url: plan.imageUrl, alt: plan.altPhoto }],
         }
       : undefined,
   };
@@ -132,7 +133,11 @@ export default async function PageFichePlan({
         ) : null}
 
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-2">
-          <WatermarkPreview imageUrl={plan.imageUrl} watermarkText="STRUCTURA" />
+          <WatermarkPreview
+            imageUrl={plan.imageUrl}
+            imageAlt={plan.altPhoto}
+            watermarkText="STRUCTURA"
+          />
           <div>
             <PriceTag amount={plan.prixFcfa} />
             <p className="text-small text-ink-soft mt-2">≈ {prixEur} €</p>
@@ -163,6 +168,35 @@ export default async function PageFichePlan({
             </ul>
           </div>
         </div>
+
+        {/* Vues du modèle livré : aucun cliché n'est inventé pour un plan qui
+            n'en possède pas — l'absence est une information, pas un vide à
+            combler par une image générique. */}
+        {plan.galerie?.length ? (
+          <section
+            aria-label="Vues du modèle livré"
+            data-galerie-plan
+            data-surface="pale"
+            className="mt-12"
+          >
+            <Kicker number="04" label="VUES DU MODÈLE" tone="clair" className="mb-4" />
+            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              {plan.galerie.map((vue, index) => (
+                <li key={vue} className="st-card rounded-card overflow-hidden">
+                  <div className="relative aspect-video">
+                    <Image
+                      src={vue}
+                      alt={`${plan.titre} — vue ${index + 1} du modèle livré`}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                      className="object-cover"
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </div>
 
       <PanneauDonnees

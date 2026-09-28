@@ -26,7 +26,7 @@ const props = {
   kicker: { number: "01", label: "INGÉNIERIE" },
   titre: "Des ouvrages calculés, pas devinés",
   accroche: "Chaque structure est dimensionnée avant le premier sac de ciment.",
-  imageUrl: "/photos/chantiers/04-04_chantier-r2-yaounde.png",
+  imageUrl: "/photos/portraits/04-60_portrait-ingenieur-casque-plan.png",
   imageAlt: "Chantier R+2 en cours d'élévation",
   points: [
     { valeur: "340 m²", label: "Surface calculée" },

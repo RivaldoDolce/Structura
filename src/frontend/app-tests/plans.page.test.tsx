@@ -25,6 +25,12 @@ vi.mock("next/navigation", () => ({
   usePathname: () => "/plans",
 }));
 
+vi.mock("next/image", () => ({
+  // Simulacre de test, jamais servi en production : <img> volontaire.
+  // eslint-disable-next-line @next/next/no-img-element
+  default: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} src={src} />,
+}));
+
 describe("Catalogue des plans", () => {
   it("affiche chaque plan avec son prix et sa référence unique", () => {
     render(<CataloguePlans plans={PLANS} />);
@@ -111,5 +117,42 @@ describe("Fiche plan", () => {
 
     expect(screen.getByText(/facture OHADA/i)).toBeInTheDocument();
     expect(screen.getByText(/CinetPay/i)).toBeInTheDocument();
+  });
+
+  /*
+   * Les vues du modèle ne sont pas décoratives : elles prouvent que le plan
+   * décrit un bâtiment livré. Le test lit les sources réellement rendues — une
+   * donnée renseignée mais jamais affichée ne vend rien.
+   */
+  it("rend les vues du modèle livré pour un plan qui en possède", async () => {
+    const plan = trouverPlan("ST-VILLA-R1-PAD") as Plan;
+    const galerie = plan.galerie ?? [];
+    expect(galerie.length).toBeGreaterThan(0);
+
+    const { container } = render(
+      (await PageFichePlan({
+        params: Promise.resolve({ reference: plan.reference }),
+      })) as React.ReactElement
+    );
+
+    const bloc = container.querySelector("[data-galerie-plan]");
+    expect(bloc).not.toBeNull();
+    const sources = [...(bloc?.querySelectorAll("img") ?? [])].map((image) =>
+      image.getAttribute("src")
+    );
+    expect(sources).toEqual(galerie);
+  });
+
+  it("n'invente aucune vue pour un plan sans galerie", async () => {
+    const plan = trouverPlan("ST-DUPLEX-SIM") as Plan;
+    expect(plan.galerie).toBeUndefined();
+
+    const { container } = render(
+      (await PageFichePlan({
+        params: Promise.resolve({ reference: plan.reference }),
+      })) as React.ReactElement
+    );
+
+    expect(container.querySelector("[data-galerie-plan]")).toBeNull();
   });
 });

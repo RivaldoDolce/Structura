@@ -6,7 +6,9 @@ import { motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
 import { fadeUpItem, inViewOnce, staggerContainer } from "@/frontend/lib/animations";
 import { tonDe } from "@/frontend/lib/lumieres";
+import type { TypeBatiment } from "@/frontend/data/plans";
 import { ButtonTech } from "../signature/button-tech";
+import { IllustrationPlan } from "../signature/illustration-plan";
 import { Kicker } from "../signature/kicker";
 import { PriceTag } from "../signature/price-tag";
 import { BlueprintGrid } from "../signature/blueprint-grid";
@@ -15,7 +17,19 @@ export interface PlanScene {
   reference: string;
   titre: string;
   prixFcfa: number;
+  typeBatiment: TypeBatiment;
+  /**
+   * Photo du modèle livré, de face. Le catalogue ne vend pas un tracé : il vend
+   * un bâtiment. Le tracé isométrique reste en fond de carte pour porter la
+   * lecture technique de l'acte, mais c'est la façade qui fait la preuve.
+   */
   imageUrl: string;
+  imageAlt: string;
+  /**
+   * Nombre de vues photographiques du modèle livré, renseigné par la fiche
+   * plan : la carte annonce la profondeur de la preuve disponible.
+   */
+  vuesLivrees?: number;
 }
 
 export interface ScenePlansProps {
@@ -90,9 +104,11 @@ export function ScenePlans({
               key={plan.reference}
               variants={fadeUpItem}
               // Carte catalogue : même grammaire de survol que les cartes
-              // portfolio — soulèvement + halo, la photo zoome déjà en 1.03.
+              // portfolio — soulèvement + halo sur la carte entière. Le visuel
+              // étant une photo, c'est lui qui zoome au survol, tandis que le
+              // tracé de fond se retire (voir plus bas).
               className={cn(
-                "group rounded-card bg-paper overflow-hidden border transition-transform duration-500 ease-out-expo hover:-translate-y-2 hover:shadow-glow",
+                "group rounded-card bg-paper overflow-hidden border transition-transform duration-reveal ease-out-expo hover:-translate-y-2 hover:shadow-glow",
                 ton.filet,
                 // Les cartes sortent légèrement de l'axe, en quinconce.
                 index === 1 && "md:translate-y-8"
@@ -103,13 +119,29 @@ export function ScenePlans({
                 aria-label={plan.titre}
                 className="block focus-visible:outline-none"
               >
-                <span className="relative block aspect-[4/3] overflow-hidden">
+                {/*
+                  Le visuel de la carte : la façade livrée (`data-vue-modele`),
+                  posée sur le tracé isométrique qui reste en fond. Le décor
+                  photo zoome au survol, le tracé se retire — c'est l'inverse de
+                  la grammaire portfolio, et c'est volontaire : ici on part du
+                  réel pour ouvrir la lecture technique.
+                */}
+                <span className="bg-surface-raised relative block aspect-[4/3] overflow-hidden">
                   <Image
+                    data-vue-modele
                     src={plan.imageUrl}
-                    alt=""
+                    alt={plan.imageAlt}
                     fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    className="object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.03]"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-reveal ease-out-expo group-hover:scale-[1.04]"
+                  />
+                  <span
+                    aria-hidden="true"
+                    className="from-surface-raised absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t to-transparent"
+                  />
+                  <IllustrationPlan
+                    type={plan.typeBatiment}
+                    className="pointer-events-none absolute inset-0 h-full w-full p-6 opacity-20 transition-opacity duration-reveal ease-out-expo group-hover:opacity-0"
                   />
                 </span>
                 <span className="block p-5">
@@ -119,6 +151,11 @@ export function ScenePlans({
                   <span className={cn("font-display text-h3 mt-2 block font-semibold", ton.titre)}>
                     {plan.titre}
                   </span>
+                  {plan.vuesLivrees !== undefined && plan.vuesLivrees > 0 ? (
+                    <span className={cn("text-mono-xs mt-2 block font-mono uppercase", ton.texte)}>
+                      {plan.vuesLivrees} vue{plan.vuesLivrees > 1 ? "s" : ""} du modèle livré
+                    </span>
+                  ) : null}
                   <span className="mt-4 block">
                     <PriceTag amount={plan.prixFcfa} tone="clair" />
                   </span>

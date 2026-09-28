@@ -16,6 +16,12 @@ export interface SceneEbenisterieProps {
   description: string;
   imageUrl: string;
   imageAlt: string;
+  /**
+   * Position du point d'intérêt de la photo (`object-position`) : la scène
+   * porte des macros dont la matière utile occupe souvent le tiers supérieur —
+   * le centrage géométrique y rognerait la preuve.
+   */
+  position?: string;
   badge: string;
   href: string;
   hrefLabel: string;
@@ -23,10 +29,12 @@ export interface SceneEbenisterieProps {
 }
 
 /**
- * Scène ébénisterie (plan V2 §5) : l'atelier se reconnaît à sa matière sans
- * lire un mot — fond warm, macro verticale, nom d'essence en serif, badge
- * cuivre. L'image dérive légèrement au scroll sur desktop (transform pur,
- * coupé par le contrat de mouvement réduit global).
+ * Scène ébénisterie (plan V2 §5, LOT 3A : média dominant chevauché).
+ *
+ * L'acte 04 répond à l'acte 03 par l'inverse : la matière porte (image large
+ * en débordement, ratio vertical conservé comme signature), le texte se pose
+ * en panneau chevauché. `data-ratio` et `data-motion` distinguent les deux
+ * grammaires — V3 §3.3 exige deux dimensions variées minimum.
  */
 export function SceneEbenisterie({
   kicker,
@@ -34,6 +42,7 @@ export function SceneEbenisterie({
   description,
   imageUrl,
   imageAlt,
+  position = "50% 20%",
   badge,
   href,
   hrefLabel,
@@ -54,21 +63,24 @@ export function SceneEbenisterie({
       data-composition="scene-ebenisterie"
       data-scene="ebenisterie"
       data-lumiere="warm"
+      data-ratio="media-dominant"
+      data-motion="matiere"
       className={cn("st-warm relative overflow-hidden py-24 md:py-32", className)}
     >
       <motion.div
         variants={staggerContainer}
         {...inViewOnce}
-        className="max-w-content mx-auto grid items-center gap-12 px-4 md:px-6 lg:grid-cols-[1fr_1fr]"
+        className="max-w-content mx-auto grid items-center gap-12 px-4 md:px-6 lg:grid-cols-[1.25fr_1fr]"
       >
-        <motion.div variants={scaleReveal} className="relative">
+        <motion.div variants={scaleReveal} className="relative lg:-ml-10">
           <motion.div data-derive style={{ y: derive }} className="relative">
-            <div className="rounded-card relative aspect-[4/5] max-h-[560px] w-full overflow-hidden">
+            <div className="rounded-card relative aspect-square w-full overflow-hidden lg:aspect-[4/5] lg:max-h-[560px]">
               <Image
                 src={imageUrl}
                 alt={imageAlt}
                 fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1024px) 50vw, 40vw"
+                style={{ objectPosition: position }}
                 className="object-cover"
               />
             </div>
@@ -81,7 +93,17 @@ export function SceneEbenisterie({
           </motion.div>
         </motion.div>
 
-        <div className="lg:pt-16">
+        {/*
+          Panneau chevauché : le texte ne repose JAMAIS sur la photo. Les
+          marges négatives (`-ml-16`) le font entrer sur le visuel — c'est la
+          grammaire « média dominant » — mais la surface opaque et son filet
+          garantissent le contraste au point de lecture. Sans elle, l'acte 04
+          produisait exactement le défaut signalé : texte entremêlé à l'image.
+        */}
+        <div
+          data-panneau-texte
+          className="border-line bg-surface-deep relative z-10 min-w-[18rem] flex-1 rounded-card border p-8 lg:-mr-10 lg:-ml-16 lg:mt-8 lg:p-10"
+        >
           <motion.div variants={fadeUpItem}>
             <Kicker number={kicker.number} label={kicker.label} className="mb-4" />
           </motion.div>

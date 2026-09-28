@@ -18,15 +18,17 @@ const PAS_CLAVIER = 5;
 
 /*
  * Démonstration automatique du geste (audit §7.3) : le curseur part à 30 %,
- * pousse à 65 % pour montrer la révélation, puis se repose à 45 % — un
- * équilibre où les deux états restent lisibles. Elle s'exécute une seule fois
- * à l'affichage, dure environ 1,2 s et cède la main dès la première
- * interaction. En mouvement réduit, le comparateur reste simplement à 50 %.
+ * pousse à 65 % pour montrer la révélation, puis se repose à 50 % — l'équilibre
+ * où les deux états sont présentés à parts égales. Le repos NE doit pas rester
+ * sur la valeur poussée : à 65 %, le visiteur lit « 65 % » comme la position
+ * correcte alors qu'elle n'est qu'un instant de démonstration. Elle s'exécute
+ * une seule fois à l'affichage et cède la main dès la première interaction.
+ * En mouvement réduit, le comparateur reste simplement à 50 %.
  */
 const POSITION_REPOS = 50;
 const DEMO_AMORCE = 30;
 const DEMO_POUSSEE = 65;
-const DEMO_EQUILIBRE = 45;
+const DEMO_EQUILIBRE = 50;
 const DEMO_DELAI_POUSSEE = 400;
 const DEMO_DELAI_EQUILIBRE = 780;
 
@@ -186,6 +188,10 @@ export function BeforeAfter({
           aria-valuenow={Math.round(position)}
           aria-valuemin={0}
           aria-valuemax={100}
+          // `aria-valuenow` seul est inintelligible à l'oreille : un nombre nu
+          // ne dit pas ce que la proportion révélée signifie. On annonce la
+          // part visible de chaque état — exactement ce que la poignée pilote.
+          aria-valuetext={`${Math.round(position)} % de l'état après, ${100 - Math.round(position)} % de l'état avant`}
           aria-describedby={aideId}
           aria-orientation="horizontal"
           onKeyDown={toucheClavier}

@@ -62,7 +62,7 @@ export const journal: EntreeJournal[] = [
     date: "2025-01-12",
     extrait:
       "Terrassement et contrôle des cotes avant coulage des semelles, réception du ferraillage en présence du client.",
-    imageUrl: "/photos/journal/04-21_journal-fouille-rigole.png",
+    imageUrl: "/photos/journal/04-38_journal-fouille-rigole-matin.png",
   },
   {
     id: "journal-ferraillage",
@@ -70,14 +70,14 @@ export const journal: EntreeJournal[] = [
     date: "2025-02-03",
     extrait:
       "Nappes HA posées selon la note de calcul, enrobage vérifié au gabarit avant bétonnage.",
-    imageUrl: "/photos/journal/04-22_journal-ferraillage-semelles.png",
+    imageUrl: "/photos/journal/04-39_journal-ferraillage-gabarit.png",
   },
   {
     id: "journal-plancher",
     titre: "Coulage du plancher — R+4 Odza",
     date: "2025-03-21",
     extrait: "180 m² coulés en une passe, vibration contrôlée et cure humide pendant sept jours.",
-    imageUrl: "/photos/journal/04-23_journal-coulage-plancher.png",
+    imageUrl: "/photos/journal/04-40_journal-coulage-vibration.png",
   },
   {
     id: "journal-charpente",
@@ -85,7 +85,7 @@ export const journal: EntreeJournal[] = [
     date: "2025-05-08",
     extrait:
       "Fermes en bois local assemblées à l'atelier, levage et contreventement en une journée.",
-    imageUrl: "/photos/journal/04-24_journal-pose-charpente.png",
+    imageUrl: "/photos/journal/04-41_journal-charpente-levage.png",
   },
 ];
 
@@ -94,18 +94,18 @@ export const equipe: MembreEquipe[] = [
     id: "ingenieur-structure",
     nom: "Ingénieur structure",
     role: "Calcul et suivi de chantier",
-    photoUrl: "/photos/portraits/04-25_portrait-ingenieur.png",
+    photoUrl: "/photos/portraits/04-60_portrait-ingenieur-casque-plan.png",
   },
   {
     id: "atelier-ebenisterie",
-    nom: "Atelier ébénisterie",
+    nom: "Ébéniste d'atelier",
     role: "Mobilier sur-mesure en essences locales",
-    photoUrl: "/photos/portraits/04-26_equipe-atelier-ebenisterie.png",
+    photoUrl: "/photos/portraits/04-61_portrait-ebeniste-rabot.png",
   },
   {
     id: "chef-chantier",
-    nom: "Chef de chantier",
+    nom: "Conductrice de travaux",
     role: "Exécution et réception des ouvrages",
-    photoUrl: "/photos/portraits/04-27_chef-equipe-chantier-tablette.png",
+    photoUrl: "/photos/portraits/04-62_portrait-conductrice-travaux.png",
   },
 ];

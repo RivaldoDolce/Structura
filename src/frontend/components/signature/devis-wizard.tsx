@@ -4,7 +4,10 @@ import { Building2, Calculator, Ruler, Wrench, type LucideIcon } from "lucide-re
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { AnimatePresence, motion } from "motion/react";
 import { cn } from "@/frontend/lib/cn";
+import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
+import { durations, easings } from "@/frontend/lib/tokens";
 
 // Règles alignées sur le tunnel : téléphone d'abord, email facultatif.
 const schemaDevis = z.object({
@@ -75,8 +78,12 @@ const TYPES_PROJET: ReadonlyArray<{
 // serveur, le client n'émet qu'un brouillon horodaté.
 export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
   const [etape, setEtape] = useState(0);
+  const [direction, setDirection] = useState<"avant" | "arriere">("avant");
   const [envoi, setEnvoi] = useState(false);
   const [reference, setReference] = useState<string | null>(null);
+  // Le mouvement est une préférence système, pas un état de formulaire : il
+  // se lit une fois, et la transition devient un simple changement d'étape.
+  const mouvementReduit = useReducedMotion();
 
   const { register, handleSubmit, watch, setValue, trigger, formState } = useForm<DonneesDevis>({
     resolver: zodResolver(schemaDevis),
@@ -125,10 +132,13 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
 
   const allerAEtape = useCallback(
     (suivante: number) => {
+      // La direction donne le sens du slide : avancer glisse vers la gauche,
+      // reculer vers la droite — le visiteur sent d'où il vient.
+      setDirection(suivante >= etape ? "avant" : "arriere");
       setEtape(suivante);
       memorise(watch(), suivante);
     },
-    [memorise, watch]
+    [etape, memorise, watch]
   );
 
   // Chaque écran ne valide que ses propres champs, sinon l'étape 1 resterait bloquée.
@@ -215,12 +225,31 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
           <div
             aria-hidden="true"
             style={{ width: `${((etape + 1) / 3) * 100}%` }}
-            className="bg-blueprint h-full transition-all duration-300"
+            className="bg-blueprint h-full transition-[width] duration-standard ease-out-expo"
           />
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(transmet)} className="space-y-6">
+      <form
+        onSubmit={handleSubmit(transmet)}
+        className="space-y-6"
+        data-testid="transition-devis"
+        data-transition-devis
+        data-etape={etape}
+        data-direction={direction}
+        data-mouvement={mouvementReduit ? "reduit" : "fluide"}
+      >
+        {/* Le formulaire reste monté pendant le mouvement : seule la lame
+            visible change d'étape, la saisie ne se démonte jamais. */}
+        <AnimatePresence initial={false} mode="sync" custom={direction}>
+          <motion.div
+            key={etape}
+            custom={direction}
+            initial={mouvementReduit ? false : { opacity: 0, x: direction === "avant" ? 32 : -32 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={mouvementReduit ? { opacity: 1, x: 0 } : { opacity: 0, x: direction === "avant" ? -32 : 32 }}
+            transition={{ duration: mouvementReduit ? 0 : durations.standard, ease: easings.outExpo }}
+          >
         {etape === 0 ? (
           <div className="space-y-6">
             <div>
@@ -248,7 +277,7 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
                     data-selected={selectionne}
                     onClick={() => setValue("typeProjet", type.id, { shouldValidate: true })}
                     className={cn(
-                      "rounded-card focus-visible:ring-blueprint relative border-2 p-6 text-left transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+                      "rounded-card focus-visible:ring-blueprint relative border-2 p-6 text-left transition-[background-color,border-color] duration-micro ease-out-expo focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
                       selectionne
                         ? "border-blueprint bg-blueprint/10"
                         : "border-line bg-surface hover:border-steel"
@@ -431,6 +460,8 @@ export function DevisWizard({ onSubmit, className }: DevisWizardProps) {
             </button>
           )}
         </div>
+          </motion.div>
+        </AnimatePresence>
       </form>
 
       <div className="rounded-control bg-elevated mt-8 p-4">

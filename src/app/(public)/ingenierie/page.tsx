@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BandeauAlterne } from "@/frontend/components/sections/bandeau-alterne";
+import { SceneEtudePrealable } from "@/frontend/components/sections/scene-etude-prealable";
+import { SceneFerraillage } from "@/frontend/components/sections/scene-ferraillage";
+import { SceneNoteCalcul } from "@/frontend/components/sections/scene-note-calcul";
+import { SceneSuiviReception } from "@/frontend/components/sections/scene-suivi-reception";
 import { CtaChaud } from "@/frontend/components/sections/cta-chaud";
 import { HeroEnTete } from "@/frontend/components/sections/hero-en-tete";
 import { PanneauDonnees } from "@/frontend/components/sections/panneau-donnees";
@@ -16,60 +19,72 @@ export const metadata: Metadata = {
 };
 
 /*
- * La méthode en quatre étapes : chacune annonce son livrable et sa durée
- * indicative. Les bandeaux alternent ivoire et ivoire second — deux papiers
- * distincts, jamais le même deux fois de suite (règle d'alternance V2).
+ * La méthode en quatre scènes différenciées (V3 §7.3 à §7.6). Chacune a sa
+ * propre grammaire : la donnée ci-dessous est celle de la scène, pas un
+ * générique réutilisé quatre fois. Chaque acte porte un rapport
+ * dominant et une lumière distincts — c'est ce qui interdit la répétition
+ * mécanique du 50/50 alterné, contrôlé par un test de composition.
  */
-const ETAPES = [
-  {
-    id: "etude",
-    number: "01",
-    title: "Étude préalable",
-    description:
-      "Relevé sur site, analyse du sol et des contraintes d'usage : la structure se dessine avant de se calculer.",
-    imageUrl: "/photos/journal/04-21_journal-fouille-rigole.png",
-    imageAlt: "Fouilles en rigole et contrôle des cotes",
-    deliverables: ["Visite technique", "Esquisse dimensionnée", "Devis ferme — 5 jours"],
-    href: "/devis",
-    surface: "ivoire",
-  },
-  {
-    id: "note-calcul",
-    number: "02",
-    title: "Note de calcul",
-    description:
-      "Descente de charges, hypothèses sismiques et coefficients de sécurité : chaque valeur est justifiée et signée.",
-    imageUrl: "/photos/chantiers/04-02_plan-3d-holographique.png",
-    imageAlt: "Maquette structurelle calculée",
-    deliverables: ["Descente de charges", "Note signée par l'ingénieur", "10 à 15 jours"],
-    href: "/devis",
-    surface: "pale",
-  },
-  {
-    id: "ferraillage",
-    number: "03",
-    title: "Plans de ferraillage",
-    description:
-      "Section de béton, diamètres, espacements et recouvrements : les plans que l'équipe suit sur le terrain.",
-    imageUrl: "/photos/journal/04-22_journal-ferraillage-semelles.png",
-    imageAlt: "Ferraillage des semelles posé selon les plans",
-    deliverables: ["Plans d'exécution", "Nomenclature acier", "5 jours après la note"],
-    href: "/devis",
-    surface: "ivoire",
-  },
-  {
-    id: "suivi",
-    number: "04",
-    title: "Suivi et réception",
-    description:
-      "Visites à chaque phase sensible, contrôle d'enrobage et procès-verbal de réception à la remise des clés.",
-    imageUrl: "/photos/chantiers/04-04_chantier-r2-yaounde.png",
-    imageAlt: "Chantier R+2 sous suivi technique",
-    deliverables: ["Visites de contrôle", "PV de réception", "Tout au long du chantier"],
-    href: "/devis",
-    surface: "pale",
-  },
-] satisfies Parameters<typeof BandeauAlterne>[0]["items"];
+const ETUDE_PREALABLE = {
+  numero: "02",
+  titre: "Étude préalable",
+  accroche:
+    "Relevé sur site, analyse du sol et des contraintes d'usage : la structure se dessine avant de se calculer.",
+  imageUrl: "/photos/journal/04-38_journal-fouille-rigole-matin.png",
+  imageAlt: "Fouilles en rigole alignées au cordeau, cotes contrôlées avant coulage des semelles",
+  preuves: [
+    { label: "Contrainte", valeur: "Terrain en pente" },
+    { label: "Sol", valeur: "Argile ferme, 2,1 m" },
+    { label: "Zone sismique", valeur: "Modérée" },
+  ],
+  livrables: ["Visite technique", "Esquisse dimensionnée", "Devis ferme — 5 jours"],
+  href: "/devis",
+  hrefLabel: "Lancer mon étude",
+} satisfies Parameters<typeof SceneEtudePrealable>[0];
+
+const NOTE_CALCUL = {
+  numero: "03",
+  titre: "Note de calcul",
+  accroche:
+    "Descente de charges, hypothèses sismiques et coefficients de sécurité : chaque valeur est justifiée et signée.",
+  imageUrl: "/photos/chantiers/04-70_bureau-etude-conception-3d.png",
+  imageAlt: "Bureau d'études STRUCTURA : conception du modèle et des plans de ferraillage",
+  cotes: [
+    { terme: "Charge permanente", valeur: "12,4 kN/m²" },
+    { terme: "Charge d'exploitation", valeur: "2,5 kN/m²" },
+    { terme: "Séisme", valeur: "0,12 g" },
+    { terme: "Béton", valeur: "C25/30" },
+  ],
+  annotation: "NOTE N° 2025-014 — SIGNÉE",
+  href: "/devis",
+  hrefLabel: "Consulter la note type",
+} satisfies Parameters<typeof SceneNoteCalcul>[0];
+
+const FERRAILLAGE = {
+  numero: "04",
+  phrase:
+    "Semelles de 40 × 40, nappe inférieure HA10 tous les 15 cm, enrobage 5 cm au gabarit.",
+  titre: "Plans de ferraillage",
+  accroche:
+    "Section de béton, diamètres, espacements et recouvrements : les plans que l'équipe suit sur le terrain.",
+  cotes: ["Semelles 40×40", "HA10 @ 15 cm", "Enrobage 5 cm", "Recouvrement 50 Ø"],
+} satisfies Parameters<typeof SceneFerraillage>[0];
+
+const SUIVI_RECEPTION = {
+  numero: "05",
+  titre: "Suivi et réception",
+  accroche:
+    "Visites à chaque phase sensible, contrôle d'enrobage et procès-verbal de réception à la remise des clés.",
+  imageUrl: "/photos/chantiers/04-45_suivi-controle-enrobage.png",
+  imageAlt: "Contrôle de l'enrobage des aciers au gabarit, carnet de suivi à la main",
+  suivi: [
+    { label: "Phase", valeur: "Élévation" },
+    { label: "Enrobage", valeur: "5 cm vérifié" },
+    { label: "Visites", valeur: "6 à ce jour" },
+  ],
+  href: "/devis",
+  hrefLabel: "Demander un suivi",
+} satisfies Parameters<typeof SceneSuiviReception>[0];
 
 const CAS = [
   { label: "Ouvrage", valeur: "Immeuble R+2" },
@@ -104,27 +119,27 @@ export default function PageIngenierie() {
         </div>
       </HeroEnTete>
 
-      <BandeauAlterne
-        items={ETAPES}
-        titre="La méthode, étape par étape"
-        accroche="Quatre étapes, quatre livrables : vous savez toujours ce que vous recevez et quand."
-        kicker={{ number: "02", label: "MÉTHODE" }}
-        lumiere="ivoire"
-      />
+      <SceneEtudePrealable {...ETUDE_PREALABLE} />
+
+      <SceneNoteCalcul {...NOTE_CALCUL} />
+
+      <SceneFerraillage {...FERRAILLAGE} />
+
+      <SceneSuiviReception {...SUIVI_RECEPTION} />
 
       <PleinLargeurEditorial
-        kicker={{ number: "03", label: "ÉTUDE DE CAS" }}
+        kicker={{ number: "06", label: "ÉTUDE DE CAS" }}
         titre="Un R+2 sur terrain en pente, en zone sismique modérée"
         accroche="Semelles décalées et voiles repris au contreventement : la pente est devenue un atout structurel."
-        image="/photos/chantiers/04-04_chantier-r2-yaounde.png"
-        alt="Immeuble R+2 en construction sur terrain en pente"
+        image="/photos/chantiers/04-31_chantier-r2-matin-dore.png"
+        alt="Ossature R+2 au petit matin : poteaux coulés, coffrages et échafaudages en place"
         legende="CHANTIER R+2 — YAOUNDÉ, 2025"
         fiche={CAS}
-        lumiere="warm"
+        lumiere="sombre"
       />
 
       <PanneauDonnees
-        kicker={{ number: "04", label: "LIVRABLES" }}
+        kicker={{ number: "07", label: "LIVRABLES" }}
         titre="Les documents que vous recevez"
         accroche="Rien ne reste dans un tiroir : chaque livrable est remis au maître d'ouvrage."
         lignes={DOCUMENTS}
@@ -136,7 +151,7 @@ export default function PageIngenierie() {
       </PanneauDonnees>
 
       <CtaChaud
-        kicker={{ number: "05", label: "DÉMARRER" }}
+        kicker={{ number: "08", label: "DÉMARRER" }}
         titre="Un calcul juste coûte moins cher qu'une reprise."
         accroche="Décrivez votre ouvrage : nous vous répondons sous 24 heures ouvrées avec une première estimation."
         actionPrincipale={{ label: "Demander un devis", href: "/devis" }}

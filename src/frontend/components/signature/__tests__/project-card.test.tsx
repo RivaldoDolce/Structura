@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { DUREE_REVELATION } from "@/frontend/lib/tokens";
 import { ProjectCard } from "../project-card";
 
 vi.mock("next/image", () => ({
@@ -55,7 +56,14 @@ describe("ProjectCard", () => {
 
     const carte = container.querySelector("article");
     expect(carte).toHaveClass("group");
-    expect(carte).toHaveClass("transition-transform", "duration-500", "ease-out-expo");
+    // La durée est déduite de l'échelle de tokens : le test valide l'intention
+    // (« la carte met plus de temps que le survol d'un bouton ») sans figer une
+    // valeur littérale, que la règle V3 interdit par ailleurs.
+    expect(carte).toHaveClass(
+      "transition-transform",
+      `duration-${DUREE_REVELATION}`,
+      "ease-out-expo"
+    );
     expect(carte).toHaveClass("hover:-translate-y-2", "hover:shadow-glow");
   });
 

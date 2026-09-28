@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { essences } from "@/frontend/data/equipe";
@@ -27,11 +27,12 @@ vi.mock("next/image", () => ({
 }));
 
 describe("Pages métier", () => {
-  it("présente l'ingénierie : méthode en quatre étapes et CTA devis", () => {
+  it("présente l'ingénierie : quatre scènes différenciées et CTA devis", () => {
     render(<PageIngenierie />);
 
     expect(screen.getByRole("heading", { name: /ingénierie structure/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /la méthode, étape par étape/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /étude préalable/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /note de calcul/i })).toBeInTheDocument();
 
     const devis = screen.getAllByRole("link", { name: /demander un devis/i });
     expect(devis.length).toBeGreaterThanOrEqual(1);
@@ -76,12 +77,26 @@ describe("Pages institutionnelles", () => {
     expect(screen.getByRole("region", { name: /chiffres clés/i })).toBeInTheDocument();
   });
 
+  it("expose les matières et savoir-faire locaux sur À propos", () => {
+    render(<PageAPropos />);
+
+    const bandeau = screen.getByRole("region", { name: /matières et savoir-faire/i });
+    expect(within(bandeau).getAllByRole("img")).toHaveLength(3);
+  });
+
   it("expose le formulaire de contact et les coordonnées", () => {
     render(<PageContact />);
 
     expect(screen.getByRole("heading", { name: /parlons de votre projet/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/nom/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/téléphone/i)).toBeInTheDocument();
+  });
+
+  it("illustre le bloc de coordonnées par le bureau d'accueil", () => {
+    render(<PageContact />);
+
+    const coordonnees = screen.getByRole("complementary", { name: /coordonnées/i });
+    expect(within(coordonnees).getByRole("img", { name: /maquette/i })).toBeInTheDocument();
   });
 });
 

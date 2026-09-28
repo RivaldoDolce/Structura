@@ -68,6 +68,10 @@
   /* Voile des modales : assombrit sans aveugler */
   --color-overlay: rgba(2, 6, 23, 0.72);
 
+  /* Bois nuit : extremité haute du dégradé chaud, hors du noir générique —
+     c'est cette profondeur brunie qui donne à l'acte ébénisterie sa matière. */
+  --color-bois-nuit: #2a1e16;
+
   /* Sémantiques */
   --color-ok: #10b981;
   --color-warn: #f59e0b;
@@ -82,6 +86,11 @@
   /* Échelle typographique fluide, sans media query */
   --text-display: clamp(3rem, 7vw + 1rem, 6rem);
   --text-display--line-height: 1.02;
+  /* Hero d'accueil : le titre partage la largeur avec le plan, sa colonne
+     éditoriale fait ~620 px en 1440. Une échelle plus serrée que `display`
+     permet trois lignes courtes — et le hero tient alors dans un écran 900 px. */
+  --text-hero: clamp(2.5rem, 3.4vw + 1.25rem, 4.5rem);
+  --text-hero--line-height: 1.04;
   --text-h1: clamp(2.25rem, 3.5vw + 1rem, 3.5rem);
   --text-h1--line-height: 1.08;
   --text-h2: clamp(1.6rem, 2vw + 0.9rem, 2.25rem);
@@ -118,12 +127,17 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* Durées : échelle unique, aucune valeur ad hoc dans un composant */
-  --dur-micro: 150ms;
-  --dur-standard: 300ms;
-  --dur-reveal: 400ms;
-  --dur-cinematic: 700ms;
-  --dur-stagger: 60ms;
+  /* Durées : échelle unique, aucune valeur ad hoc dans un composant.
+     Le namespace `--transition-duration-*` est celui du thème Tailwind v4 : les
+     utilitaires `duration-micro`, `duration-standard`… en dérivent directement,
+     ce qui rend une durée littérale (`duration-300`) à la fois inutile et
+     détectable. L'échelle est mirroitée dans `lib/tokens.ts` pour Motion et
+     vérifiée par `app-tests/regles-v3.test.ts`. */
+  --transition-duration-micro: 150ms;
+  --transition-duration-standard: 300ms;
+  --transition-duration-reveal: 400ms;
+  --transition-duration-cinematic: 700ms;
+  --transition-duration-stagger: 60ms;
 
   /* Animations des primitives, limitées à transform et opacity : aucun paint
    pendant l'animation. */
@@ -225,7 +239,7 @@
 /* Contexte chaud : la matière bois entre par la lumière, pas par la
    saturation. Réservé aux sections et cartes ébénisterie. */
 .st-warm {
-  background: linear-gradient(180deg, #2a1e16 0%, var(--color-surface-warm) 100%);
+  background: linear-gradient(180deg, var(--color-bois-nuit) 0%, var(--color-surface-warm) 100%);
   box-shadow: inset 0 1px 0 rgba(217, 119, 6, 0.12);
   --st-fusion: var(--color-surface-warm);
 }
@@ -244,6 +258,52 @@
 }
 
 /* ------------------------------------------------------------------ */
+/* Recettes de scène (V3 §6.3 et §6.4) : protection localisée d'une    */
+/* photographie de héros et masque de révélation d'une ligne de titre. */
+/* ------------------------------------------------------------------ */
+
+/* Protection d'une photo de héros : la densité suit la position du texte, pas
+   le cadre. Un voile opaque plein cadre transformerait la photographie en
+   aplat ; ici, la zone visuelle opposée reste lisible au premier regard.
+   Densités calibrées sur la photo du hero d'accueil (luminance relative ≈ 0,03
+   côté texte, ≈ 0,14 côté plan) : le titre travaille au-delà de 13:1 tandis
+   que le cyan du plan garde plus de 7,5:1 — mesuré, pas supposé.
+   Vertical sur mobile — le titre occupe toute la largeur —, oblique dès 768 px
+   où la composition place le texte à gauche et la matière à droite.
+   `color-mix` dérive du token de fond : aucune valeur brute à resynchroniser. */
+.st-voile-photo {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-fond) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-fond) 88%, transparent) 55%,
+    color-mix(in srgb, var(--color-fond) 82%, transparent) 100%
+  );
+}
+
+@media (min-width: 768px) {
+  .st-voile-photo {
+    background: linear-gradient(
+      100deg,
+      var(--color-fond) 0%,
+      color-mix(in srgb, var(--color-fond) 92%, transparent) 36%,
+      color-mix(in srgb, var(--color-fond) 62%, transparent) 60%,
+      color-mix(in srgb, var(--color-fond) 30%, transparent) 100%
+    );
+  }
+}
+
+/* Dépassement d'une ligne de titre révélée par masque : le parent est rogné
+   (`overflow-hidden`) pour que la translation verticale se lise comme un lever
+   de rideau. Le padding bas, compensé par une marge négative, rend l'espace
+   nécessaire aux jambages de l'italique Fraunces — sans lui, la ligne serait
+   tronquée au repos. */
+.st-masque-titre {
+  display: block;
+  padding-block-end: 0.14em;
+  margin-block-end: -0.14em;
+}
+
+/* ------------------------------------------------------------------ */
 /* Lumière claire (plan V2 §2) : l'ivoire et l'ivoire second. Chaque    */
 /* recette porte son fond *et* la surface de fusion des photos — une    */
 /* seule déclaration, donc aucune divergence possible entre les actes.  */
@@ -258,33 +318,60 @@
   --st-fusion: var(--color-paper-soft);
 }
 
-/* Lisière : aux deux extrémités d'une bande claire, la lumière se pose et se
-   retire. Le papier sort du noir au lieu de le couper — c'est ce fondu qui
+/* Lisière : la couture ne se décide pas seule, elle se décide avec son voisin.
+   Par défaut — bande claire encadrée de sombre — la lumière se pose et se
+   retire : le papier sort du noir au lieu de le couper, et c'est ce fondu qui
    rend le passage sombre → clair perceptible sans lire un titre.
-   Elle reste dans la zone de respiration (≤ 96 px) : le contenu commence
-   toujours sur la surface pleine, donc aucun texte n'est dégradé. */
+
+   Entre deux bandes claires, ce fondu serait absurde : il creuserait une tache
+   noire au milieu du papier. La couture devient alors un filet d'un pixel,
+   l'équivalent graphique du trait de coupe qui sépare deux planches. */
+.st-lisiere {
+  /* Couleur de fondu, résolue au cas par cas par les règles de voisinage. */
+  --st-lisiere-fond: var(--color-fond);
+}
+
 .st-lisiere::before,
 .st-lisiere::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   z-index: 0;
-  height: clamp(3rem, 6vw, 6rem);
+  /* Bornée par la plus faible respiration du site (py-20) : au-delà, le fondu
+     atteindrait la première ligne de contenu. */
+  height: clamp(3rem, 5vw, 5rem);
   pointer-events: none;
 }
 
 .st-lisiere::before {
   top: 0;
-  background: linear-gradient(180deg, var(--color-fond) 0%, rgba(6, 10, 18, 0) 100%);
+  background: linear-gradient(180deg, var(--st-lisiere-fond) 0%, transparent 100%);
 }
 
 .st-lisiere::after {
   bottom: 0;
-  background: linear-gradient(0deg, var(--color-fond) 0%, rgba(6, 10, 18, 0) 100%);
+  background: linear-gradient(0deg, var(--st-lisiere-fond) 0%, transparent 100%);
+}
+
+/* Deux bandes claires jointives : la bande haute renonce à son fondu — sans
+   lui, il creuserait une tache noire au milieu même du papier. La bande basse
+   pose à la place un trait d'un pixel, à la couleur des filets clairs.
+   Enhancement progressif : sans `:has()` (navigateurs antérieurs à 2023), le
+   rendu retombe sur le fondu historique — l'état actuel du site, jamais une
+   couture cassée. */
+.st-lisiere:has(+ .st-lisiere)::after {
+  display: none;
+}
+
+.st-lisiere + .st-lisiere::before {
+  height: 1px;
+  background: var(--color-line-encre);
 }
 
 /* Lien à soulignement progressif : le trait se trace de gauche à droite comme
-   un trait de cote — 200 ms, transform uniquement, jamais de reflow. */
+   un trait de cote — 150 ms, transform uniquement, jamais de reflow.
+   Recette unique du site : un composant qui porte `.st-lien` n'a plus à
+   redéclarer son propre trait. */
 .st-lien {
   position: relative;
 }
@@ -298,11 +385,17 @@
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform var(--dur-micro) var(--ease-out-expo);
+  transition: transform var(--transition-duration-micro) var(--ease-out-expo);
 }
 
 .st-lien:hover::after,
 .st-lien:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Page courante : le trait reste tracé. L'état vient de l'attribut sémantique,
+   pas d'une seconde recette — un seul soulignement dans tout le site. */
+.st-lien[aria-current="page"]::after {
   transform: scaleX(1);
 }
 

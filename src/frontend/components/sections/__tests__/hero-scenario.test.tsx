@@ -39,7 +39,6 @@ function rendAvecDecor() {
   const decor = (
     <div ref={racine}>
       {DECOR}
-      <div data-parallax data-parallax-vitesse="1.06" />
     </div>
   );
 
@@ -104,12 +103,12 @@ describe("HeroScenario", () => {
     vue.unmount();
   });
 
-  it("anima la couche de parallax à sa vitesse", async () => {
+  it("ne pose aucun transform concurrent sur les couches du décor", async () => {
     const { vue } = rendAvecDecor();
 
     await waitFor(() => expect(fromToStub).toHaveBeenCalled());
-    const appelParallax = fromToStub.mock.calls.find(([, fin]) => fin && "y" in fin);
-    expect(appelParallax?.[1]).toMatchObject({ y: expect.any(Number) });
+    const translations = fromToStub.mock.calls.filter(([, fin]) => fin && "y" in fin);
+    expect(translations).toHaveLength(0);
     vue.unmount();
   });
 

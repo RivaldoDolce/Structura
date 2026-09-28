@@ -55,7 +55,11 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
     ref
   ) => {
     const classes = cn(
-      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-control font-medium transition-all",
+      "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap rounded-control font-medium",
+      // Propriétés nommées : le survol ne joue que sur la teinte de fond, la
+      // bordure et l'opacité (état désactivé). `all` déclencherait des
+      // transitions parasites sur la hauteur, la largeur et l'ombre.
+      "transition-[background-color,border-color,color,opacity] duration-micro ease-out-expo",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-steel focus-visible:ring-offset-2 focus-visible:ring-offset-fond",
       "disabled:pointer-events-none disabled:opacity-50",
       CLASSES_VARIANTES[variant],
@@ -87,10 +91,10 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
           aria-hidden="true"
           className="rounded-control pointer-events-none absolute inset-0 overflow-hidden"
         >
-          <span className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-          <span className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-          <span className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-current opacity-0 transition-all duration-300 group-hover:-translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
-          <span className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-current opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
+          <span className="absolute top-0 left-0 h-3 w-3 border-t-2 border-l-2 border-current opacity-0 transition-[opacity,transform] duration-standard group-hover:-translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
+          <span className="absolute top-0 right-0 h-3 w-3 border-t-2 border-r-2 border-current opacity-0 transition-[opacity,transform] duration-standard group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
+          <span className="absolute bottom-0 left-0 h-3 w-3 border-b-2 border-l-2 border-current opacity-0 transition-[opacity,transform] duration-standard group-hover:-translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
+          <span className="absolute right-0 bottom-0 h-3 w-3 border-r-2 border-b-2 border-current opacity-0 transition-[opacity,transform] duration-standard group-hover:translate-x-1 group-hover:translate-y-1 group-hover:opacity-100" />
         </span>
 
         {isLoading ? (
@@ -124,7 +128,7 @@ export const ButtonTech = React.forwardRef<HTMLButtonElement, ButtonTechProps>(
             {icon ? (
               <span
                 aria-hidden="true"
-                className="transition-transform duration-300 group-hover:translate-x-1"
+                className="transition-transform duration-micro ease-out-expo group-hover:translate-x-1"
               >
                 {icon}
               </span>

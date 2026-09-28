@@ -49,6 +49,89 @@ function recettePour(chemin) {
   return RECETTES.find((recette) => recette.motif.test(chemin.replace(/\\/g, "/")));
 }
 
+/* ------------------------------------------------------------------ */
+/* Dérivations de marque                                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Le monogramme du kit est une planche opaque : le glyphe est rendu sur un fond
+ * bleu nuit parcouru d'une maille blueprint, sans canal alpha. Posée telle
+ * quelle dans l'en-tête, la planche afficherait son carré sombre — un sticker,
+ * pas un sceau.
+ *
+ * La dérivation reconstruit l'alpha par rampe sur la luminance : sous 26 le
+ * pixel appartient au fond ou à la maille (qui plafonne vers 20), au-dessus de
+ * 60 il appartient au trait plein. La teinte est ensuite ramenée à l'aplat de
+ * marque : un sceau se lit par sa forme, jamais par un dégradé.
+ */
+const SCEAU = {
+  source: "public/branding/monogramme-cyan.png",
+  cible: "public/branding/monogramme-sceau.png",
+  seuilFond: 26,
+  seuilTrait: 60,
+  /** `--color-blueprint` : le sceau ne porte pas sa propre teinte. */
+  teinte: { r: 0x22, g: 0xd3, b: 0xee },
+  /** Plus de trois fois la taille d'affichage en en-tête : net en densité double. */
+  taille: 168,
+};
+
+/**
+ * Détoure une planche de marque vers un PNG à canal alpha, rogné sur son
+ * glyphe. Retourne le poids du fichier écrit, ou `null` si la source manque.
+ */
+async function deriverSceau({ source, cible, seuilFond, seuilTrait, teinte, taille }) {
+  if (!existsSync(source)) return null;
+
+  const { data, info } = await sharp(source).removeAlpha().raw().toBuffer({
+    resolveWithObject: true,
+  });
+  const { width, height, channels } = info;
+  const rgba = Buffer.alloc(width * height * 4);
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const depuis = (y * width + x) * channels;
+      const luminance =
+        0.2126 * data[depuis] + 0.7152 * data[depuis + 1] + 0.0722 * data[depuis + 2];
+      const couverture = Math.min(
+        1,
+        Math.max(0, (luminance - seuilFond) / (seuilTrait - seuilFond)),
+      );
+      const alpha = Math.round(couverture * 255);
+
+      const vers = (y * width + x) * 4;
+      rgba[vers] = teinte.r;
+      rgba[vers + 1] = teinte.g;
+      rgba[vers + 2] = teinte.b;
+      rgba[vers + 3] = alpha;
+
+      // Le rognage suit l'alpha utile : l'anti-aliasing sous 8/255 ne décide pas
+      // du cadre, sans quoi un voile résiduel suffirait à garder toute la planche.
+      if (alpha > 8) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if (maxX < 0) return null;
+
+  const { data: png, info: sortie } = await sharp(rgba, { raw: { width, height, channels: 4 } })
+    .extract({ left: minX, top: minY, width: maxX - minX + 1, height: maxY - minY + 1 })
+    .resize(taille, taille, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png({ compressionLevel: 9 })
+    .toBuffer({ resolveWithObject: true });
+
+  writeFileSync(cible, png);
+  return { poids: png.length, cote: sortie.width };
+}
+
 /** Formater un poids en octets de façon lisible. */
 function formaterPoids(octets) {
   if (octets >= 1024 * 1024) return `${(octets / 1024 / 1024).toFixed(2)} Mo`;
@@ -125,6 +208,18 @@ async function main() {
       : "Aucun fichier converti.",
     "",
   );
+
+  if (!secDryRun) {
+    const sceau = await deriverSceau(SCEAU);
+    if (sceau) {
+      lignesRapport.push(
+        "## Dérivations de marque",
+        "",
+        `- \`${SCEAU.cible}\` — sceau ${sceau.cote}×${sceau.cote} détouré depuis \`${SCEAU.source}\` (${formaterPoids(sceau.poids)}).`,
+        "",
+      );
+    }
+  }
 
   writeFileSync(fichierRapport, lignesRapport.join("\n"), "utf8");
   // Journal d'exécution : un script de build a le droit de parler, mais via

@@ -4,19 +4,29 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { motion } from "motion/react";
-import { BlueprintGrid } from "../signature/blueprint-grid";
 import { ButtonTech } from "../signature/button-tech";
 import { Kicker } from "../signature/kicker";
-import { useReducedMotion } from "@/frontend/hooks/use-reduced-motion";
 import { fadeItem, fadeUpItem, staggerContainer, titleReveal } from "@/frontend/lib/animations";
-import { FONDS_HEROS } from "@/frontend/data/fonds";
+import { PHOTO_HERO_ACCUEIL } from "@/frontend/data/fonds";
 import { HeroScenario } from "./hero-scenario";
 import { PlanDessin } from "./plan-dessin";
 
-/** Premier écran de l'accueil : fond photo du kit sous la maille blueprint, plan rejoué au scroll sur desktop. */
+/**
+ * Premières lignes du H1 (V3 §6.4). La rupture est intentionnelle : elle isole
+ * le mot éditorial pour qu'il soit le dernier temps de la chorégraphie. Chaque
+ * ligne se referme par un espace, sans quoi le titre ne serait plus une phrase
+ * continue pour une technologie d'assistance, qui ignore la mise en page.
+ */
+const LIGNES_TITRE = ["L'ingénierie qui", "construit en"] as const;
+
+/**
+ * Premier écran de l'accueil (composition C1, V3 §6) : la photographie réelle
+ * d'un chantier porte le titre sous une protection localisée, et le plan
+ * isométrique — seul porteur du plan depuis que la maille blueprint a quitté le
+ * hero — se dessine au défilement.
+ */
 export function Hero() {
   const racine = useRef<HTMLElement>(null);
-  const animationsReduites = useReducedMotion();
 
   return (
     <section
@@ -26,33 +36,31 @@ export function Hero() {
       data-composition="C1"
       data-surface="photo"
       data-lumiere="sombre"
-      className="relative min-h-[calc(100vh-4rem)] overflow-hidden md:min-h-[calc(100vh-5rem)]"
+      className="relative min-h-[calc(100svh-4rem)] overflow-hidden md:min-h-[calc(100svh-5rem)]"
     >
-      {/* Fond photo du kit (élément LCP, servi en AVIF), voilé pour garantir
-          le contraste du titre : la matière entre sur l'accueil sans jamais
-          concurrencer la maille technique posée au-dessus. */}
-      <div className="absolute inset-0" aria-hidden="true">
-        <Image
-          src={FONDS_HEROS.accueil}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-        <div className="bg-fond/70 absolute inset-0" />
-        <div className="from-fond/40 to-fond absolute inset-0 bg-gradient-to-b via-transparent" />
-      </div>
+      {/* Élément LCP : la photo informe, elle n'illustre pas. Sa teinte sombre
+          (luminance relative ≈ 0,03 sur sa moitié gauche, mesurée) est ce qui
+          autorise un voile dégressif sans transformer la scène en aplat. */}
+      <Image
+        src={PHOTO_HERO_ACCUEIL.src}
+        alt={PHOTO_HERO_ACCUEIL.alt}
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectPosition: PHOTO_HERO_ACCUEIL.position }}
+        className="object-cover"
+      />
 
-      <div data-blueprint-grid data-parallax="" data-parallax-vitesse="0.94" aria-hidden="true">
-        <BlueprintGrid fade="both" className="absolute inset-0" />
-      </div>
+      {/* Protection localisée (V3 §6.3) : dense sous le titre, légère sous le
+          plan, ouverte au-delà. La recette porte la densité complète — aucun
+          composant n'a de valeur d'assombrissement à calibrer. */}
+      <div className="st-voile-photo pointer-events-none absolute inset-0" aria-hidden="true" />
 
       <motion.div
         initial="hidden"
         animate="show"
         variants={staggerContainer}
-        className="max-w-content relative mx-auto flex min-h-[calc(100vh-4rem)] flex-col justify-center px-4 py-24 md:min-h-[calc(100vh-5rem)] md:px-6 md:py-32"
+        className="max-w-content relative mx-auto flex min-h-[calc(100svh-4rem)] flex-col justify-center px-4 py-24 md:min-h-[calc(100svh-5rem)] md:px-6 md:py-32"
       >
         <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
           <div>
@@ -62,17 +70,18 @@ export function Hero() {
 
             <motion.h1
               variants={fadeItem}
-              className="font-display text-display text-ink max-w-4xl font-bold"
+              className="font-display text-hero text-ink text-balance font-bold"
             >
-              <span className="block overflow-hidden">
+              {LIGNES_TITRE.map((ligne) => (
+                <span key={ligne} data-ligne className="st-masque-titre overflow-hidden">
+                  <motion.span variants={titleReveal} className="block">
+                    {ligne}{" "}
+                  </motion.span>
+                </span>
+              ))}
+              <span data-ligne className="st-masque-titre overflow-hidden">
                 <motion.span variants={titleReveal} className="block">
-                  L&apos;ingénierie qui
-                </motion.span>
-              </span>
-              <span className="block overflow-hidden">
-                <motion.span variants={titleReveal} className="block">
-                  construit en{" "}
-                  <em className="font-editorial text-ink font-normal italic">confiance</em>
+                  <em className="font-editorial font-normal italic">confiance</em>
                 </motion.span>
               </span>
             </motion.h1>
@@ -82,7 +91,7 @@ export function Hero() {
               className="text-body text-ink-soft mt-8 max-w-2xl md:text-lg"
             >
               De la rigueur du calcul de structure à la noblesse de la finition sur-mesure. Votre
-              projet immobilier de A à Z à Yaoundé.
+              projet immobilier de A à Z au Cameroun.
             </motion.p>
 
             <motion.div variants={fadeUpItem} className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -95,38 +104,17 @@ export function Hero() {
             </motion.div>
           </div>
 
+          {/* Un seul mouvement piloté par le défilement (V3 §6.5) : c'est le
+              tracé qui porte le récit. Ni parallax, ni translation
+              concurrente — le plan ne reçoit qu'un seul geste. */}
           <motion.div
             variants={fadeItem}
-            data-parallax=""
-            data-parallax-vitesse="1"
+            data-motion="trace-scrub"
             className="relative mx-auto w-full max-w-xl"
           >
             <PlanDessin />
           </motion.div>
         </div>
-
-        {animationsReduites ? null : (
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-            <motion.div
-              variants={fadeItem}
-              data-parallax=""
-              data-parallax-vitesse="1.06"
-              className="text-mono-xs text-blueprint/60 absolute top-32 right-8 hidden items-center gap-2 font-mono uppercase md:flex"
-            >
-              <span className="bg-blueprint/60 h-px w-8" />
-              <span>POTEAU BA Ø20</span>
-            </motion.div>
-            <motion.div
-              variants={fadeItem}
-              data-parallax=""
-              data-parallax-vitesse="1.06"
-              className="text-mono-xs text-blueprint/60 absolute bottom-10 left-8 hidden items-center gap-2 font-mono uppercase md:flex"
-            >
-              <span>8.40 m</span>
-              <span className="bg-blueprint/60 h-px w-8" />
-            </motion.div>
-          </div>
-        )}
       </motion.div>
 
       <HeroScenario racine={racine} />

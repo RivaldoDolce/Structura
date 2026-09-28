@@ -52,7 +52,7 @@ export function ProjectCard({
       transition={{ duration: 0.4, ease: easings.outExpo }}
       className={cn(
         "group rounded-card bg-surface relative overflow-hidden",
-        "transition-transform duration-500 ease-out-expo hover:-translate-y-2 hover:shadow-glow",
+        "transition-transform duration-reveal ease-out-expo hover:-translate-y-2 hover:shadow-glow",
         className
       )}
     >
@@ -62,7 +62,7 @@ export function ProjectCard({
           alt={imageAlt ?? title}
           fill
           sizes={imageSizes}
-          className="object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.04]"
+          className="object-cover transition-transform duration-reveal ease-out-expo group-hover:scale-[1.04]"
         />
         <div
           aria-hidden="true"
@@ -86,7 +86,7 @@ export function ProjectCard({
         ) : null}
 
         {donnees.length > 0 ? (
-          <div className="border-line bg-elevated pointer-events-none absolute inset-x-0 bottom-0 hidden translate-y-full border-t p-6 transition-transform duration-500 group-hover:translate-y-0 md:block">
+          <div className="border-line bg-elevated pointer-events-none absolute inset-x-0 bottom-0 hidden translate-y-full border-t p-6 transition-transform duration-reveal ease-out-expo group-hover:translate-y-0 md:block">
             <dl className="text-mono-xs grid grid-cols-2 gap-4 font-mono uppercase">
               {donnees.map((entree) => (
                 <div key={entree.terme}>

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { ScenePlans } from "../scene-plans";
+import { ScenePlans, type ScenePlansProps } from "../scene-plans";
 
 vi.mock("next/link", () => ({
   default: ({
@@ -15,13 +15,10 @@ vi.mock("next/link", () => ({
   ),
 }));
 
-vi.mock("next/image", () => ({
-  // Simulacre de test, jamais servi en production : <img> volontaire.
-  // eslint-disable-next-line @next/next/no-img-element
-  default: ({ alt, src }: { alt: string; src: string }) => <img alt={alt} src={src} />,
-}));
-
-const props = {
+// Le type est annoté : sans lui, TypeScript élargit les littéraux de
+// `typeBatiment` en `string` et le test perdrait exactement la garantie que
+// la scène vérifie — chaque modèle doit porter un tracé existant.
+const props: ScenePlansProps = {
   kicker: { number: "03", label: "PLANS" },
   titre: "Des modèles prêts à construire",
   accroche: "Adaptables à votre terrain, déposés pour le permis.",
@@ -30,19 +27,25 @@ const props = {
       reference: "ST-VILLA-R1-PAD",
       titre: "Villa R+1 patio padouk",
       prixFcfa: 4500000,
-      imageUrl: "/photos/immobilier/04-15_villa-bastos-nuit.png",
+      typeBatiment: "villa",
+      imageUrl: "/photos/immobilier/04-79_villa-patio-padouk-facade.png",
+      imageAlt: "Villa R+1 patio padouk — façade sur patio padouk",
     },
     {
       reference: "ST-DUPLEX-SIM",
       titre: "Duplex jumelé clé en main",
       prixFcfa: 3800000,
-      imageUrl: "/photos/immobilier/04-17_duplex-simbock.png",
+      typeBatiment: "duplex",
+      imageUrl: "/photos/immobilier/04-80_duplex-jumele-facade.png",
+      imageAlt: "Duplex jumelé clé en main — façade sur jardin",
     },
     {
       reference: "ST-R4-ODZA-20",
       titre: "Immeuble R+4 vingt logements",
       prixFcfa: 12000000,
-      imageUrl: "/photos/immobilier/04-16_immeuble-r4-odza.png",
+      typeBatiment: "immeuble",
+      imageUrl: "/photos/immobilier/04-81_immeuble-odza-facade.png",
+      imageAlt: "Immeuble R+4 vingt logements — façade sur rue",
     },
   ],
   href: "/plans",
@@ -74,5 +77,55 @@ describe("ScenePlans", () => {
       "href",
       "/plans"
     );
+  });
+
+  /*
+   * Une carte du catalogue porte la photo du modèle livré : la nouvelle vague
+   * d'images (`04-79` → `04-81`) montre enfin le bâtiment de face, façade et
+   * jardin, là où les clichés d'intérieur laissaient le visiteur sans preuve
+   * extérieure. Le tracé dessiné reste en aplat discret derrière la photo — il
+   * donne la grille technique de l'acte sans voler la vue au modèle réel.
+   */
+  it("présente chaque modèle par sa façade et conserve le tracé en fond", () => {
+    const { container } = render(<ScenePlans {...props} />);
+
+    // Une image par carte, dans l'ordre des plans. `next/image` sert une URL
+    // d'optimiseur : c'est le chemin source, encodé dans `url`, qui identifie
+    // le visuel — le lire via l'attribut src demanderait de décoder l'optimiseur.
+    const sources = [...container.querySelectorAll("[data-vue-modele]")].map(
+      (image) => decodeURIComponent(new URL(image.getAttribute("src")!, "http://x").searchParams.get("url") ?? "")
+    );
+    expect(sources).toEqual([
+      "/photos/immobilier/04-79_villa-patio-padouk-facade.png",
+      "/photos/immobilier/04-80_duplex-jumele-facade.png",
+      "/photos/immobilier/04-81_immeuble-odza-facade.png",
+    ]);
+    // Le tracé reste présent : il porte la lecture « plan », pas la preuve.
+    expect(
+      [...container.querySelectorAll("[data-illustration]")].map(
+        (illustration) => illustration.getAttribute("data-illustration")
+      )
+    ).toEqual(["villa", "duplex", "immeuble"]);
+  });
+
+  it("décrit la photo du modèle pour les technologies d'assistance", () => {
+    render(<ScenePlans {...props} />);
+
+    expect(
+      screen.getByRole("img", { name: "Villa R+1 patio padouk — façade sur patio padouk" }),
+    ).toBeInTheDocument();
+  });
+
+  it("affiche le nombre de vues du modèle livré quand la fiche plan en possède", () => {
+    const avecVues = {
+      ...props,
+      plans: props.plans.map((plan, index) => ({
+        ...plan,
+        vuesLivrees: index === 0 ? 2 : undefined,
+      })),
+    };
+    render(<ScenePlans {...avecVues} />);
+
+    expect(screen.getByText("2 vues du modèle livré")).toBeInTheDocument();
   });
 });

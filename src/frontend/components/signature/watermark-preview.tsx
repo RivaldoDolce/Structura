@@ -9,6 +9,12 @@ import { colors } from "@/frontend/lib/tokens";
 export interface WatermarkPreviewProps {
   imageUrl: string;
   watermarkText: string;
+  /**
+   * Ce que l'image montre réellement. Le libellé par défaut parle d'un « plan »,
+   * ce qui devient un mensonge dès que la vignette est une façade : la
+   * description doit venir de la donnée, jamais d'une convention.
+   */
+  imageAlt?: string;
   /** Ton du cartouche : encre sur les bandes claires, ink par défaut. */
   tone?: TonCartouche;
   className?: string;
@@ -23,6 +29,7 @@ const REPETITIONS_FILIGRANE = 5;
 export function WatermarkPreview({
   imageUrl,
   watermarkText,
+  imageAlt = "Aperçu du plan avec filigrane de protection",
   tone = "sombre",
   className,
 }: WatermarkPreviewProps) {
@@ -50,7 +57,7 @@ export function WatermarkPreview({
       <div className="rounded-card bg-surface relative overflow-hidden">
         <Image
           src={imageUrl}
-          alt="Aperçu du plan avec filigrane de protection"
+          alt={imageAlt}
           width={0}
           height={0}
           sizes="(max-width: 1200px) 100vw, 1200px"

@@ -11,7 +11,7 @@ export const PROJETS_PORTFOLIO: PortfolioProject[] = [
     title: "Villa Bastos",
     description:
       "Villa contemporaine R+1, structure béton armé calculée en zone sismique modérée, menuiseries sur-mesure en padouk.",
-    imageUrl: "/photos/immobilier/04-15_villa-bastos-nuit.png",
+    imageUrl: "/photos/immobilier/04-46_villa-bastos-jour.png",
     location: "Bastos, Yaoundé",
     year: "2025",
     surface: "340 m²",
@@ -22,7 +22,7 @@ export const PROJETS_PORTFOLIO: PortfolioProject[] = [
     title: "Immeuble R+4 Odza",
     description:
       "Résidence de 20 logements, descente de charges vérifiée, planchers à corps creux et fondations profondes.",
-    imageUrl: "/photos/immobilier/04-16_immeuble-r4-odza.png",
+    imageUrl: "/photos/immobilier/04-47_immeuble-odza-jour.png",
     location: "Odza, Yaoundé",
     year: "2024",
     surface: "1 850 m²",
@@ -33,7 +33,7 @@ export const PROJETS_PORTFOLIO: PortfolioProject[] = [
     title: "Duplex Simbock",
     description:
       "Duplex jumelé livré clé en main : gros œuvre, charpente bois et second œuvre en onze mois.",
-    imageUrl: "/photos/immobilier/04-17_duplex-simbock.png",
+    imageUrl: "/photos/immobilier/04-48_duplex-simbock-jardin.png",
     location: "Simbock, Yaoundé",
     year: "2024",
     surface: "210 m²",
@@ -52,20 +52,20 @@ export const PROJETS_PORTFOLIO: PortfolioProject[] = [
   },
   {
     id: "reparation-mokolo",
-    title: "Réparation structurelle Mokolo",
+    title: "Rénovation Mokolo",
     description:
       "Reprise en sous-œuvre et confinement d'un bâtiment fissuré, sans interrompre l'activité du rez-de-chaussée.",
-    imageUrl: "/photos/avant-apres/04-20_apres-batiment-repare-mokolo.png",
+    imageUrl: "/photos/journal/04-40_journal-coulage-vibration.png",
     location: "Mokolo, Yaoundé",
     year: "2023",
-    slug: "reparation-mokolo",
+    slug: "renovation-mokolo",
   },
   {
     id: "table-reunion-padouk",
     title: "Mobilier de bureau en padouk",
     description:
       "Table de réunion de douze places et console d'accueil, essences locales sélectionnées et finition mate.",
-    imageUrl: "/photos/mobilier/04-11_table-reunion-padouk.png",
+    imageUrl: "/photos/mobilier/04-57_table-reunion-salle-bois.png",
     location: "Atelier, Yaoundé",
     year: "2024",
     slug: "mobilier-bureau-padouk",

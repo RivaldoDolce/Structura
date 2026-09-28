@@ -26,7 +26,7 @@ const props = {
   kicker: { number: "04", label: "IMMOBILIER" },
   titre: "Des biens vérifiés, pas des promesses",
   accroche: "Foncier, structure, finitions : chaque bien est contrôlé avant mise en vente.",
-  imageUrl: "/photos/immobilier/04-15_villa-bastos-nuit.png",
+  imageUrl: "/photos/immobilier/04-49_terrain-nsimalen-bornes.png",
   verifications: ["Titre foncier vérifié", "Structure calculée", "Permis de bâtir OK"],
   actionPrincipale: { label: "Voir les biens", href: "/immobilier" },
 };

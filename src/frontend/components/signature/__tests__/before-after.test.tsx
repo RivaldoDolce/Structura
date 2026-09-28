@@ -75,7 +75,7 @@ describe("BeforeAfter", () => {
     expect(container.querySelector("[data-voile]")).toHaveStyle({ clipPath: "inset(0 70% 0 0)" });
   });
 
-  it("enseigne le geste par une démonstration automatique 30 → 65 → 45", () => {
+  it("enseigne le geste par une démonstration automatique 30 → 65 → 50", () => {
     vi.useFakeTimers();
     try {
       render(<BeforeAfter {...props} />);
@@ -91,7 +91,9 @@ describe("BeforeAfter", () => {
       act(() => {
         vi.advanceTimersByTime(380);
       });
-      expect(curseur).toHaveAttribute("aria-valuenow", "45");
+      // Le repos revient au centre : les deux états sont présentés à parts
+      // égales, sans laisser croire que 65 % est la valeur « correcte ».
+      expect(curseur).toHaveAttribute("aria-valuenow", "50");
     } finally {
       vi.useRealTimers();
     }
@@ -141,5 +143,50 @@ describe("BeforeAfter", () => {
 
     expect(screen.getByText("Chantier")).toBeInTheDocument();
     expect(screen.getByText("Livré")).toBeInTheDocument();
+  });
+
+  /*
+   * Logique de comparaison : le geste s'enseigne une seule fois, mais le repos
+   * doit montrer les deux états à parts égales. Une démonstration qui se repose
+   * à 45 % laisse le visiteur supposer que 45 % est la valeur « correcte » ;
+   * l'équilibre vrai d'un comparateur est le centre, 50 %.
+   */
+  it("se repose au centre, l'état de référence de la comparaison", () => {
+    vi.useFakeTimers();
+    try {
+      render(<BeforeAfter {...props} />);
+      const curseur = screen.getByRole("slider");
+
+      act(() => {
+        vi.advanceTimersByTime(1200);
+      });
+      expect(curseur).toHaveAttribute("aria-valuenow", "50");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  // La poignée doit rester exactement sur la coupe et au-dessus du voile :
+  // décalée d'un pixel, le geste devient imprécis là où il compte le plus —
+  // aux deux extrêmes, où l'on vérifie que l'état « avant » et l'état « après »
+  // sont bien entiers.
+  it("expose une poignée centrée sur la coupe", () => {
+    render(<BeforeAfter {...props} />);
+
+    const curseur = screen.getByRole("slider");
+    expect(curseur.style.left).toBe("30%");
+    expect(curseur).toHaveClass("absolute", "-translate-x-1/2");
+  });
+
+  // Le nom accessible de la poignée doit dire ce que la coupe montre, pas
+  // seulement « comparaison avant/après » : c'est la seule description que
+  // reçoit un lecteur d'écran au moment du geste.
+  it("annonce la proportion révélée dans le nom de la poignée", () => {
+    render(<BeforeAfter {...props} />);
+
+    const curseur = screen.getByRole("slider");
+    // Amorce de démonstration : 30 % de l'état après révélé.
+    expect(curseur).toHaveAccessibleName(/comparaison avant\/après/i);
+    expect(curseur).toHaveAttribute("aria-valuetext", expect.stringMatching(/30\s*%/));
   });
 });

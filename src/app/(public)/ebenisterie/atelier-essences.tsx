@@ -42,13 +42,13 @@ export function AtelierEssences({ essences }: AtelierEssencesProps) {
             <li key={essence.id} className="group">
               {/* Carte matière : même grammaire de survol que les cartes
                   portfolio — zoom contenu + soulèvement + halo. */}
-              <div className="st-card rounded-card relative aspect-square overflow-hidden transition-transform duration-500 ease-out-expo group-hover:-translate-y-2 group-hover:shadow-glow">
+              <div className="st-card rounded-card relative aspect-square overflow-hidden transition-transform duration-reveal ease-out-expo group-hover:-translate-y-2 group-hover:shadow-glow">
                 <Image
                   src={essence.imageUrl}
                   alt={`Veinage du ${essence.nom.toLowerCase()}`}
                   fill
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                  className="object-cover transition-transform duration-500 ease-out-expo group-hover:scale-[1.04]"
+                  className="object-cover transition-transform duration-reveal ease-out-expo group-hover:scale-[1.04]"
                 />
                 <span
                   className={cn(

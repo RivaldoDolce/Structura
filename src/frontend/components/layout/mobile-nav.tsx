@@ -68,7 +68,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: animationsReduites ? 0 : 0.3 }}
+          transition={{ duration: animationsReduites ? 0 : durations.standard }}
           onClick={onClose}
           className="bg-fond/95 fixed inset-0 z-50 backdrop-blur-md"
         >
@@ -77,6 +77,7 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
             role="dialog"
             aria-modal="true"
             aria-label="Menu de navigation"
+            data-reveal="masque-cascade"
             onClick={(evenement) => evenement.stopPropagation()}
             className="flex h-full flex-col"
           >
@@ -107,12 +108,20 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
               <motion.ul
                 initial="masquee"
                 animate="visible"
+                exit="sortie"
                 variants={{
                   masquee: {},
                   visible: {
-                    transition: { staggerChildren: animationsReduites ? 0 : 0.05 },
+                    transition: { staggerChildren: animationsReduites ? 0 : durations.stagger },
+                  },
+                  sortie: {
+                    transition: {
+                      staggerChildren: animationsReduites ? 0 : durations.stagger / 2,
+                      staggerDirection: -1,
+                    },
                   },
                 }}
+                data-reveal="masque-cascade"
                 className="space-y-6"
               >
                 {navLinks.map((lien) => (
@@ -128,7 +137,16 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
                           ease: easings.outExpo,
                         },
                       },
+                      sortie: {
+                        opacity: 0,
+                        x: -20,
+                        transition: {
+                          duration: animationsReduites ? 0 : durations.standard,
+                          ease: easings.outExpo,
+                        },
+                      },
                     }}
+                    data-sortie="miroir"
                   >
                     <Link
                       href={lien.href}
@@ -145,9 +163,10 @@ export function MobileNav({ isOpen, onClose, navLinks }: MobileNavProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
               transition={{
-                duration: animationsReduites ? 0 : 0.4,
-                delay: animationsReduites ? 0 : navLinks.length * 0.05 + 0.2,
+                duration: animationsReduites ? 0 : durations.reveal,
+                delay: animationsReduites ? 0 : navLinks.length * durations.stagger + durations.stagger,
               }}
               className="px-4 pb-8"
             >
