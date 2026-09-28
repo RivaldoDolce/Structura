@@ -7,7 +7,7 @@ Cahier des charges actif : `docs/Guide/refonte_structura_v3.md` (roadmap par lot
 ## Architecture
 
 Séparation stricte du skill 01 : `src/frontend/components/{ui,signature,sections,layout,providers}`,
-`src/frontend/{lib,hooks}`, `src/frontend/data/`. `ui/` porte les 16 primitives, `signature/` les 14 composants de
+`src/frontend/{lib,hooks}`, `src/frontend/data/`. `ui/` porte les 16 primitives, `signature/` les 19 composants de
 marque, `sections/` compose les pages et les scènes métier.
 
 ## État réel
@@ -27,7 +27,7 @@ marque, `sections/` compose les pages et les scènes métier.
   `app-tests/regles-v3.test.ts`.
   Transition de route subtile via `src/app/template.tsx` (voile + translation légère, sans casser le focus).
   Garde systématique : coupure sous 768 px et respect strict de `prefers-reduced-motion` (`useScenarioActif`, `MotionProvider`).
-- **Signature & Primitives** : 14 composants signature et 16 primitives UI fonctionnels et testés en TDD.
+- **Signature & Primitives** : 19 composants signature et 16 primitives UI fonctionnels et testés en TDD.
   `ButtonTech` gère les coins en L et variantes (`conversion`, `primary`, `ghost`, `encre`).
   `JalonTimeline` sur fiches portfolio avec rail tracé au scroll.
   `BeforeAfter` avec auto-démo 30 → 65 → **50** (repos au centre : 45 % se lisait
