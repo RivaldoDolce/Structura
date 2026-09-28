@@ -131,7 +131,9 @@ function ActeConception({
 }
 /* Acte 02 — l'atelier porte : média dominant, panneau de geste chevauché. */
 function ActeFabrication({ etape }: { etape: EtapeGeste }) {
-  const ton = tonDe("pale");
+  // Ton de la CARTE, pas de la bande : `pale` décrit le papier, la carte est une
+  // surface sombre posée dessus. Les deux ne partagent pas les mêmes textes.
+  const ton = tonDe("warm");
 
   return (
     <motion.div
@@ -154,8 +156,17 @@ function ActeFabrication({ etape }: { etape: EtapeGeste }) {
           />
         </div>
       </motion.div>
+      {/*
+        La carte est une surface sombre posée sur la bande pâle. Elle prend
+        donc SON ton, pas celui de la bande : le ton `pale` est calculé pour le
+        papier et tombe à 1,3:1 sur ce fond, d'où un titre brun illisible.
+        `warm` donne encre claire sur bleu, et son accent sable rattache la carte
+        à la matière de l'atelier. La bande conserve son `pale` déclaré.
+      */}
       <motion.div
         variants={fadeUpItem}
+        data-carte
+        data-lumiere-carte="warm"
         className={cn(
           "bg-elevated rounded-card relative z-10 border p-6 shadow-xl lg:-ml-16 lg:mb-10",
           ton.filet
@@ -164,7 +175,7 @@ function ActeFabrication({ etape }: { etape: EtapeGeste }) {
         <p className={cn("text-mono-xs font-mono uppercase", ton.texte)}>{etape.numero}</p>
         <h3 className={cn("font-display text-h2b mt-2 font-bold", ton.titre)}>{etape.titre}</h3>
         <p className={cn("text-body mt-3", ton.texte)}>{etape.description}</p>
-        <Livrables livrables={etape.livrables} lumiere="pale" />
+        <Livrables livrables={etape.livrables} lumiere="warm" />
         <ButtonTech asChild variant={ton.bouton} size="lg" className="mt-7 w-full">
           <Link href={etape.href}>{etape.hrefLabel}</Link>
         </ButtonTech>

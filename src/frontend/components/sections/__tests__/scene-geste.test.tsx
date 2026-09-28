@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
@@ -113,5 +113,43 @@ describe("SceneGeste", () => {
       acte.getAttribute("data-lumiere")
     );
     expect(lumieres).toEqual(["ivoire", "pale", "warm"]);
+  });
+
+  /*
+   * Régression « texte marron sur carte bleue » : l'acte 02 pose une carte
+   * sombre (bg-elevated) au-dessus de la bande pâle, mais l'habillait du ton
+   * `pale`. Ses textes, calculés pour le papier, tombent alors à 1,3:1 sur
+   * cette surface — le titre devient littéralement illisible.
+   *
+   * Un ton décrit la surface sur laquelle il est posé, pas la bande qui
+   * l'accueille : la bande garde sa lumière pale, la carte flottante prend
+   * celle de sa propre surface. Le test verrouille les deux, pour qu'on ne
+   * puisse plus réintroduire l'appariement incorrect.
+   */
+  it("habille la carte flottante d'un ton lisible sur fond sombre", () => {
+    const { container } = render(
+      <SceneGeste
+        etapes={GESTE.etapes}
+        kicker={{ number: "03", label: "LE GESTE" }}
+        titre="Du croquis à la pièce posée"
+      />
+    );
+
+    const carte = container.querySelector('[data-acte-geste="fabrication"] [data-carte]');
+    expect(carte).not.toBeNull();
+    expect(carte).toHaveClass("bg-elevated");
+    // La bande reste pâle, la carte déclare la sienne.
+    expect(carte).toHaveAttribute("data-lumiere-carte", "warm");
+
+    // Un ton sombre : encre claire, jamais l'encre du papier.
+    const titre = within(carte as HTMLElement).getByRole("heading", { level: 3 });
+    expect(titre.className).toContain("text-ink");
+    expect(titre.className).not.toContain("text-encre");
+
+    const description = within(carte as HTMLElement).getByText(
+      GESTE.etapes[1].description
+    );
+    expect(description.className).toContain("text-ink-soft");
+    expect(description.className).not.toContain("text-encre");
   });
 });
