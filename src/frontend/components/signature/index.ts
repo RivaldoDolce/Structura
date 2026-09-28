@@ -5,10 +5,15 @@ export { BlueprintGrid } from "./blueprint-grid";
 export type { BlueprintGridProps } from "./blueprint-grid";
 export { ButtonTech } from "./button-tech";
 export type { ButtonTechProps } from "./button-tech";
+export { CtaMagnetique } from "./cta-magnetique";
+export type { CtaMagnetiqueProps } from "./cta-magnetique";
+
 export { DevisWizard } from "./devis-wizard";
 export type { DevisWizardProps } from "./devis-wizard";
 export { FilAriane } from "./fil-ariane";
 export type { FilArianeItem, FilArianeProps } from "./fil-ariane";
+export { IllustrationPlan } from "./illustration-plan";
+export type { IllustrationPlanProps } from "./illustration-plan";
 export { JalonTimeline } from "./jalon-timeline";
 export type { Jalon, JalonTimelineProps } from "./jalon-timeline";
 export { Kicker } from "./kicker";
