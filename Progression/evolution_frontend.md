@@ -1,5 +1,267 @@
 # Évolution Frontend — STRUCTURA
 
+## 2026-09-28 — V3b : barre, acte 04, acte 05 et comparateur de l'acte 09
+
+Quatre défauts de relecture traités en une passe, avec le lot photographique
+`04-78` → `04-81` (Vague 4) optimisé dans la foulée : maîtres PNG sRGB
+(`compressionLevel: 9`, aucun sur-échantillonnage) puis dérivés `.webp` par
+`npm run assets` — gain de 71 % à 81 % par fichier.
+
+- **Barre de navigation** : le conteneur est désormais borné et rempli
+  (`w-full max-w-[112rem]`) au lieu de s'étirer sur toute la fenêtre large — le
+  verrou de marque dérive de l'aplomb du contenu et le titre n'est plus à
+  l'extrême gauche du cadre perçu. Grille `auto 1fr auto` conservée : c'est elle
+  qui garantit verrou à gauche et CTA à l'indroite du *contenu*, là où
+  `justify-between` ne ferait que répartir l'espace restant. Le CTA repasse en
+  `md:block` (le test d'accessibilité le vérifiait déjà) et le hamburger gagne
+  `justify-self-end` : en dessous de `md`, il était seul dans la colonne
+  centrale et se collait à gauche.
+- **Acte 04 (ébénisterie)** — « le texte s'entremelle à l'image » : les marges
+  négatives de la colonne éditoriale la faisaient entrer sur la photo sans
+  aucune surface de protection. Le texte est désormais posé sur un panneau
+  opaque (`bg-surface-deep`, filet `border-line`, `p-8 lg:p-10`) qui le sépare
+  du visuel — le chevauchement devient une grammaire assumée au lieu d'un
+  défaut. Le visuel passe de la macro d'essence (`04-05`) à la photo d'atelier
+  (`04-78_atelier-ebenisterie-faconnage`) : une macro de bois ne montre ni la
+  main ni la machine, donc ni le métier. La même photo alimente l'étape 02
+  (« Fabrication ») de la page ébénisterie, qui perdait son équipe au profit
+  d'un groupe d'atelier à la mise en scène datée.
+- **Acte 05 (plans)** — la carte ne montre plus un tracé mais **la façade du
+  modèle livré** (`04-79` villa, `04-80` duplex, `04-81` immeuble). Le tracé
+  isométrique reste en fond, à 20 % d'opacité, et se retire au survol : on part
+  du réel pour ouvrir la lecture technique. `PlanScene` exige désormais
+  `imageUrl` + `imageAlt` (typage, pas convention : impossible d'oublier
+  l'alternative texte). Les mêmes images remplacent les couvertures dans les
+  sous-menus — catalogue `/plans` et fiche `/plans/[reference]` — via la donnée
+  `PLANS[].imageUrl`, sans duplication de source.
+- **Donnée `altPhoto`** : la description d'une photo n'est plus un `alt` en
+  dur dans le composant. `WatermarkPreview` accepte `imageAlt`, parce que son
+  libellé par défaut — « Aperçu du plan » — devient un mensonge dès que la
+  vignette est une façade. L'Open Graph de la fiche plan en profite aussi.
+- **Acte 09** : les trois duos statiques (`MosaiqueAvantApres`) sont retirés.
+  Ils répetaient la matière du journal (acte 08) et concurrençaient le seul
+  geste que la bande doit enseigner ; montrer trois comparaisons fixes à côté
+  d'une quatrième interactive apprend au visiteur qu'il n'a rien à faire. Le
+  composant, devenu orphelin, est supprimé (pas de code mort). La section ne
+  porte plus que le comparateur Mokolo, dont la logique est corrigée :
+  - le repos de la démonstration automatique revient à **50 %** et non 45 % —
+    à 45 %, le visiteur lit une valeur arbitraire comme l'état « correcte » ;
+  - la poignée expose `aria-valuetext` (« 30 % de l'état après, 70 % de l'état
+    avant ») : `aria-valuenow` seul est un nombre nu, inintelligible à l'oreille.
+- TDD : 8 vérifications écrites avant implémentation (barre épinglée, panneau
+  de l'acte 04, photo d'atelier, façades de l'acte 05, absence de duos statiques,
+  repos à 50 %, poignée sur la coupe, proportion annoncée).
+- Résultat : **333/333 tests**, `tsc --noEmit` propre, **ESLint 0 erreur**
+  (6 avertissements pré-existants des scripts d'audit), `next build` 28/28.
+
+## 2026-09-28 — V3 : intégration des lots d'images premium (Vague 1 à 3)
+
+Catalogue photographique partiel (29 fichiers, 1376 à 1672 px) réceptionné et branché à
+`Progression/plan_integration_images_v3.md` : maîtres PNG sRGB (≈ 500 Ko, < 3 Mo) nommés
+`04-30` → `04-77`, ratios normalisés au guide (exact 16:9 / 16:10 / 4:3, portraits rognés sur la
+saillance), dérivés `.webp` regénérés via le script `npm run assets` (ajouté : le guide le
+référençait, il n'existait pas).
+
+- Hero d'accueil : `fond_accueil.png` (choix utilisateur) devient `04-30_hero-accueil-chantier-matin-dore`,
+  teinte suffisamment sombre pour conserver la recette `.st-voile-photo` (contraste mesuré :
+  titre 13:1 à 18:1, cyan du plan 7,9:1 — commentaires `globals.css` et `hero.tsx` resynchronisés).
+- Journal + jalons + étude préalable : 09 clichés du feuilleton (`04-38` → `04-43`) ; les jalons
+  élévation et finitions, sans photo auparavant, sont enfin illustrés — la vitrine d'accueil
+  affiche 4 jalons distincts au lieu de 3.
+- Immobilier : jour clair et bornage visible (`04-46` → `04-49`) sur portfolio, plans et acte
+  immobilier de l'accueil.
+- Ébénisterie : conception (sélection des matières, `04-72`), pièce signature lit bubinga (`04-59`),
+  table de réunion (`04-57`) ; contact : vignette bureau (`04-71`) ; à-propos : bandeau matières
+  locales à 3 clichés (`04-73` → `04-75`) ; fiche plan : galerie « vues du modèle » rendue
+  (`04-76`, `04-77`) au lieu d'être donnée morte.
+- Écarts documentés au guide : `IMG-CH-03` fracture le journal (pas le portfolio, resté sur `04-01`
+  pour éviter le double affichage) ; `IMG-HERO-01` alimente l'étude de cas d'ingénierie (`04-31`)
+  au lieu d'être redondant avec le hero ; réemplois restants limités aux couples assumés
+  (bien ↔ plan, jalon ↔ journal).
+- Orphelins retirés : 18 maîtres remplacés et leurs dérivés (récupérables via git) ; lots
+  `Vague 1|2|3` supprimés après optimisation.
+- Résultat : **324/324 tests** (TDD : 4 vérifications ajoutées avant implémentation — galerie
+  rendue, bandeau matières, vignette contact — + adaptation des fixtures aux nouveaux chemins),
+  `tsc --noEmit` propre, **ESLint 0 erreur** (avertissements pré-existants du script d'audit).
+
+## 2026-09-28 — Refonte accueil : actes 04, 05 et 09
+
+- Acte 09 « La méthode » (`Le chantier, étape par étape`) : le comparateur unique devenait
+  pauvre face aux 6 clichés du journal — `PleinLargeurEditorial` *média* porte désormais une
+  `MosaiqueAvantApres` (`signature/`, 3 duos fouilles → élévation `04-38`/`04-42`, ferraillage →
+  coulage `04-39`/`04-40`, charpente → finitions `04-41`/`04-43`) puis le comparateur interactif
+  Mokolo (`04-63`/`04-64`). La paire `04-64` disparaît de `PROJETS_PORTFOLIO` au profit d'une
+  entrée « Coulage de dalle » (`renovation-mokolo`) : le `BeforeAfter` retrouve le même cadrage
+  des deux côtés.
+- Acte 04 (ébénisterie) : la macro est cadrée `50% 20%` dans un carré contenu (plus de
+  `max-h` fixe compressé), la colonne texte a une base intrinsèque — `SceneEbenisterie`
+  accepte désormais une `position` optionnelle.
+- Acte 05 (plans) : la scène reste sans photographie par conception (tracé unique, garde-fou
+  conservé) mais annonce la preuve — chaque carte affiche « N vues du modèle livré » quand la
+  fiche plan en possède (`vuesLivrees`, mono encre).
+- TDD : `MosaiqueAvantApres` (ordre avant → après, légendes), garde-fou « jamais de photo »
+  de `ScenePlans` conservé + annonce des vues, accueil (3 paires + comparateur), adaptation
+  des fixtures de la page démo (données réelles, plus de projets fictifs).
+- Résultat : **327/327 tests**, `tsc --noEmit` propre, **ESLint 0 erreur** (avertissements
+  pré-existants du script d'audit).
+
+## 2026-09-27 — V3 : Lot 3 ingénierie (quatre scènes différenciées) livré
+
+`/ingenierie` empilait quatre fois le même `BandeauAlterne` 50/50 — la répétition
+mécanique que la V3 §7.7 interdit. Quatre scènes aux grammaires distinctes :
+
+- 01 `SceneEtudePrealable` (ivoire, 40/60, image débordante, tableau de preuves).
+- 02 `SceneNoteCalcul` (pâle, média dominant, panneau de cotes en chevauchement).
+- 03 `SceneFerraillage` (sombre, plan technique `PlanFerraillage` pleine largeur).
+- 04 `SceneSuiviReception` (warm, photo plein cadre, panneau de suivi léger).
+
+Chaque scène porte `data-composition` et `data-ratio` : le test de composition de
+la page vérifie l'ordre des huit actes et l'absence de collision de lumières
+(ivoire → pâle → sombre → warm → sombre → pâle → warm). Les tests `metier`
+obsolètes (sélecteur `data-composition` seul, titre de méthode supprimé) ont été
+alignés sur les nouveaux marqueurs.
+
+## 2026-09-26 — V3 : Lot 2 (coutures et transitions entre actes) livré
+
+Le lot a commencé par une vérification de la composition réelle de la page, et non
+par une lecture du code. C'est cette mesure qui a révélé les trois défauts ci-dessous :
+aucun n'était visible dans l'arborescence des composants.
+
+### Coutures : la tache noire au milieu du papier
+
+`.st-lisiere` fond systématiquement vers `--color-fond`. Entre deux bandes **claires**
+jointives — accueil (acte 02 `pale` → acte 03 `ivoire`), ébénisterie (bandeau ivoire
+→ pièce `pale`), catalogue de plans — cela dessinait une bande noire en plein milieu
+d'une zone papier. Le dégradé n'a de sens qu'à l'entrée et à la sortie d'une zone
+sombre ; entre deux papiers, il triche sur la continuité et crée au contraire une rupture.
+
+La couture clair/clair est désormais un filet d'un pixel en `line-encre`, la lisière
+du dessus renonçant à son fondu pour ne poser qu'un trait. La règle est vérifiée par
+un test de CSS, seule façon d'attraper un comportement qui ne se manifeste qu'en assemblage.
+
+### Recyclage photographique : six occurrences, quatre causes
+
+Le test d'intégration vérifiait déjà l'absence de doublons, mais la règle avait été
+affaiblie pour laisser passer ces cas. L'audit en a révélé les causes distinctes :
+
+- l'acte 03 (ingénierie) et le fondu de l'acte 08 (journal) réutilisaient la photo
+  du hero — un même cliché de chantier paraissait trois fois ;
+- le quatrième jalon du journal n'a pas de photo et empruntait celle du premier,
+  affichant deux fois la même image sous deux dates : le critère de sélection est
+  désormais la présence d'un cliché, pas le rang ;
+- le catalogue de plans ilustrait des **modèles à vendre** par les photos des
+  immeubles déjà vendus, la même preuve revenant trois fois sur la page.
+
+### Décision de composition : un plan se montre par son tracé
+
+Le catalogue présentait chaque modèle par la photo d'un bâti déjà construit — ce
+qui laisse croire que le modèle existe. Il est désormais présenté par
+`IllustrationPlan`, dont le volume est calculé à partir du type. Cette décision a
+donné un second bénéfice : le duplex, jusqu'ici indiscernable d'une villa, se
+distingue par sa forme (deux volumes en cascade) et non par un étage de plus.
+
+`typeBatiment` a été resserré de `string` à `TypeBatiment` à la source : sans cela,
+un modèle mal typé retombait silencieusement sur la villa, et deux modèles distincts
+se confondraient à l'écran. Le contrat du type est ici la garantie du tracé.
+
+### Vérifications
+
+292/292 tests Vitest passants (62 fichiers), `tsc --noEmit` propre, `next build`
+réussi (103 kB de First Load JS partagé).
+
+## 2026-09-26 — V3 : Lot 0 (garde-fous TDD) et Lot 1 (visage du site) livrés
+
+Démarche TDD appliquée : les règles structurelles ont été écrites avant leur correction,
+et chaque composant touché a été couvert par un test de rendu et d'intention.
+
+### Lot 0 — Garde-fous transverses
+
+- `app-tests/regles-v3.test.ts` : audit statique des sources de production. Ces règles
+  sont invisibles à l'écran — un composant peut défaire une décision de finition sans
+  qu'aucune casse — d'où un test de code source plutôt qu'un test de rendu.
+  - `transition-all` interdit : chaque transition nomme ses propriétés.
+  - Durées littérales (`duration-300`) interdites : toute durée sort d'un token.
+  - Échelle CSS ⇄ JS (`--transition-duration-*` / `durations`) maintenue synchronisée,
+    avec un garde-fou du garde-fou : si l'extraction ne trouve plus rien, c'est la règle
+    qui est cassée, pas le code.
+  - Hiérarchie des cinq crans de surface préservée.
+- Découverte technique : les tokens `--dur-*` (namespace maison) ne produisaient aucun
+  utilitaire. Bascule sur le namespace officiel `--transition-duration-*` de Tailwind v4,
+  ce qui rend l'interdiction des durées littérales tenable sans perte de granularité.
+- Conversion des durées : `button-tech`, `devis-wizard`, `site-header`, `price-tag`,
+  `project-card`, `scene-plans`, `atelier-essences`. Attribution d'un `className`
+  dupliqué dans l'icône de chargement de `ButtonTech` (avertissement esbuild).
+
+## 2026-09-27 — Achèvement des Lots 3 & 4 (Compositions métiers, Mouvement V3 & CtaMagnetique)
+
+### Composants Signature & Mouvement V3 (Lot 4)
+- **CtaMagnetique (`src/frontend/components/signature/cta-magnetique.tsx`)** :
+  - Conforme aux spécifications V3 (§12, Lot 4).
+  - Déplacement fluide par micro-attraction vers le pointeur (`transform` pur, limité à 8px) avec rappel par spring physique.
+  - Détection fine de l'environnement matériel via le hook `usePointeurFin` (`pointer: fine`) et respect absolu de `prefers-reduced-motion` : inerte sur mobile/tactile et au clavier.
+  - Couverture TDD complète (`cta-magnetique.test.tsx`).
+- **Transitions MobileNav & DevisWizard** :
+  - `mobile-nav.tsx` : implémentation de la fermeture en miroir (stagger inversé), tokens temporels stricts (`durations.stagger`, `durations.reveal`), masque cascade (`data-reveal="masque-cascade"`).
+  - `devis-wizard.tsx` : navigation par glissement horizontal unifié avec mode instantané en cas de mouvement réduit.
+
+### Scénarisation Métier & Compositions Asymétriques (Lot 3)
+- Consolidation des scènes d'ingénierie et d'ébénisterie (`SceneEtudePrealable`, `SceneFerraillage`, `SceneNoteCalcul`, `SceneSuiviReception`, `SceneGeste`).
+- Intégration et exportation du module `CtaMagnetique` dans l'index des composants signature.
+
+### Validation Globale
+- **Vitest** : 100% vert sur l'ensemble de la suite (sections, signature, layout, app-tests, lib, hooks).
+- **TypeScript** : `npx tsc --noEmit` zéro erreur.
+- **Next.js Production Build** : `next build` validé avec succès (28 routes statiques/SSG générées, 103 kB First Load JS).
+
+
+### Lot 1 — Header institutionnel
+
+- Sceau : le monogramme du kit est opaque (3 canaux, sans alpha) et posait un carré
+  sombre sur les actes clairs. `scripts/convert-assets.mjs` détoure désormais un PNG à
+  canal alpha ; le sceau est décoratif (`alt=""`), le libellé restant porté par le lien.
+- Deux seuils de défilement distincts (floutage 24 px, compactage 96 px) : le fond se
+  densifie dès que le titre quitte l'écran, la hauteur ne se réduit qu'une fois le
+  défilement engagé.
+- Soulignement unifié sur `.st-lien` (la définition locale ne réagissait qu'au survol
+  d'un trait de 1 px `aria-hidden`, donc jamais visible) et `aria-current` sur la page
+  courante. Transitions conditionnées par `prefers-reduced-motion`.
+
+### Lot 1 — Hero « un seul porteur du plan »
+
+- La maille blueprint quitte le hero : superposée à `PlanDessin`, elle donnait deux
+  représentations concurrentes de la même villa. Elle reste disponible pour les mini-heros
+  métier via `FONDS_HEROS`.
+- Fond photo réelle de chantier R+2 à Yaoundé, luminance mesurée (~0,13 au tiers
+  gauche) — elle autorise un voile dégressif sans transformer la scène en aplat.
+- Échelle `--text-hero` dédiée (max 72 px) : la colonne éditoriale fait ~617 px en 1440,
+  trois lignes courtes y tiennent sans veuve, et le hero tient dans un écran portable.
+- Cotes flottantes dupliquées retirées : elles doublonnaient les cotes réelles du plan.
+- Parallax multi-couches supprimé : un seul mouvement scroll-driven (le tracé), conformément
+  au principe « un seul élément narratif dominant par scène ».
+
+### Vérifications
+
+281/281 tests Vitest passants (61 fichiers), `tsc --noEmit` propre, `next build` réussi
+(103 kB de First Load JS partagé). `Progression/etat_frontend.md` resynchronisé.
+
+## 2026-09-25 — Alignement stratégique sur le Cahier de Refonte V3
+
+- **Examen approfondi du référentiel V3** (`docs/Guide/refonte_structura_v3.md`) :
+  - Validation du principe cardinal : **« Conserver le système, améliorer sa mise en scène »** (pas de réécriture, pas de design system bis ni de palette générique SaaS).
+  - Validation de la structure en 10 actes narratifs de la page d'accueil (préservés depuis le sprint précédent) avec différenciation géométrique stricte (fin de l'alternance mécanique 50/50).
+  - Validation des 7 chantiers prioritaires (Lots 0 à 6) :
+    - Lot 0 : Garde-fous TDD (non-régression visuelle et structurelle).
+    - Lot 1 : Visage du site (Header institutionnel compactable + underline, Hero « un seul porteur du plan » et photo valorisée, H1 text-wrap balance).
+    - Lot 2 : Coutures intelligentes (`st-lisiere` tenant compte de `--st-voisin`, filet net sur clair→clair).
+    - Lot 3 : Scénarisation des pages métier (priorité absolue à la refonte d'Ingénierie en 4 actes asymétriques).
+    - Lot 4 : Mouvement narratif ciblé (pas de surenchère, devis slide 200-300ms, GSAP scrub cadencé).
+    - Lot 5 : Matière, finition, placeholders d'images floutés/ton-sur-ton et footer institutionnel d'ingénierie.
+    - Lot 6 : Progressive enhancement (View Transitions).
+- **Mise à jour des documents de suivi** :
+  - `Progression/etat_frontend.md` synchronisé sur la branche `feat/refonte-design` (268 tests verts, socle V2 validé, transition vers V3).
+  - `Progression/plan_refonte_v3.md` initialisé pour séquencer l'implémentation par lots TDD.
+
+
 ## 2026-09-24 — Refonte V2 : socle lumière + contrastes + survols premium (V2-1c/V2-1d)
 
 Périmètre `plan_refonte_v2.md` respecté : tokens, recettes et mouvement
